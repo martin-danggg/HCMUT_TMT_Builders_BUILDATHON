@@ -1,0 +1,563 @@
+\documentclass[a4paper,12pt]{article}
+
+% --- CÀI ĐẶT NGÔN NGỮ & FONT ---
+\usepackage{vntex}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+
+% --- ĐỊNH DẠNG TRANG & VĂN BẢN ---
+\usepackage{a4wide}
+\usepackage{geometry}
+\geometry{a4paper, left=2cm, right=2cm, top=2.5cm, bottom=4.2cm, footskip=12mm}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+% --- ĐỒ HỌA & BẢNG BIỂU ---
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{svg}
+\usepackage{tikz}
+\usetikzlibrary{arrows,snakes,backgrounds,positioning,shapes,calc,fit}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{array}
+\usepackage[skip=5pt]{caption}
+\usepackage{placeins}
+\usepackage{float}       % thêm: template dùng [H]
+\usepackage{longtable}   % thêm: bảng dài ngắt trang
+
+% --- MÀU SẮC & CODE ---
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}    % thêm: tô màu dòng bảng
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[framemethod=tikz]{mdframed}
+
+% --- HEADER & FOOTER ---
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% --- HYPERREF (Luôn load cuối cùng) ---
+\usepackage{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+% ================= CÀI ĐẶT MÀU SẮC =================
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{black}}
+\definecolor{p1}{RGB}{52,101,164}
+\definecolor{p2}{RGB}{78,154,6}
+\definecolor{p3}{RGB}{204,0,0}
+\definecolor{p4}{RGB}{117,80,123}
+\definecolor{p5}{RGB}{193,125,17}
+\definecolor{p6}{RGB}{32,128,128}
+\definecolor{p7}{RGB}{90,90,90}
+\definecolor{p8}{RGB}{170,60,120}
+
+% ================= CÀI ĐẶT HEADER/FOOTER =================
+\everymath{\color{blue}}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+ \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{hcmut.png}}
+   \end{picture}&
+    \begin{tabular}{l}
+        \textbf{\ttfamily Trường Đại học Bách khoa - ĐHQG-HCM}\\
+        \textbf{\ttfamily Khoa Khoa học và Kĩ thuật Máy tính}
+    \end{tabular}
+ \end{tabular}
+}
+\fancyhead[R]{}
+\fancyfoot{}
+\fancyfoot[L]{\scriptsize \ttfamily \textcolor{blue}{Builders Buildathon 2026 - P3 CAD De-ID \\ Đội HCMUT TMT, Tháng 11/2026}}
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+
+% ================= CÁC HỘP MÀU =================
+% \partbox{màu}{tiêu đề}{nội dung}: hộp ngắn, không ngắt trang
+\newcommand{\partbox}[3]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \longbox{màu}{tiêu đề}{nội dung}: hộp dài, được ngắt trang
+\newcommand{\longbox}[3]{%
+\begin{mdframed}[linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \metabox{màu}{khối lượng}{tiên quyết}{là nền cho}{số người}
+\newcommand{\metabox}[5]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1pt,leftmargin=0pt,rightmargin=0pt,backgroundcolor=#1!15]
+\textbf{Khối lượng:} #2\par
+\textbf{Tiên quyết:} #3\par
+\textbf{Là nền cho:} #4\par
+\textbf{Số người:} #5
+\end{mdframed}}
+
+% ================= LỆNH PHỤ (thêm cho báo cáo này) =================
+% \trial{...}: số liệu chạy thử, chưa phải kết quả chính thức
+\newcommand{\trial}[1]{\textcolor{p5}{\textbf{[chạy thử]}~#1}}
+% \src{...}: ghi nguồn của một con số
+\newcommand{\src}[1]{{\footnotesize\textcolor{p7}{(nguồn: #1)}}}
+\newcommand{\fn}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=1pt,topsep=2pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\Large Đại học Quốc gia Thành phố Hồ Chí Minh \\
+\Large Trường Đại học Bách khoa \\
+\Large Khoa Khoa học và Kĩ thuật Máy tính
+\end{center}
+
+\vspace{1cm}
+\begin{center}
+\includegraphics[width=4cm]{hcmut.png}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{c}
+    \textbf{\Large BUILDERS BUILDATHON 2026} \\[0.2cm]
+    \textbf{\Large (Problem 3)} \\
+    ~~\\
+    \hline
+    \\
+    \multicolumn{1}{l}{\textbf{{\Large Tổng quan đề bài}}}\\
+    \\
+    \textbf{{\LARGE Machina -- CAD De-ID}}\\[0.2cm]
+    {\large Ẩn danh 139,7 GB tài liệu kỹ thuật mà file vẫn dùng được}\\
+    \\
+    \hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrl}
+\hspace{2cm} & Track: & Machina - CAD De-ID \\
+& Đội: & HCMUT TMT\\
+& Sinh viên: & Đặng Minh Triết - 2510249 \\
+& Hạn chót: & 23:00 Chủ nhật 22/11/2026 (GMT+7) \\
+\end{tabular}
+\end{table}
+
+\vfill
+\begin{center}
+{\footnotesize Thành phố Hồ Chí Minh, Tháng 11/2026}
+\end{center}
+\end{titlepage}
+
+\thispagestyle{fancy}
+\newpage
+\tableofcontents
+\newpage
+
+\shorthandoff{"}
+\sloppy
+
+\section{Tổng quan}
+
+\subsection{Thông tin chung}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.0cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Nội dung} \\
+\midrule
+Track & Machina -- CAD De-ID (nhà tài trợ Machina, giải \$5{,}000, \textbf{chỉ 12 đội} trên bảng lúc chụp). Machina giới thiệu \textbf{top 3} vào vòng phỏng vấn đầu tiên vị trí Engineering Researcher \\
+Bài toán & Kho tài liệu kỹ thuật 188.722 file, 139,7 GB (PDF, bản vẽ, SolidWorks, Inventor, định dạng CAD trung tính, ảnh, file nén). Xây pipeline thay mọi thông tin định danh bằng bút danh nhất quán, mà mọi file kỹ thuật vẫn dùng được và liên kết giữa các file vẫn đúng \\
+Hạn nộp & \textbf{23:00 Chủ nhật 22/11/2026 (GMT+7)}. Bảng xếp hạng lúc đóng là kết quả cuối; không chấm thêm sau giờ đóng \\
+Giới hạn nộp & Tổng \textbf{20 attempt có chấm}, tối đa 2 lần/giờ, mỗi đội chỉ một bài đang chấm tại một thời điểm. Chấm thường dưới 20 phút sau khi bắt đầu, tối đa 3 giờ \\
+Lấy dữ liệu & Không cần tài khoản AWS: tải từ \url{https://machina-input.joinbuilders.org} bằng \fn{get-input.sh} (có \fn{--limit}, \fn{--prefix}, \fn{--jobs}, chạy lại được để nối tiếp) hoặc xem \fn{manifest.tsv}. Cần hệ thống file \emph{phân biệt hoa thường}. Mạng chậm thì thuê VM có ít nhất 400 GB đĩa \\
+Hình thức nộp & Mỗi attempt một thư mục \fn{attempt-N/} gồm \fn{corpus/}, \fn{code/}, \fn{README.txt}; upload bằng \fn{upload.py} (token 1 giờ) vào \fn{gs://builders-machina-submissions-1120/}\allowbreak\fn{teams/<team-id>/attempt-N/}, rồi dán địa chỉ đó vào form. Có thể nộp từ bucket S3 riêng ở us-west-2 (chính sách bucket trong \fn{challenge.pdf}) \\
+Giới hạn bài nộp & \fn{corpus/} tối đa 400.000 object; file trên 2 GB bị bỏ qua khi chấm; scorer dừng nếu cần quá 12 GB tải về hoặc quá 1 giờ đọc để tìm file cần kiểm tra. File trong thư mục Builders bị xóa 10 ngày sau khi upload \\
+\bottomrule
+\end{tabularx}
+\caption{Thông tin chung của P3 \src{trang đề, challenge.pdf, upload.py}}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Trang đề và \fn{challenge.pdf} khác nhau:} PDF nói ``tối đa 3 attempt'', sao chép vào bucket S3 riêng bằng AWS CLI và gửi địa chỉ cho BTC. Trang đề ghi rõ: ``Where challenge.pdf and this page differ on attempts, where the input comes from, or how to submit, this page applies''. Vậy áp dụng: \textbf{20 attempt}, tải qua \fn{machina-input.joinbuilders.org}, nộp qua form trên trang.
+\end{mdframed}
+
+\subsection{Bảng điểm và cách chấm}
+P3 \textbf{chấm tự động} bằng 1000 phép kiểm tra riêng tư. Không có phần chấm AI hay người chấm trong điểm số; BTC có thể chấm lại mọi đội bằng bộ chấm nghiêm hơn trong sự kiện, và bảng cuối dùng điểm mới nhất.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.3cm}YC{1.6cm}C{1.5cm}}
+\toprule
+\textbf{Thành phần} & \textbf{Định nghĩa} & \textbf{Cách chấm} & \textbf{Phần} \\
+\midrule
+Điểm một attempt & Số check qua trên 1000 check riêng tư trên \fn{corpus/}: tên được thay nhất quán ở mọi nơi xuất hiện, và file kỹ thuật vẫn dùng được & auto & 3.2--3.5 \\
+Phản hồi & Thấy tổng điểm và số check qua theo từng \emph{category}, không bao giờ thấy check nào hay file nào & auto & 3.6 \\
+File hỏng/thiếu & Check trên file mà scorer không tìm thấy hoặc không mở được thì trượt (và hiện là ``not checked''). Phải giữ phần mở rộng và các phần đường dẫn không định danh để scorer tìm được file & auto & 3.4, 3.5 \\
+Bị từ chối (không mất lượt) & Địa chỉ sai dạng, thiếu hoặc rỗng \fn{corpus/}, bucket S3 không ở us-west-2 hoặc không đọc công khai được, quá 400.000 object, quá 12 GB tải/1 giờ đọc & auto & 3.5 \\
+Hòa & Attempt sớm hơn xếp trên & auto & 3.6 \\
+\bottomrule
+\end{tabularx}
+\caption{Rubric P3 \src{trang đề}}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{rlr|rlr}
+\toprule
+\textbf{Hạng} & \textbf{Đội} & \textbf{Điểm} & \textbf{Hạng} & \textbf{Đội} & \textbf{Điểm} \\
+\midrule
+1 & 67 & 660 & 7 & yoookay & 292 \\
+2 & Team-Xero & 417 & 8 & We Asked ChatGPT & 271 \\
+3 & Hidden Test Cases & 398 & 9 & whyMiso & 158 \\
+4 & sirPeasALot & 374 & 10 & AT & 51 \\
+5 & Monsters & 293 & 11 & Lone Gradient & 39 \\
+6 & putabuilderon & 292 & 12 & prompt-gods & 1 \\
+-- & \textit{Baseline (chép nguyên đầu vào)} & \textit{292} & & & \\
+\bottomrule
+\end{tabular}
+\caption{Ảnh chụp leaderboard P3 ngày 21/11}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Cách đọc bảng điểm:} chép nguyên đầu vào đã được 292/1000. Nghĩa là khoảng 29\% số check là loại ``file còn dùng được / thông tin kỹ thuật còn nguyên'', và bản sao chép qua hết. 6/12 đội đang ở mức 292 hoặc thấp hơn, tức pipeline của họ làm hỏng file nhiều hơn số tên thay được. \textbf{Nguyên tắc số 1: không bao giờ làm hỏng file}; khi không chắc sửa an toàn được thì giữ nguyên byte và ghi vào README. Hạng 3 hiện là 398: chỉ cần khoảng $+110$ check so với baseline là vào top 3.
+\end{mdframed}
+
+\subsection{Nguồn thông tin và quy ước số liệu}
+\begin{itemize}
+  \item \textbf{Nguồn chính:} trang đề (ảnh chụp). \fn{challenge.pdf} (3 trang) dùng cho phần yêu cầu kỹ thuật, trừ các điểm trang đề đã ghi đè. Repo chưa có forum Q\&A.
+  \item \textbf{Tham khảo:} \fn{upload.py} (16 luồng mặc định, mảnh 1 MiB, thử lại 4 lần, bỏ qua file đã có cùng kích thước và MD5 \emph{trong cùng thư mục đích}).
+  \item Chưa có số liệu chạy thử: mình không truy cập được \fn{machina-input.joinbuilders.org} từ môi trường làm việc (bị chặn mạng), nên chưa biết tỉ lệ từng định dạng. Bước đầu của 3.1 là lấy \fn{manifest.tsv} và đếm.
+  \item Số liệu ``quan sát'': ổ D: chứa repo có 272 GB, còn trống khoảng 113 GB (đo từ máy của bạn qua kết nối desktop). \textbf{Không đủ} cho 139,7 GB đầu vào + file nén giải ra + đầu ra.
+\end{itemize}
+
+\subsection{Sơ đồ phụ thuộc}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={draw,rounded corners,thick,text width=3.3cm,minimum height=1.2cm,align=center,font=\small},
+  ext/.style={draw,dashed,rounded corners,text width=3.6cm,minimum height=1cm,align=center,font=\small,fill=gray!8},
+  arr/.style={->,thick,>=stealth},
+  lab/.style={font=\scriptsize,fill=white,inner sep=1pt}]
+  \node[ext] (c) at (0,2.6) {\textbf{Máy chạy}: VM $\ge$ 400 GB hoặc WSL2 ext4 + xử lý theo lô};
+  \node[box,draw=p1,fill=p1!10] (a) at (0,0) {\textbf{3.1} Lấy dữ liệu, khảo sát corpus};
+  \node[box,draw=p2,fill=p2!10] (b) at (5.4,0) {\textbf{3.2} Nhận diện danh tính, bảng bút danh};
+  \node[box,draw=p3,fill=p3!10] (d) at (10.8,0) {\textbf{3.3} Xử lý theo định dạng};
+  \node[box,draw=p4,fill=p4!10] (e) at (10.8,-2.8) {\textbf{3.4} Đổi tên file/thư mục, cập nhật tham chiếu};
+  \node[box,draw=p5,fill=p5!10] (f) at (5.4,-2.8) {\textbf{3.5} Kiểm định, đóng gói attempt};
+  \node[box,draw=p6,fill=p6!10] (g) at (0,-2.8) {\textbf{3.6} Chiến lược 20 attempt};
+  \draw[arr] (c) -- (a);
+  \draw[arr] (a) -- node[lab,above=2pt]{danh sách file} (b);
+  \draw[arr] (b) -- node[lab,above=2pt]{bảng bút danh} (d);
+  \draw[arr] (d) -- (e);
+  \draw[arr] (b) -- node[lab,sloped,above=2pt]{tên file} (e);
+  \draw[arr] (e) -- (f);
+  \draw[arr] (f) -- (g);
+  \draw[arr,dashed] (d.north) to[bend right=25] node[lab,above=1pt]{phát hiện thêm danh tính} (b.north);
+  \draw[arr,dashed] (g.north) to[bend left=20] node[lab,left=2pt]{điểm theo category} (a.south west);
+\end{tikzpicture}
+\end{center}
+Nét đứt là vòng lặp: xử lý định dạng làm lộ thêm danh tính (quay lại bổ sung bảng bút danh), và phản hồi theo category sau mỗi attempt chỉ ra phần nào cần làm tiếp. P3 không phụ thuộc P1, P2, P4 và \emph{không cần GitHub}, nhưng tốn băng thông và đĩa nhiều nhất, nên phải bắt đầu tải sớm.
+
+\subsection{Hiện trạng repo}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.2cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Hiện trạng (đọc ngày 21/11, khoảng 11:10)} \\
+\midrule
+Repo chính & \fn{martin-danggg/HCMUT_TMT_Builders_BUILDATHON}, nhánh \fn{main}, remote \fn{origin} qua SSH \\
+Commit mới nhất & \fn{55687de} ``Initial commit'', 21/11/2026 10:41:21 +0700, tác giả Triet Dang. Đây là commit duy nhất \\
+File đã commit & Chỉ \fn{README.md} (31 byte, một dòng tiêu đề) \\
+Chưa commit (untracked) & \fn{p1_Builders/} (2,9 MB), \fn{p2_Databricks/} (5,7 MB), \fn{p3_Machina/} (48 KB), \fn{p4_RWX/} (404 KB): toàn bộ là starter files do ban tổ chức phát, chưa có dòng code lời giải nào \\
+Thư mục \fn{reports/} & Chứa file tổng quan này (tiếng Việt và tiếng Anh, chưa commit) \\
+\fn{.gitignore} của repo chính & Bỏ qua 3 thư mục \fn{submission/} (repo riêng) và \fn{p3_Machina/work/} (dữ liệu P3 không được công bố) \\
+Repo nộp riêng (đã tạo trên GitHub, public) & P1: \fn{martin-danggg/hcmut-tmt-p1-mech-royale} $\rightarrow$ \fn{p1_Builders/submission/}\allowbreak\fn{hcmut-tmt-p1-mech-royale/} (commit \fn{f4e1861})\newline P2: \fn{martin-danggg/hcmut-tmt-p2-shopping-sessions} $\rightarrow$ \fn{p2_Databricks/submission/}\allowbreak\fn{hcmut-tmt-p2-shopping-sessions/} (commit \fn{21cd7e4})\newline P4: \fn{martin-danggg/hcmut-tmt-p4-blast-radius} $\rightarrow$ \fn{p4_RWX/submission/}\allowbreak\fn{hcmut-tmt-p4-blast-radius/} (commit \fn{2a682dc})\newline Khung từ starter được clone, commit ``Setup: add requirements'' và push lên \fn{main} bằng \fn{tools/setup_submissions.sh} \\
+\bottomrule
+\end{tabularx}
+\caption{Hiện trạng repo chính, chung cho cả 4 problem}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Nộp bài bằng repo riêng (đã chốt):} P1, P2 và P4 đều yêu cầu \emph{một repo GitHub public có \fn{Dockerfile} ở thư mục gốc} của commit được nộp. Repo chính là monorepo (p1--p4 nằm trong thư mục con) nên \textbf{không nộp repo chính}. Mỗi track có một repo public riêng, đặt trên máy tại \fn{pX_.../submission/hcmut-tmt-pX-.../}; mỗi thư mục đó là một git repo độc lập với remote riêng, còn repo chính bỏ qua chúng qua \fn{.gitignore}. Khi nộp: dán link repo riêng (ví dụ \fn{https://github.com/martin-danggg/hcmut-tmt-p4-blast-radius}) vào ô \emph{Public GitHub repository}; ô \emph{Commit} để trống thì BTC lấy commit mới nhất của \fn{main}. Repo phải giữ public và giữ mọi commit đã nộp đến khi công bố kết quả. P3 không cần GitHub (nộp qua thư mục \fn{gs://} của đội).
+\end{mdframed}
+
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{5.3cm}C{1.6cm}Y}
+\toprule
+\textbf{Thành phần của P3} & \textbf{Có chưa} & \textbf{Ghi chú} \\
+\midrule
+\fn{challenge.pdf} & Có & 3 trang; một số điểm đã bị trang đề ghi đè \\
+\fn{upload.py} & Có & Python 3, chỉ dùng thư viện chuẩn \\
+\fn{get-input.sh}, \fn{manifest.tsv} & Chưa & Tải từ \url{https://machina-input.joinbuilders.org} \\
+Corpus đầu vào (139,7 GB) & Chưa & Không đưa vào repo; phải giữ riêng tư \\
+Pipeline (\fn{code/}), bảng bút danh riêng tư & Chưa & Bảng bút danh để \emph{ngoài} thư mục nộp \\
+\fn{README.txt} của attempt & Chưa & Đầu ra của 3.5 \\
+\bottomrule
+\end{tabularx}
+\caption{Phần đã có và còn thiếu của P3}
+\end{table}
+
+\subsection{Phân công và lịch}
+Làm một mình nên cột ``người review'' không áp dụng. Thay cho review: mỗi attempt phải qua bộ quét rò rỉ và kiểm tra mở file (mục 3.5).
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1cm}L{2.6cm}YC{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Người chính} & \textbf{Việc} & \textbf{Review} \\
+\midrule
+3.1 & Đặng Minh Triết & Chuẩn bị máy, tải corpus, thống kê định dạng & -- \\
+3.2 & Đặng Minh Triết & Danh sách danh tính, sinh bút danh nhất quán & -- \\
+3.3 & Đặng Minh Triết & Bộ xử lý cho từng định dạng & -- \\
+3.4 & Đặng Minh Triết & Đổi tên đường dẫn, sửa tham chiếu giữa file & -- \\
+3.5 & Đặng Minh Triết & Kiểm tra mở file, quét rò rỉ, README, upload & -- \\
+3.6 & Đặng Minh Triết & Thứ tự attempt, đọc phản hồi category & -- \\
+\bottomrule
+\end{tabularx}
+\caption{Bảng phân công P3}
+\end{table}
+
+Không có ``tuần'' hay ``hạn tag'': hạn duy nhất là 23:00 CN 22/11. P3 được 6,5 giờ làm việc trong khoảng 25 giờ (26\%), chưa kể thời gian tải và upload chạy nền. Ước tính (chưa đo): 139,7 GB ở 100 Mbps mất khoảng 3,1 giờ mỗi chiều.
+
+\begin{center}\small
+\begin{longtable}{L{1.7cm}L{2.1cm}C{1.1cm}L{10.4cm}}
+\toprule \textbf{Ngày} & \textbf{Giờ} & \textbf{Track} & \textbf{Việc} \\ \midrule\endhead
+T7 21/11 & 11:15--12:00 & Chung & Tạo 3 repo public riêng cho P1, P2, P4 (Dockerfile ở gốc); kiểm tra Docker/WSL2; P3: tải manifest, chạy \fn{get-input.sh --limit 100} \\
+ & 12:00--15:30 & P4 & 4.1 môi trường + 4.2 map coverage tại commit ghim; 4.3--4.4 selector v1; \fn{make sample}; nộp lần 1 \\
+ & 15:30--18:00 & P1 & 1.1 hạ tầng + 1.2 bản đồ + 1.3 di chuyển/vùng bo; nộp bot v1 \\
+ & 18:00--19:00 & -- & Nghỉ \\
+ & 19:00--22:30 & P2 & 2.1--2.7 bản đúng: 36/36 fixture, \fn{check-dev} MATCH; nộp lần 1 \\
+\rowcolor{p3!15} & 22:30--23:30 & P3 & 3.1 khảo sát 100 file mẫu; bắt đầu tải toàn bộ corpus chạy nền qua đêm \\
+ & 23:30--00:30 & P1 & 1.4 chiến đấu v2; nộp (chấm trong lúc ngủ) \\
+CN 22/11 & 00:30--07:30 & -- & Ngủ (P3 tiếp tục tải nền) \\
+\rowcolor{p3!15} & 07:30--10:30 & P3 & 3.2--3.5 pipeline v1 trên corpus; upload attempt 1 \\
+ & 10:30--12:30 & P2 & 2.8 tối ưu tốc độ; nộp 2 lần \\
+ & 12:30--13:30 & -- & Nghỉ trưa \\
+ & 13:30--15:00 & P4 & 4.5 luật an toàn + tinh chỉnh chia worker; nộp \\
+ & 15:00--18:00 & P1 & 1.5 loot/nâng cấp + 1.6 vòng lặp A/B (khoảng 10 lần nộp) \\
+\rowcolor{p3!15} & 18:00--20:30 & P3 & 3.6 attempt 2--3 theo điểm từng category \\
+ & 20:30--21:30 & P2 & Cải tiến cuối, nộp \\
+ & 21:30--22:00 & P4 & Cải tiến cuối, nộp \\
+ & 22:00--22:45 & Chung & Chốt bài: chọn submission cuối cho từng track, giữ repo public, gắn tag \fn{pX-final} \\
+ & 22:45--23:00 & -- & Dự phòng. 23:00 đóng tất cả các track \\
+\bottomrule
+\caption{Lịch đề xuất cho cả 4 track đến hạn 23:00 CN 22/11 (dòng tô màu là P3)}
+\end{longtable}
+\end{center}
+
+
+\subsection{Chọn hướng tổng thể}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.4cm}YYC{1.5cm}}
+\toprule
+\textbf{Hướng} & \textbf{Ưu} & \textbf{Nhược} & \textbf{Chọn?} \\
+\midrule
+\multicolumn{4}{l}{\textit{Máy chạy}} \\
+VM đám mây $\ge$ 400 GB & Đúng gợi ý của đề; mạng nhanh nên tải/upload mỗi attempt nhanh & Tốn tiền của bạn & \textbf{Có, nếu có ngân sách} \\
+Máy cá nhân, WSL2 ext4, xử lý theo lô bằng \fn{--prefix} & Miễn phí & Ổ D: còn khoảng 113 GB; NTFS không phân biệt hoa thường (phải dùng ext4 của WSL2); upload 140 GB mỗi attempt rất lâu & Dự phòng \\
+\midrule
+\multicolumn{4}{l}{\textit{Cách thay thế trong file nhị phân}} \\
+\textbf{Thay cùng độ dài byte} (bút danh dài đúng bằng tên gốc, cả bản ASCII và UTF-16) & Không lệch offset, cấu trúc nhị phân giữ nguyên, tham chiếu tên file sửa được tại chỗ & Bút danh bị ràng buộc độ dài; không dùng được trong luồng nén & \textbf{Có} \\
+Viết lại bằng thư viện định dạng (pikepdf, olefile, ezdxf, zip) & Đúng cấu trúc & Mỗi định dạng một thư viện; CAD độc quyền (SolidWorks, DWG) không có thư viện mở tốt & Có, cho định dạng mở \\
+Xuất PDF/ảnh rồi bỏ file gốc & Dễ & Đề cấm: phải giữ file native dùng được & Không \\
+\bottomrule
+\end{tabularx}
+\caption{So sánh các hướng làm P3}
+\end{table}
+
+\textbf{Chọn:} thư viện chuẩn cho định dạng mở + thay cùng độ dài cho phần nhị phân, vì cách này giữ được điểm ``file còn dùng được'' (292 điểm nền) trong khi vẫn thay tên. \textbf{Về ưu tiên giữa các track:} P3 có ít đội nhất và hạng 3 chỉ cần khoảng 400 điểm, nên tỉ lệ ``công sức trên thứ hạng'' tốt nhất trong 4 track; điểm nghẽn là tải và upload, nên quyết định máy chạy ngay trong khung 22:30--23:30 tối T7 để tải qua đêm.
+
+\newpage
+\section{Các phần việc}
+
+% ---------------------------------------------------------------
+\subsection{3.1 Lấy dữ liệu và khảo sát corpus}
+\partbox{p1}{1. Yêu cầu của đề}{Tải corpus vào \fn{./input/} trên hệ thống file phân biệt hoa thường, đủ chỗ cho 139,7 GB, file nén giải ra và đầu ra. Thử 100 file trước (\fn{bash get-input.sh --limit 100}), rồi tải đủ. Giữ đầu vào riêng tư, không công bố.}
+\partbox{p1}{2. Mục tiêu khi xong}{Có máy chạy đủ đĩa; có \fn{manifest.tsv} và bảng thống kê: số file và dung lượng theo phần mở rộng, theo thư mục cấp 1--2, số file trùng (theo hash), số file rỗng/hỏng, số file nén và độ sâu lồng nhau.}
+\partbox{p1}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{manifest.tsv} (đường dẫn, kích thước từng file), corpus.\\
+\textbf{Kiến thức:} WSL2 hoặc Linux VM, \fn{fsutil file setCaseSensitiveInfo} (nếu buộc phải dùng NTFS), lệnh \fn{file}/libmagic, \fn{sha256sum}, pandas để thống kê.}
+\partbox{p1}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} trang đề mục ``1. Get the input'', \fn{get-input.sh --help}.\\
+\textbf{Đầu ra:} \fn{work/manifest.tsv}, \fn{work/inventory.parquet} (đường dẫn, kích thước, phần mở rộng, magic, sha256), \fn{notes/p3_inventory.md}.}
+\longbox{p1}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Quyết định máy chạy (xem bảng chọn hướng). Nếu dùng máy cá nhân: tạo distro WSL2, đặt ổ ảo ext4 trên ổ có chỗ trống, làm mọi thứ bên trong ext4.
+  \item \fn{curl -fsSLO https://machina-input.joinbuilders.org/get-input.sh}; \fn{bash get-input.sh --limit 100}; lấy \fn{manifest.tsv}.
+  \item Thống kê từ manifest (chưa cần tải hết): phần mở rộng, thư mục, dung lượng. Chọn mẫu đại diện cho mỗi định dạng để làm 3.3.
+  \item Tải toàn bộ chạy nền (\fn{--jobs} cao). Nếu thiếu đĩa: tải theo \fn{--prefix} từng lô, xử lý, upload, xóa lô, giữ bảng bút danh dùng chung giữa các lô.
+  \item Tính sha256 mọi file để gom file trùng (xử lý một lần, dùng lại kết quả, bảo đảm nhất quán).
+\end{enumerate}}
+\partbox{p1}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Trên hệ thống file không phân biệt hoa thường, hai file chỉ khác hoa thường sẽ đè nhau và mất file (bị tính là thiếu). Đầu vào có file trùng, file rỗng, file hỏng sẵn: không được lặng lẽ bỏ, phải ghi trong README. Không đưa đầu vào thô lên GitHub hay thư mục nộp.}
+\metabox{p1}{15\% của P3 (3,9\% tổng 4 problem), khoảng 1,0 giờ (chưa kể tải nền)}{Chọn máy chạy}{3.2, 3.3}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{3.2 Nhận diện danh tính và bảng bút danh}
+\partbox{p2}{1. Yêu cầu của đề}{Thay tên công ty và người, tài khoản, thông tin liên lạc, tên miền, địa chỉ, logo, tên và số hiệu dự án/chi tiết mang tính định danh. Cùng một danh tính phải nhận cùng một bút danh trên toàn corpus; danh tính khác nhau phải giữ khác nhau; trường định danh phải điền bút danh có nghĩa, không để trống.}
+\partbox{p2}{2. Mục tiêu khi xong}{Danh sách danh tính (mỗi danh tính có loại, các biến thể viết) và hàm sinh bút danh tất định, có cùng độ dài byte với tên gốc khi cần, không trùng nhau. Bảng ánh xạ lưu riêng tư, ngoài thư mục nộp.}
+\partbox{p2}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} metadata từ mọi định dạng (PDF Info/XMP, thuộc tính OLE, \fn{docProps}, EXIF, header STEP \fn{FILE_NAME}), tên thư mục và file, văn bản trích từ PDF/bản vẽ (khung tên: công ty, người vẽ, người kiểm).\\
+\textbf{Kiến thức:} regex cho email, URL, tên miền, số điện thoại; HMAC để sinh bút danh tất định; NER (spaCy) chỉ để gợi ý; mã hóa UTF-8/UTF-16LE.}
+\partbox{p2}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{work/inventory.parquet}, kết quả trích metadata của 3.3.\\
+\textbf{Đầu ra:} \fn{code/identities.py} (luật nhận diện), \fn{code/pseudonym.py} (sinh bút danh), \fn{private/mapping.json} (\emph{không} nộp).}
+\longbox{p2}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} danh sách danh tính = (thu thập tự động từ các trường chắc chắn là định danh) + (regex cho liên lạc) + (rà tay các ứng viên có tần suất cao).
+\begin{enumerate}[leftmargin=1.4em]
+  \item Trích mọi trường metadata kiểu tác giả, công ty, người lưu cuối, bản quyền, tổ chức; gom giá trị khác nhau, đếm tần suất.
+  \item Regex: email, URL, tên miền (đuôi phổ biến), số điện thoại; tách tên miền từ email để thay nhất quán.
+  \item Tên thư mục cấp cao thường là tên khách hàng/dự án: liệt kê và đánh dấu.
+  \item Mẫu số hiệu chi tiết/dự án (ví dụ chữ + số theo một định dạng lặp lại): suy ra định dạng từ dữ liệu, sinh bút danh \emph{giữ nguyên khuôn dạng} (chữ thay bằng chữ, số thay bằng số, giữ dấu gạch).
+  \item Biến thể: hoa/thường, viết tắt, có/không có dấu cách hay gạch dưới, dạng sở hữu, bản UTF-16. Tất cả biến thể của một danh tính ánh xạ về cùng một bút danh (giữ kiểu hoa thường của nơi xuất hiện).
+  \item Bút danh có nghĩa và tất định: \fn{HMAC(secret, danh tính chuẩn hóa)} chọn từ danh sách tên giả (công ty, người, đường phố), tên miền dùng miền dành riêng như \fn{example.com}; chỉnh độ dài cho bằng tên gốc; kiểm tra không có hai danh tính trùng bút danh.
+\end{enumerate}}
+\partbox{p2}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Không thay nhầm thông tin kỹ thuật không định danh: tên vật liệu, đơn vị, dung sai, tên tiêu chuẩn (ISO, ASME), tên phần mềm (``SolidWorks'', ``Autodesk Inventor'' trong trường Producer/Application là phần mềm, không phải danh tính). Tên ngắn hay tên trùng từ thường (ví dụ một họ người trùng một từ tiếng Anh) dễ thay nhầm: chỉ thay khi khớp nguyên từ và có ngữ cảnh.}
+\metabox{p2}{20\% của P3 (5,2\% tổng), khoảng 1,3 giờ}{3.1}{3.3, 3.4}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{3.3 Xử lý theo định dạng}
+\partbox{p3}{1. Yêu cầu của đề}{Bao phủ chữ hiển thị và ảnh, tên file và thư mục, metadata và file đính kèm của PDF, thuộc tính native của CAD, ảnh xem trước nhúng, nội dung file nén. Phải xem metadata nội bộ của file native: tìm kiếm chữ thường hay ảnh xem trước sạch là chưa đủ. Giữ hình học, kích thước, dung sai, đơn vị, vật liệu, cấu hình, BOM và quan hệ giữa bản vẽ, model, assembly; giữ các khóa bắt buộc của định dạng.}
+\partbox{p3}{2. Mục tiêu khi xong}{Mỗi định dạng có một bộ xử lý \fn{process(path_in, path_out, mapper)} trả về ``đã sửa'', ``giữ nguyên an toàn'' hoặc ``không xử lý được (lý do)''. Mọi file đầu ra mở được bằng thư viện kiểm tra tương ứng.}
+\partbox{p3}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} mẫu đại diện của từng định dạng (từ 3.1), bảng bút danh (3.2).\\
+\textbf{Kiến thức:} cấu trúc PDF (Info, XMP, luồng nội dung, XObject ảnh, file đính kèm), OLE Compound File (Inventor, Office cũ), Office Open XML, DXF, STEP/IGES (văn bản), STL, EXIF/XMP, zip/7z/tar.}
+\partbox{p3}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{challenge.pdf} mục ``What the pipeline must achieve''.\\
+\textbf{Đầu ra:} \fn{code/handlers/*.py} (mỗi định dạng một file), \fn{code/requirements.lock}, nhật ký xử lý riêng tư.}
+\longbox{p3}{5. Hướng giải quyết và các bước làm}{
+\begin{center}\footnotesize
+\begin{tabularx}{\linewidth}{L{2.6cm}L{3.1cm}YC{1.3cm}}
+\toprule
+\textbf{Định dạng} & \textbf{Công cụ gợi ý} & \textbf{Cần xử lý} & \textbf{Rủi ro} \\
+\midrule
+Văn bản (TXT, CSV, XML, JSON, HTML, SVG) & Python thuần & Thay chuỗi theo bảng + regex & Thấp \\
+STEP, IGES, DXF, OBJ & Python thuần, \fn{ezdxf} & Header \fn{FILE_NAME} (tác giả, tổ chức), tên \fn{PRODUCT}, khối khung tên, thuộc tính block & Thấp \\
+Office (DOCX, XLSX, PPTX) & \fn{zipfile} + XML & Nội dung, \fn{docProps/core.xml}, \fn{app.xml} (Company), ảnh nhúng & Thấp \\
+PDF & \fn{pikepdf}, \fn{PyMuPDF} & Info + XMP, file đính kèm (xử lý đệ quy), chú thích, chữ hiển thị (redact rồi chèn bút danh), ảnh logo & Vừa \\
+Ảnh (PNG, JPG, TIFF, BMP) & \fn{Pillow}, \fn{piexif}, OCR \fn{tesseract} & EXIF/XMP/IPTC; chữ trong ảnh (OCR, tô đè); logo & Vừa \\
+Inventor (IPT, IAM, IDW), Office cũ & \fn{olefile} & Luồng thuộc tính (SummaryInformation, thuộc tính riêng), ảnh xem trước; thay cùng độ dài & Vừa \\
+SolidWorks (SLDPRT, SLDASM, SLDDRW) & Phân tích byte & Thuộc tính tùy biến, đường dẫn tham chiếu, ảnh xem trước; nhiều luồng bị nén, phải thử trên mẫu & Cao \\
+DWG & Phân tích byte & Từ bản 2004 phần lớn dữ liệu bị nén; chỉ sửa được phần không nén & Cao \\
+STL & Python thuần & Header 80 byte và tên solid (bản ASCII) & Thấp \\
+File nén (ZIP, 7Z, TAR) & \fn{zipfile}, \fn{py7zr}, \fn{tarfile} & Giải nén đệ quy, xử lý từng file, nén lại cùng định dạng, đổi tên bên trong & Vừa \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\begin{enumerate}[leftmargin=1.4em]
+  \item Phân loại file bằng magic bytes, không chỉ phần mở rộng (đầu vào có file hỏng/sai đuôi).
+  \item Làm theo thứ tự lợi ích/rủi ro: văn bản và CAD trung tính $\rightarrow$ metadata PDF/Office/ảnh $\rightarrow$ file nén $\rightarrow$ chữ hiển thị trong PDF $\rightarrow$ Inventor $\rightarrow$ SolidWorks/DWG.
+  \item Với file nhị phân: tìm mọi lần xuất hiện của từng biến thể danh tính ở dạng ASCII/Latin-1 và UTF-16LE, thay bằng bút danh cùng độ dài; nếu thấy luồng zlib thì thử giải nén, thay, nén lại và kiểm tra độ dài/checksum trước khi chấp nhận.
+  \item Logo: tìm ảnh lặp lại giống hệt (cùng hash) trong rất nhiều tài liệu, đó thường là logo; thay bằng ảnh trung tính cùng kích thước pixel và cùng định dạng.
+  \item Mỗi bộ xử lý tự kiểm: mở lại file đầu ra; lỗi thì trả về file gốc chưa sửa (an toàn) và ghi lý do. Điểm ``dùng được'' quan trọng hơn một tên bị sót.
+  \item Song song hóa theo file (multiprocessing), dùng lại kết quả cho file trùng hash.
+\end{enumerate}}
+\partbox{p3}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Không được để bản gốc chưa xử lý nằm trong file nén đầu ra. Không đổi khóa bắt buộc của định dạng. Không thay số đo, dung sai, vật liệu. Đổi nội dung PDF có thể làm hỏng font subset (chữ thay không có glyph): kiểm tra hiển thị trên mẫu. File trên 2 GB không được chấm. Không giữ file tạm hay bảng ánh xạ trong thư mục nộp.}
+\metabox{p3}{30\% của P3 (7,8\% tổng), khoảng 2,0 giờ}{3.1, 3.2}{3.4, 3.5}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{3.4 Đổi tên file, thư mục và cập nhật tham chiếu}
+\partbox{p4}{1. Yêu cầu của đề}{Tên file và thư mục cũng phải ẩn danh. Khi đổi tên file thì đổi luôn các tham chiếu tới nó. Giữ phần mở rộng và các phần đường dẫn không định danh để scorer tìm được file nó kiểm tra.}
+\partbox{p4}{2. Mục tiêu khi xong}{Bảng đổi tên (đường dẫn gốc $\rightarrow$ đường dẫn mới) không trùng lặp; mọi tham chiếu (assembly $\rightarrow$ part, bản vẽ $\rightarrow$ model, xref DWG, liên kết trong PDF/HTML, đường dẫn trong file nén) trỏ đúng tên mới.}
+\partbox{p4}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} danh sách đường dẫn (manifest), bảng bút danh, các chuỗi tham chiếu tìm thấy ở 3.3.\\
+\textbf{Kiến thức:} cách assembly lưu đường dẫn tới part (thường là đường dẫn tuyệt đối/tương đối dạng chuỗi trong file), giới hạn 400.000 object.}
+\partbox{p4}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{work/inventory.parquet}, \fn{private/mapping.json}.\\
+\textbf{Đầu ra:} \fn{code/rename.py}, \fn{private/rename_map.json} (không nộp).}
+\longbox{p4}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Tách mỗi đường dẫn thành các phần; chỉ thay token định danh bên trong mỗi phần (tên công ty, dự án, người, số hiệu), giữ phần còn lại và phần mở rộng.
+  \item Dùng bút danh cùng độ dài để đường dẫn mới dài bằng đường dẫn cũ: tham chiếu trong file nhị phân được sửa tại chỗ bằng phép thay cùng độ dài ở 3.3.
+  \item Kiểm tra trùng: hai đường dẫn khác nhau không được ra cùng tên mới (kể cả khi so không phân biệt hoa thường).
+  \item Áp bảng đổi tên cho cả đường dẫn bên trong file nén.
+  \item Ghi lại các tham chiếu không sửa được (ví dụ nằm trong luồng nén của SolidWorks) để đưa vào README.
+\end{enumerate}}
+\partbox{p4}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Đổi tên mà quên đổi tham chiếu làm assembly mất liên kết, có thể mất cả nhóm check ``quan hệ giữa file''. Đổi cả phần không định danh của đường dẫn (ví dụ thư mục \fn{drawings/}) làm scorer không tìm thấy file. README phải dùng đường dẫn \emph{mới} hoặc mô tả trung tính, không nhắc tên gốc.}
+\metabox{p4}{10\% của P3 (2,6\% tổng), khoảng 0,65 giờ}{3.2, 3.3}{3.5}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{3.5 Kiểm định và đóng gói attempt}
+\partbox{p5}{1. Yêu cầu của đề}{Mỗi attempt có \fn{corpus/} (file đã ẩn danh), \fn{code/} (toàn bộ mã nguồn và phiên bản thư viện hoặc lockfile), \fn{README.txt} (lệnh chạy chính xác, giới hạn, ngoại lệ, lỗi sẵn có của nguồn). Không đưa thông tin đăng nhập, dữ liệu thô, file tạm, log riêng tư. Upload bằng \fn{upload.py} với token 1 giờ.}
+\partbox{p5}{2. Mục tiêu khi xong}{Một attempt hợp lệ đã upload; bộ quét rò rỉ báo 0 lần xuất hiện tên gốc; mọi file mở được hoặc được ghi rõ là lỗi sẵn có của nguồn.}
+\partbox{p5}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} đầu ra của 3.3--3.4, danh sách tên gốc (riêng tư).\\
+\textbf{Kiến thức:} tìm chuỗi nhiều mẫu nhanh (Aho--Corasick, \fn{ripgrep}), cách \fn{upload.py} nối tiếp khi hết token (\fn{--token-file}).}
+\partbox{p5}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{upload.py}, trang đề mục 3--4.\\
+\textbf{Đầu ra:} \fn{attempt-N/corpus/}, \fn{attempt-N/code/}, \fn{attempt-N/README.txt}; \fn{code/validate.py}, \fn{code/leakscan.py}.}
+\longbox{p5}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Kiểm tra mở file theo định dạng (\fn{pikepdf.open}, \fn{PIL.Image.verify}, \fn{zipfile.testzip}, \fn{olefile}, \fn{ezdxf.readfile}, đọc header STEP). So với file gốc: file gốc mở được mà đầu ra không mở được là lỗi nghiêm trọng, phải quay về bản gốc.
+  \item Quét rò rỉ trên mọi byte đầu ra, cả bên trong file nén và luồng zlib đã giải nén, với các dạng ASCII, UTF-16LE, không phân biệt hoa thường, URL-encode.
+  \item Đếm object (tối đa 400.000) và file lớn hơn 2 GB.
+  \item Viết README: lệnh chạy, phiên bản, giới hạn, danh sách file không xử lý được kèm lý do (dùng đường dẫn mới).
+  \item Upload: \fn{export MACHINA_UPLOAD_TOKEN=...}; \fn{python3 upload.py --dest} \fn{gs://builders-machina-submissions-1120/}\allowbreak\fn{teams/<team-id>/attempt-N/} \fn{--corpus ./cleaned-corpus --code ./code} \fn{--readme ./README.txt}; hết token thì lấy token mới và dán khi được hỏi; chạy lại sẽ bỏ qua file đã lên.
+  \item Dán địa chỉ thư mục \fn{attempt-N/} (kết thúc bằng \fn{/}) vào form.
+\end{enumerate}}
+\partbox{p5}{6. Yêu cầu đặc biệt, chỗ dễ sai}{\fn{upload.py} chỉ bỏ qua file đã có \emph{trong cùng thư mục đích}, nên mỗi attempt mới phải upload lại toàn bộ khoảng 140 GB; với mạng gia đình đây là giới hạn thực sự của số attempt (nên hỏi BTC có cách sao chép phía server không). Không sửa attempt đã nộp cho tới khi công bố kết quả. Chỉ dùng thư mục của đội mình.}
+\metabox{p5}{15\% của P3 (3,9\% tổng), khoảng 1,0 giờ (chưa kể upload nền)}{3.3, 3.4}{3.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{3.6 Chiến lược 20 attempt}
+\partbox{p6}{1. Yêu cầu của đề}{Tổng 20 attempt có chấm, 2 lần/giờ, mỗi lúc một bài; bài bị từ chối vẫn tính vào giới hạn mỗi giờ. Attempt tốt nhất giữ điểm; bảng lúc đóng là kết quả cuối.}
+\partbox{p6}{2. Mục tiêu khi xong}{Ít nhất một attempt trên 292 càng sớm càng tốt, sau đó tăng dần theo phản hồi category, và attempt tốt nhất được nộp sớm (hòa thì bài sớm hơn xếp trên).}
+\partbox{p6}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} điểm và số check qua theo category của từng attempt.\\
+\textbf{Kiến thức:} thử nghiệm có kiểm soát (mỗi attempt đổi một nhóm thay đổi để biết category nào lên/xuống).}
+\partbox{p6}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} kết quả chấm trên trang nộp.\\
+\textbf{Đầu ra:} \fn{notes/p3_log.md} (attempt, thay đổi, điểm theo category).}
+\longbox{p6}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item \textbf{Attempt 1 (an toàn):} văn bản, CAD trung tính, metadata PDF/Office/ảnh, tên file/thư mục; file nhị phân khó giữ nguyên byte. Mục tiêu: chắc chắn trên 292 và lấy bảng category.
+  \item \textbf{Attempt 2:} thêm file nén đệ quy, chữ hiển thị trong PDF, logo.
+  \item \textbf{Attempt 3+:} thêm Inventor/SolidWorks/DWG theo kiểu thay cùng độ dài, chỉ phần đã thử an toàn trên mẫu.
+  \item Sau mỗi attempt: category nào giảm thì xem lại bộ xử lý liên quan (thường là làm hỏng file); category nào thấp thì đó là chỗ làm tiếp.
+  \item Lưu ý BTC có thể chấm lại bằng bộ chấm nghiêm hơn: đừng dựa vào ``mẹo'' làm qua check mà không thật sự ẩn danh.
+\end{enumerate}}
+\partbox{p6}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Nếu scorer lỗi trên một attempt, attempt đó chờ BTC xử lý (form hiện attempt đang chờ) và chặn bài kế tiếp vì mỗi lúc chỉ một bài. Đặt mốc nộp attempt cuối trước khoảng 20:30 CN để còn thời gian chấm (thường dưới 20 phút, tối đa 3 giờ).}
+\metabox{p6}{10\% của P3 (2,6\% tổng), khoảng 0,65 giờ}{3.5}{Kết quả cuối của P3}{Bỏ qua (làm một mình)}
+
+\newpage
+\section{Bảng tóm tắt các phần}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1.0cm}L{2.9cm}YC{1.2cm}C{1.3cm}L{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Tên} & \textbf{Đầu ra chính} & \textbf{\% P3} & \textbf{\% tổng} & \textbf{Tiên quyết} \\
+\midrule
+3.1 & Lấy dữ liệu, khảo sát & Máy chạy, \fn{manifest.tsv}, \fn{inventory.parquet} & 15 & 3,9 & Máy chạy \\
+3.2 & Danh tính, bút danh & \fn{identities.py}, \fn{pseudonym.py}, bảng ánh xạ riêng & 20 & 5,2 & 3.1 \\
+3.3 & Xử lý theo định dạng & \fn{code/handlers/*.py} & 30 & 7,8 & 3.1, 3.2 \\
+3.4 & Đổi tên, tham chiếu & \fn{rename.py}, bảng đổi tên riêng & 10 & 2,6 & 3.2, 3.3 \\
+3.5 & Kiểm định, đóng gói & \fn{attempt-N/}, \fn{validate.py}, \fn{leakscan.py} & 15 & 3,9 & 3.3, 3.4 \\
+3.6 & Chiến lược attempt & \fn{notes/p3_log.md} & 10 & 2,6 & 3.5 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng P3}} & \textbf{100} & \textbf{26} & \\
+\bottomrule
+\end{tabularx}
+\caption{Tóm tắt P3. ``\% tổng'' là phần trăm trên tổng khối lượng 4 problem (P1 26\%, P2 26\%, P3 26\%, P4 22\%)}
+\end{table}
+
+\end{document}

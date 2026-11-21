@@ -1,0 +1,17 @@
+# Repo nộp bài riêng của từng track: mỗi thư mục là một git repo độc lập
+p1_Builders/submission/
+p2_Databricks/submission/
+p4_RWX/submission/
+
+# Dữ liệu P3 (không được công bố)
+p3_Machina/submission/
+
+# File tạm khi biên dịch LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+_minted*/

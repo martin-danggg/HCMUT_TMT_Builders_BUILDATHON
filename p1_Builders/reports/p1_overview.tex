@@ -1,0 +1,577 @@
+\documentclass[a4paper,12pt]{article}
+
+% --- CÀI ĐẶT NGÔN NGỮ & FONT ---
+\usepackage{vntex}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+
+% --- ĐỊNH DẠNG TRANG & VĂN BẢN ---
+\usepackage{a4wide}
+\usepackage{geometry}
+\geometry{a4paper, left=2cm, right=2cm, top=2.5cm, bottom=4.2cm, footskip=12mm}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+% --- ĐỒ HỌA & BẢNG BIỂU ---
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{svg}
+\usepackage{tikz}
+\usetikzlibrary{arrows,snakes,backgrounds,positioning,shapes,calc,fit}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{array}
+\usepackage[skip=5pt]{caption}
+\usepackage{placeins}
+\usepackage{float}       % thêm: template dùng [H]
+\usepackage{longtable}   % thêm: bảng dài ngắt trang
+
+% --- MÀU SẮC & CODE ---
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}    % thêm: tô màu dòng bảng
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[framemethod=tikz]{mdframed}
+
+% --- HEADER & FOOTER ---
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% --- HYPERREF (Luôn load cuối cùng) ---
+\usepackage{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+% ================= CÀI ĐẶT MÀU SẮC =================
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{black}}
+\definecolor{p1}{RGB}{52,101,164}
+\definecolor{p2}{RGB}{78,154,6}
+\definecolor{p3}{RGB}{204,0,0}
+\definecolor{p4}{RGB}{117,80,123}
+\definecolor{p5}{RGB}{193,125,17}
+\definecolor{p6}{RGB}{32,128,128}
+\definecolor{p7}{RGB}{90,90,90}
+\definecolor{p8}{RGB}{170,60,120}
+
+% ================= CÀI ĐẶT HEADER/FOOTER =================
+\everymath{\color{blue}}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+ \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{hcmut.png}}
+   \end{picture}&
+    \begin{tabular}{l}
+        \textbf{\ttfamily Trường Đại học Bách khoa - ĐHQG-HCM}\\
+        \textbf{\ttfamily Khoa Khoa học và Kĩ thuật Máy tính}
+    \end{tabular}
+ \end{tabular}
+}
+\fancyhead[R]{}
+\fancyfoot{}
+\fancyfoot[L]{\scriptsize \ttfamily \textcolor{blue}{Builders Buildathon 2026 - P1 Mech Royale \\ Đội HCMUT TMT, Tháng 11/2026}}
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+
+% ================= CÁC HỘP MÀU =================
+% \partbox{màu}{tiêu đề}{nội dung}: hộp ngắn, không ngắt trang
+\newcommand{\partbox}[3]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \longbox{màu}{tiêu đề}{nội dung}: hộp dài, được ngắt trang
+\newcommand{\longbox}[3]{%
+\begin{mdframed}[linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \metabox{màu}{khối lượng}{tiên quyết}{là nền cho}{số người}
+\newcommand{\metabox}[5]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1pt,leftmargin=0pt,rightmargin=0pt,backgroundcolor=#1!15]
+\textbf{Khối lượng:} #2\par
+\textbf{Tiên quyết:} #3\par
+\textbf{Là nền cho:} #4\par
+\textbf{Số người:} #5
+\end{mdframed}}
+
+% ================= LỆNH PHỤ (thêm cho báo cáo này) =================
+% \trial{...}: số liệu chạy thử, chưa phải kết quả chính thức
+\newcommand{\trial}[1]{\textcolor{p5}{\textbf{[chạy thử]}~#1}}
+% \src{...}: ghi nguồn của một con số
+\newcommand{\src}[1]{{\footnotesize\textcolor{p7}{(nguồn: #1)}}}
+\newcommand{\fn}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=1pt,topsep=2pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\Large Đại học Quốc gia Thành phố Hồ Chí Minh \\
+\Large Trường Đại học Bách khoa \\
+\Large Khoa Khoa học và Kĩ thuật Máy tính
+\end{center}
+
+\vspace{1cm}
+\begin{center}
+\includegraphics[width=4cm]{hcmut.png}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{c}
+    \textbf{\Large BUILDERS BUILDATHON 2026} \\[0.2cm]
+    \textbf{\Large (Problem 1)} \\
+    ~~\\
+    \hline
+    \\
+    \multicolumn{1}{l}{\textbf{{\Large Tổng quan đề bài}}}\\
+    \\
+    \textbf{{\LARGE Builders -- Mech Royale}}\\[0.2cm]
+    {\large Viết AI cho mech trong trận battle royale 16 mech}\\
+    \\
+    \hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrl}
+\hspace{2cm} & Track: & Builders - Mech Royale \\
+& Đội: & HCMUT TMT\\
+& Sinh viên: & Đặng Minh Triết - 2510249 \\
+& Hạn chót: & 23:00 Chủ nhật 22/11/2026 (GMT+7) \\
+\end{tabular}
+\end{table}
+
+\vfill
+\begin{center}
+{\footnotesize Thành phố Hồ Chí Minh, Tháng 11/2026}
+\end{center}
+\end{titlepage}
+
+\thispagestyle{fancy}
+\newpage
+\tableofcontents
+\newpage
+
+\shorthandoff{"}
+\sloppy
+
+\section{Tổng quan}
+
+\subsection{Thông tin chung}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.0cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Nội dung} \\
+\midrule
+Track & Builders -- Mech Royale (nhà tài trợ Builders, giải \$5{,}000, 123 đội trên bảng practice lúc chụp) \\
+Bài toán & Viết chương trình lái một mech trong trận tự do 16 mech trên khuôn viên Ohio State (từ sân vận động Ohio Stadium đến Oval). Mỗi 0,1 s nhận quan sát (thấy gì, nghe gì), trả lời đi đâu, ngắm đâu, bắn gì \\
+Hạn nộp & \textbf{23:00 Chủ nhật 22/11/2026 (GMT+7)}. Lúc viết (T7 21/11, khoảng 11:10) còn khoảng 36 giờ \\
+Giới hạn nộp & 4 lần/giờ; mỗi lần chấm mất vài phút. Khung nộp lúc chụp: ``4 of 4 left this hour'', hàng đợi 0/1000, 24 worker chấm \\
+Hình thức nộp & Repo GitHub public, \fn{Dockerfile} ở gốc (chép nội dung \fn{python/} hoặc \fn{ts/} của kit lên gốc), tối đa 20 MB ở commit nộp. Có thể ghi commit hash, để trống thì lấy commit mới nhất của nhánh mặc định \\
+Build & linux/amd64, có mạng, tối đa 10 phút. Đề khuyên ghim phiên bản vì bài vào chung kết được build lại \\
+Chạy & 1 CPU, 512 MB RAM, không swap, không mạng, uid 65534 (không phải root), đĩa chỉ đọc trừ \fn{/tmp} 64 MB, tối đa 128 process/thread, bản đồ mount chỉ đọc tại \fn{/arena} \\
+Ngôn ngữ & Bất kỳ; dùng thư viện và AI thoải mái \\
+\bottomrule
+\end{tabularx}
+\caption{Thông tin chung của P1 \src{trang đề, protocol.md, README.md của kit}}
+\end{table}
+
+\subsection{Bảng điểm và cách chấm}
+P1 \textbf{chấm tự động hoàn toàn} bằng các trận đấu mô phỏng; không có phần chấm AI hay người chấm.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.3cm}YC{1.6cm}C{1.5cm}}
+\toprule
+\textbf{Thành phần} & \textbf{Định nghĩa} & \textbf{Cách chấm} & \textbf{Phần} \\
+\midrule
+Điểm một trận & $16 - \text{hạng}$: thắng được 15, chết đầu tiên được 0. Hạng là thứ tự chết; chết cùng tick thì chung hạng; hết giờ thì xếp người sống theo HP & auto & 1.3, 1.4 \\
+Điểm một lần nộp & Trung bình $(16-\text{hạng})$ trên 48 trận practice với 15 bot nhà & auto & 1.6 \\
+Điều kiện hợp lệ & Phải build được và qua \fn{check/check.py} dưới giới hạn sandbox; lỗi thì bị từ chối, không ảnh hưởng điểm tốt nhất & auto & 1.1 \\
+Vòng loại & Top 32 đội theo bảng practice, mỗi đội 16 trận đấu với nhau trên seed mới & auto & 1.6 \\
+Chung kết & Top 16 của vòng loại đấu 64 trận (4 trận cuối đấu trực tiếp tại địa điểm, tính như nhau); xếp hạng theo trung bình loạt trận & auto & 1.6 \\
+Hòa & Bài nộp sớm hơn xếp trên & auto & 1.6 \\
+\bottomrule
+\end{tabularx}
+\caption{Rubric P1 \src{trang đề, protocol.md §4}}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lrl}
+\toprule
+\textbf{Mốc trên bảng practice (ảnh chụp 21/11)} & \textbf{Điểm} & \textbf{Ghi chú} \\
+\midrule
+Hạng 1 (AT) & 5,48 & Trung bình khoảng hạng 10,5 \\
+Hạng 2 (A-bot LLC) & 5,35 & \\
+Baseline (bot Python mẫu của kit) & 1,15 & Đứng sau khoảng 113 đội \\
+Số đội & 123 & \\
+\bottomrule
+\end{tabular}
+\caption{Ảnh chụp leaderboard practice}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Điều quan trọng nhất của luật practice:} 15 bot nhà (4 dễ, 4 trung bình, 4 khó, 3 chuyên gia) hành động như \emph{một đội}: chia sẻ tầm nhìn, không đánh nhau, và săn bạn theo kiểu ``một con lúc đầu, thêm dần khi bạn hạ bớt, tất cả vào cuối''. Đề viết ``hunt you weakest first''; mình hiểu là bot yếu được gửi đi trước, nhưng câu này có thể đọc theo cách khác, nên hỏi BTC nếu cần. Vì bot nhà không giết nhau, \textbf{bạn chỉ lên hạng khi bot nhà chết}: do bạn giết, hoặc do vùng bo ở cuối trận (người nhiều HP chết sau). Vòng loại và chung kết thì khác hẳn: đấu tự do với bot của các đội khác. Bot phải mạnh ở cả hai bối cảnh.
+\end{mdframed}
+
+\subsection{Nguồn thông tin và quy ước số liệu}
+\begin{itemize}
+  \item \textbf{Nguồn chính:} trang đề (ảnh chụp) và \fn{protocol.md} (``complete specification''). Repo chưa có forum Q\&A.
+  \item \textbf{Số luật chơi:} lấy từ \fn{hello.config} trong \fn{check/stream.jsonl.gz} của kit (một trận thật). Đề dặn đọc số từ \fn{hello.config} lúc chạy vì cân bằng có thể đổi giữa các trận; các số trong file này chỉ để lên kế hoạch.
+  \item Số có nhãn \trial{} do mình chạy, \emph{không phải kết quả chính thức}.
+\end{itemize}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.2cm}Y}
+\toprule
+\textbf{Nhóm} & \textbf{Số quan trọng (mặc định trong \fn{hello.config})} \\
+\midrule
+Nhịp trận & 20 tick/s, quyết định mỗi 2 tick (10 lần/s), trận tối đa 480 s, 16 mech; ngân sách 50 ms/quyết định, \fn{hello} 20 s; mất trả lời thì giữ di chuyển 1 s rồi đứng yên \\
+Mech & 1400 HP, đi 11,7 m/s, chạy nhanh 19,5 m/s, năng lượng 100 (hồi 18/s sau 0,6 s), quay thân 4 rad/s, hồi máu 45 HP/s sau 5 s không giao tranh, trúng từ phía sau (ngoài cung 180°) nhân 1,5 \\
+Vũ khí & Súng: 45 sát thương, 0,24 s/phát, 252 m/s, tầm 230 m, băng 12, nạp 2,4 s. Cối: 200 trực tiếp + 160 lan (7 m), 2,6 s, 72 m/s. Laser: tối đa 315 sau 0,75 s nạp, hồi 1,65 s, tầm 280 m. Sét: 60, 0,25 s, tầm 45 m, nón 30°, lan 2 mục tiêu, 3 năng lượng/phát \\
+Tầm nhìn, âm thanh & Nhìn 200 m trong nón 120° theo hướng thân, 45 m mọi hướng; nhớ vị trí 5 s. Âm thanh có hướng (sai số 7°) và khoảng cách thô (gần/vừa/xa) \\
+Vùng bo & Bắt đầu bán kính 560 m tại (41,3; $-$72,8), co về 380, 240, 140, 70, 25, 0 m; sát thương ngoài bo 20, 35, 60, 100, 160, 260 HP/s; vòng cuối đóng lúc khoảng 415 s (6:55) \\
+Loot & 40 vũ khí rải sẵn, 36 thùng (300 HP, 50\% rơi vũ khí), 12 drone NPC (350 HP, rơi 2 cube); 3 supply drop gọi lúc 70, 140, 210 s, đáp sau 25 s, đứng một mình 4 s trong vòng 8 m để nhận 3 cube + đầy HP + đầy năng lượng \\
+Cube, nâng cấp & Mỗi cube +4\% HP tối đa và +4\% sát thương (tối đa 10), to thêm 5\%; nâng cấp ở mốc 1, 3, 6, 10, 15, 21, 28, 36, 45 cube; 22 loại nâng cấp (9 cho mech, 13 cho vũ khí) \\
+Bản đồ & \fn{world.json}: 259 khối (223 tòa nhà, 27 khối sân vận động, 9 cầu), 1560 cây; \fn{terrain.i16}: lưới 1070 $\times$ 724, bước 1 m, int16 cm \\
+\bottomrule
+\end{tabularx}
+\caption{Số liệu luật chơi \src{\fn{check/stream.jsonl.gz} (dòng \fn{hello}), \fn{arena/v2/world.json}, protocol.md}}
+\end{table}
+
+\begin{center}
+\begin{tikzpicture}[x=0.030cm,y=1cm]
+  \draw[->,thick] (0,0) -- (500,0) node[right,font=\scriptsize]{giây};
+  \foreach \t in {0,60,110,155,195,230,265,295,325,350,375,390,415,480} {\draw (\t,0.08) -- (\t,-0.08);}
+  \foreach \t/\l in {0/0,110/110,195/195,265/265,325/325,375/375,415/415,480/480} {\node[font=\tiny,below] at (\t,-0.1) {\l};}
+  \fill[p1!25] (0,0.15) rectangle (110,0.55); \node[font=\tiny] at (55,0.35) {560$\to$380};
+  \fill[p2!25] (110,0.15) rectangle (195,0.55); \node[font=\tiny] at (152,0.35) {$\to$240};
+  \fill[p5!30] (195,0.15) rectangle (265,0.55); \node[font=\tiny] at (230,0.35) {$\to$140};
+  \fill[p4!30] (265,0.15) rectangle (325,0.55); \node[font=\tiny] at (295,0.35) {$\to$70};
+  \fill[p3!30] (325,0.15) rectangle (375,0.55); \node[font=\tiny] at (350,0.35) {$\to$25};
+  \fill[p3!55] (375,0.15) rectangle (415,0.55); \node[font=\tiny] at (395,0.35) {$\to$0};
+  \foreach \t in {70,140,210} {\draw[p6,thick,->] (\t,1.05) -- (\t,0.6); \draw[p6,thick] (\t+25,0.6) circle (2pt);}
+  \node[font=\scriptsize,p6,anchor=west] at (0,1.25) {Supply drop: gọi lúc 70/140/210 s (mũi tên), đáp sau 25 s (chấm tròn)};
+\end{tikzpicture}\\[2pt]
+{\small Hình: dòng thời gian vùng bo. Mỗi ô gồm thời gian giữ yên và thời gian co; số trong ô là bán kính sau khi co (m).}
+\end{center}
+
+\subsection{Sơ đồ phụ thuộc}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={draw,rounded corners,thick,text width=3.3cm,minimum height=1.2cm,align=center,font=\small},
+  ext/.style={draw,dashed,rounded corners,text width=3.6cm,minimum height=1cm,align=center,font=\small,fill=gray!8},
+  arr/.style={->,thick,>=stealth},
+  lab/.style={font=\scriptsize,fill=white,inner sep=1pt}]
+  \node[ext] (c) at (0,2.6) {\textbf{Chung}: repo public, Docker (dùng chung với P2, P4)};
+  \node[box,draw=p1,fill=p1!10] (a) at (0,0) {\textbf{1.1} Hạ tầng, tuân thủ protocol};
+  \node[box,draw=p2,fill=p2!10] (b) at (5.4,0) {\textbf{1.2} Mô hình thế giới (bản đồ, tầm nhìn)};
+  \node[box,draw=p3,fill=p3!10] (d) at (10.8,1.3) {\textbf{1.3} Di chuyển, vùng bo, sinh tồn};
+  \node[box,draw=p4,fill=p4!10] (e) at (10.8,-1.3) {\textbf{1.4} Chiến đấu, vũ khí};
+  \node[box,draw=p5,fill=p5!10] (f) at (5.4,-3.2) {\textbf{1.5} Loot, cube, nâng cấp};
+  \node[box,draw=p6,fill=p6!10] (g) at (0,-3.2) {\textbf{1.6} Vòng lặp nộp, A/B, chốt final};
+  \draw[arr] (c) -- (a);
+  \draw[arr] (a) -- node[lab,above=2pt]{khung bot} (b);
+  \draw[arr] (b) -- node[lab,sloped,above=2pt]{độ cao, đường} (d);
+  \draw[arr] (b) -- node[lab,sloped,below=2pt]{tầm nhìn (LOS)} (e);
+  \draw[arr] (d) -- (e);
+  \draw[arr] (d.south west) -- (f.north east);
+  \draw[arr] (e) -- (f);
+  \draw[arr] (f) -- (g);
+  \draw[arr,dashed] (a) -- node[lab,left=2pt]{nộp sớm} (g);
+\end{tikzpicture}
+\end{center}
+P1 không phụ thuộc kết quả của P2, P3, P4. Phần chung duy nhất là hạ tầng (repo GitHub public, Docker build linux/amd64) và quỹ thời gian. Mũi tên nét đứt: nên nộp bot đơn giản ngay sau 1.1 để có điểm và kiểm tra quy trình, không đợi các phần sau.
+
+\subsection{Hiện trạng repo}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.2cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Hiện trạng (đọc ngày 21/11, khoảng 11:10)} \\
+\midrule
+Repo chính & \fn{martin-danggg/HCMUT_TMT_Builders_BUILDATHON}, nhánh \fn{main}, remote \fn{origin} qua SSH \\
+Commit mới nhất & \fn{55687de} ``Initial commit'', 21/11/2026 10:41:21 +0700, tác giả Triet Dang. Đây là commit duy nhất \\
+File đã commit & Chỉ \fn{README.md} (31 byte, một dòng tiêu đề) \\
+Chưa commit (untracked) & \fn{p1_Builders/} (2,9 MB), \fn{p2_Databricks/} (5,7 MB), \fn{p3_Machina/} (48 KB), \fn{p4_RWX/} (404 KB): toàn bộ là starter files do ban tổ chức phát, chưa có dòng code lời giải nào \\
+Thư mục \fn{reports/} & Chứa file tổng quan này (tiếng Việt và tiếng Anh, chưa commit) \\
+\fn{.gitignore} của repo chính & Bỏ qua 3 thư mục \fn{submission/} (repo riêng) và \fn{p3_Machina/work/} (dữ liệu P3 không được công bố) \\
+Repo nộp riêng (đã tạo trên GitHub, public) & P1: \fn{martin-danggg/hcmut-tmt-p1-mech-royale} $\rightarrow$ \fn{p1_Builders/submission/}\allowbreak\fn{hcmut-tmt-p1-mech-royale/} (commit \fn{f4e1861})\newline P2: \fn{martin-danggg/hcmut-tmt-p2-shopping-sessions} $\rightarrow$ \fn{p2_Databricks/submission/}\allowbreak\fn{hcmut-tmt-p2-shopping-sessions/} (commit \fn{21cd7e4})\newline P4: \fn{martin-danggg/hcmut-tmt-p4-blast-radius} $\rightarrow$ \fn{p4_RWX/submission/}\allowbreak\fn{hcmut-tmt-p4-blast-radius/} (commit \fn{2a682dc})\newline Khung từ starter được clone, commit ``Setup: add requirements'' và push lên \fn{main} bằng \fn{tools/setup_submissions.sh} \\
+\bottomrule
+\end{tabularx}
+\caption{Hiện trạng repo chính, chung cho cả 4 problem}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Nộp bài bằng repo riêng (đã chốt):} P1, P2 và P4 đều yêu cầu \emph{một repo GitHub public có \fn{Dockerfile} ở thư mục gốc} của commit được nộp. Repo chính là monorepo (p1--p4 nằm trong thư mục con) nên \textbf{không nộp repo chính}. Mỗi track có một repo public riêng, đặt trên máy tại \fn{pX_.../submission/hcmut-tmt-pX-.../}; mỗi thư mục đó là một git repo độc lập với remote riêng, còn repo chính bỏ qua chúng qua \fn{.gitignore}. Khi nộp: dán link repo riêng (ví dụ \fn{https://github.com/martin-danggg/hcmut-tmt-p4-blast-radius}) vào ô \emph{Public GitHub repository}; ô \emph{Commit} để trống thì BTC lấy commit mới nhất của \fn{main}. Repo phải giữ public và giữ mọi commit đã nộp đến khi công bố kết quả. P3 không cần GitHub (nộp qua thư mục \fn{gs://} của đội).
+\end{mdframed}
+
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{5.3cm}C{1.6cm}Y}
+\toprule
+\textbf{Thành phần của P1} & \textbf{Có chưa} & \textbf{Ghi chú} \\
+\midrule
+\fn{mechfight-kit.tar.gz} + bản giải nén & Có & \fn{p1_Builders/starter_files/}; có thêm bản sao \fn{protocol.md} ở ngoài \\
+Wrapper Python / TypeScript, bot mẫu & Có & \fn{mechfight.py} 566 dòng, \fn{mechfight.ts} 517 dòng, \fn{example_bot.py}, \fn{example.ts} \\
+\fn{check/check.py} + luồng quan sát ghi sẵn & Có & 320 dòng; luồng có 1 \fn{hello} và 300 quan sát \\
+Bản đồ \fn{arena/v2/} & Có & \fn{world.json} 300 KB, \fn{terrain.i16} 1,5 MB \\
+Bộ mô phỏng trận để thử offline & \textbf{Không có} & Kit không phát simulator: chỉ thử thật qua lượt nộp practice hoặc chơi trên trình duyệt \\
+Repo nộp riêng \fn{hcmut-tmt-p1-mech-royale} & Có & \fn{p1_Builders/submission/}\allowbreak\fn{hcmut-tmt-p1-mech-royale/}: \fn{Dockerfile}, \fn{bot.py} (bot mẫu đổi tên \fn{hcmut-tmt}), \fn{mechfight.py}, \fn{check/}, \fn{arena/v2/}, \fn{docs/}, README; commit ``Setup: add requirements'' \\
+Bot của đội & Chưa & Đầu ra của 1.1--1.5 \\
+\bottomrule
+\end{tabularx}
+\caption{Phần đã có và còn thiếu của P1}
+\end{table}
+
+\subsection{Phân công và lịch}
+Làm một mình nên cột ``người review'' không áp dụng. Thay cho review: mỗi phiên bản đều phải qua \fn{check.py} với cờ sandbox trước khi nộp.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1cm}L{2.6cm}YC{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Người chính} & \textbf{Việc} & \textbf{Review} \\
+\midrule
+1.1 & Đặng Minh Triết & Repo nộp, Dockerfile, đo thời gian trả lời, nộp bản đầu & -- \\
+1.2 & Đặng Minh Triết & Lưới độ cao, kiểm tra tầm nhìn, lưới đi được & -- \\
+1.3 & Đặng Minh Triết & Tìm đường, theo vùng bo, chọn chỗ đứng, hồi máu & -- \\
+1.4 & Đặng Minh Triết & Chọn mục tiêu, ngắm đón, dùng từng vũ khí, quay mặt về phía địch & -- \\
+1.5 & Đặng Minh Triết & Nhặt vũ khí, cube, chọn nâng cấp, supply drop & -- \\
+1.6 & Đặng Minh Triết & Nộp đều, ghi log, so sánh phiên bản, chốt final & -- \\
+\bottomrule
+\end{tabularx}
+\caption{Bảng phân công P1}
+\end{table}
+
+Không có ``tuần'' hay ``hạn tag'': hạn duy nhất là 23:00 CN 22/11. Đề xuất tự gắn tag \fn{p1-final} lên commit chốt. P1 được 6,5 giờ trong khoảng 25 giờ làm việc (26\%). Vì mỗi giờ chỉ nộp được 4 lần, hãy nộp ngay trước khi chuyển sang track khác để máy chấm chạy trong lúc làm việc khác.
+
+\begin{center}\small
+\begin{longtable}{L{1.7cm}L{2.1cm}C{1.1cm}L{10.4cm}}
+\toprule \textbf{Ngày} & \textbf{Giờ} & \textbf{Track} & \textbf{Việc} \\ \midrule\endhead
+T7 21/11 & 11:15--12:00 & Chung & Tạo 3 repo public riêng cho P1, P2, P4 (Dockerfile ở gốc); kiểm tra Docker/WSL2; P3: tải manifest, chạy \fn{get-input.sh --limit 100} \\
+ & 12:00--15:30 & P4 & 4.1 môi trường + 4.2 map coverage tại commit ghim; 4.3--4.4 selector v1; \fn{make sample}; nộp lần 1 \\
+\rowcolor{p1!15} & 15:30--18:00 & P1 & 1.1 hạ tầng + 1.2 bản đồ + 1.3 di chuyển/vùng bo; nộp bot v1 \\
+ & 18:00--19:00 & -- & Nghỉ \\
+ & 19:00--22:30 & P2 & 2.1--2.7 bản đúng: 36/36 fixture, \fn{check-dev} MATCH; nộp lần 1 \\
+ & 22:30--23:30 & P3 & 3.1 khảo sát 100 file mẫu; bắt đầu tải toàn bộ corpus chạy nền qua đêm \\
+\rowcolor{p1!15} & 23:30--00:30 & P1 & 1.4 chiến đấu v2; nộp (chấm trong lúc ngủ) \\
+CN 22/11 & 00:30--07:30 & -- & Ngủ (P3 tiếp tục tải nền) \\
+ & 07:30--10:30 & P3 & 3.2--3.5 pipeline v1 trên corpus; upload attempt 1 \\
+ & 10:30--12:30 & P2 & 2.8 tối ưu tốc độ; nộp 2 lần \\
+ & 12:30--13:30 & -- & Nghỉ trưa \\
+ & 13:30--15:00 & P4 & 4.5 luật an toàn + tinh chỉnh chia worker; nộp \\
+\rowcolor{p1!15} & 15:00--18:00 & P1 & 1.5 loot/nâng cấp + 1.6 vòng lặp A/B (khoảng 10 lần nộp) \\
+ & 18:00--20:30 & P3 & 3.6 attempt 2--3 theo điểm từng category \\
+ & 20:30--21:30 & P2 & Cải tiến cuối, nộp \\
+ & 21:30--22:00 & P4 & Cải tiến cuối, nộp \\
+ & 22:00--22:45 & Chung & Chốt bài: chọn submission cuối cho từng track, giữ repo public, gắn tag \fn{pX-final} \\
+ & 22:45--23:00 & -- & Dự phòng. 23:00 đóng tất cả các track \\
+\bottomrule
+\caption{Lịch đề xuất cho cả 4 track đến hạn 23:00 CN 22/11 (dòng tô màu là P1)}
+\end{longtable}
+\end{center}
+
+
+\subsection{Chọn hướng tổng thể}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.3cm}YYC{1.5cm}}
+\toprule
+\textbf{Hướng} & \textbf{Ưu} & \textbf{Nhược} & \textbf{Chọn?} \\
+\midrule
+A. \textbf{Bot luật (máy trạng thái + điểm số tình huống)} & Dễ hiểu, dễ sửa theo kết quả practice; chạy nhanh trong 50 ms & Phải tự nghĩ ra chiến thuật & \textbf{Có} \\
+B. Học tăng cường (RL) & Có thể tìm chiến thuật lạ & Không có simulator, mỗi giờ chỉ 4 lần nộp; không đủ thời gian & Không \\
+C. Tự viết simulator rồi tối ưu tham số & Thử được hàng nghìn trận & Viết lại vật lý, tầm nhìn, AI bot nhà mất nhiều ngày & Không \\
+\midrule
+Python + numpy & Wrapper có sẵn; numpy làm lưới nhanh & Python chậm nếu lặp nhiều trong 50 ms & \textbf{Có} \\
+TypeScript (bun) & Nhanh hơn Python ở vòng lặp & Phải tự viết cấu trúc lưới & Dự phòng \\
+\bottomrule
+\end{tabularx}
+\caption{So sánh các hướng làm P1}
+\end{table}
+
+\textbf{Chọn A với Python}, vì không có simulator nên vòng phản hồi duy nhất là 48 trận mỗi lần nộp, 4 lần/giờ. Bot luật cho phép sửa đúng chỗ sau mỗi lần nộp. Mọi tính toán nặng (lưới bản đồ) làm offline và lưu thành file \fn{.npy} trong repo, nên mỗi quyết định chỉ còn vài phép tra cứu.
+
+\newpage
+\section{Các phần việc}
+
+% ---------------------------------------------------------------
+\subsection{1.1 Hạ tầng và tuân thủ protocol}
+\partbox{p1}{1. Yêu cầu của đề}{Image Docker có entrypoint nói protocol \fn{mechfight/1} qua stdin/stdout (JSON từng dòng, tối đa 64 KiB/dòng): trả \fn{ready} trong 20 s, mỗi quan sát trả đúng một action có \fn{tick} trùng, trong 50 ms; khi nhiều quan sát dồn lại thì chỉ trả quan sát mới nhất; thoát sạch sau \fn{end}. Phải qua \fn{check.py} chạy dưới cờ sandbox.}
+\partbox{p1}{2. Mục tiêu khi xong}{Repo public riêng \fn{hcmut-tmt-p1-mech-royale} (đã tạo) có \fn{Dockerfile} ở gốc; \fn{check.py} báo PASS khi chạy qua \fn{docker run --network none --cpus 1 --memory 512m --read-only ...}; có bot v1 đã nộp và có điểm.}
+\partbox{p1}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} kit (\fn{python/}, \fn{check/}, \fn{arena/}).\\
+\textbf{Kiến thức:} Docker, chạy process không phải root, đọc stdin không chặn (wrapper đã có luồng đọc riêng), đo thời gian bằng \fn{time.perf_counter}.}
+\partbox{p1}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{python/mechfight.py}, \fn{python/example_bot.py}, \fn{python/Dockerfile} (\fn{FROM python:3.13-slim}), \fn{check/check.py}, \fn{protocol.md} §1--3, §6.\\
+\textbf{Đầu ra:} repo \fn{hcmut-tmt-p1-mech-royale/} gồm \fn{Dockerfile}, \fn{mechfight.py}, \fn{bot.py}, \fn{data/} (lưới bản đồ của 1.2), \fn{README.md}.}
+\longbox{p1}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Tạo repo public, chép nội dung \fn{python/} lên gốc, đổi \fn{ENTRYPOINT} sang \fn{bot.py}. Nếu dùng numpy thì ghim phiên bản và \fn{pip install} \emph{hệ thống} trong Dockerfile (không \fn{--user}, vì bot chạy với uid 65534).
+  \item Chạy \fn{python3 check/check.py -- python3 -u bot.py}, rồi \fn{docker build} và lệnh \fn{check.py --map-dir /arena -- docker run ...} đúng như README của kit.
+  \item Thêm bộ đếm thời gian: nếu một quyết định sắp chạm khoảng 30 ms thì trả action rút gọn (giữ di chuyển cũ). Trễ quá 2\% số quan sát là trượt kiểm tra.
+  \item Bọc toàn bộ \fn{act()} trong \fn{try/except}: lỗi thì log ra stderr và trả action an toàn (đi về tâm vùng bo), không để process chết (chết là đứng yên làm bia cả trận).
+  \item Nộp ngay bản v1 (bot mẫu + đi vào bo an toàn hơn) để kiểm tra quy trình và có mốc điểm.
+\end{enumerate}
+\trial{Bot mẫu Python qua \fn{check.py} (chạy trực tiếp, không Docker, trên máy chạy thử): PASS, 300/300 quan sát đúng hạn, thời gian trả lời p50 0,3 ms, p99 0,6 ms, tối đa 1,2 ms. Trong container 1 CPU sẽ chậm hơn.}}
+\partbox{p1}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Mọi thứ không phải protocol phải ra stderr. Chỉ ghi được vào \fn{/tmp} (64 MB). Tên trong \fn{ready} bị cắt còn 32 ký tự. Bot qua \fn{check.py} khi chạy thường vẫn có thể trượt khi chạy với cờ sandbox (ghi file ngoài \fn{/tmp}, cài gói cho root). Trả lời sát 50 ms thì điểm có thể khác giữa các lần chạy.}
+\metabox{p1}{10\% của P1 (2,6\% tổng 4 problem), khoảng 0,65 giờ}{Phần ``Chung'' (GitHub, Docker)}{1.2, 1.6 (nộp sớm)}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{1.2 Mô hình thế giới}
+\partbox{p2}{1. Yêu cầu của đề}{Kit cố ý không có tìm đường, ngắm hay vật lý: ``Building your own model of the world from \fn{protocol.md} and from match observations is part of the challenge''. Tường chặn di chuyển và đạn; bậc cao quá 1,2 m hoặc dốc quá 50° là tường; cây chặn tầm nhìn nhưng không chặn đạn.}
+\partbox{p2}{2. Mục tiêu khi xong}{Có các hàm tra cứu nhanh: \fn{ground_z(x, y)}, \fn{los(a, b)} (có nhìn/bắn thẳng được không), \fn{walkable(i, j)}, và một ``trí nhớ'' về địch (vị trí, vận tốc, HP, vũ khí, lần thấy cuối, hướng âm thanh).}
+\partbox{p2}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{arena/v2/world.json} (khối \fn{prisms} với \fn{ring}, \fn{holes}, \fn{base}, \fn{top}), \fn{terrain.i16}.\\
+\textbf{Kiến thức:} điểm trong đa giác, raster hóa đa giác, nội suy song tuyến, duyệt lưới theo tia (Bresenham/DDA), hệ trục của đề (x đông, y bắc, z lên; yaw tính từ +x ngược chiều kim đồng hồ).}
+\partbox{p2}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{world.json}, \fn{terrain.i16}, \fn{protocol.md} §5, §7, §8, §11.\\
+\textbf{Đầu ra:} \fn{tools/build_grid.py} (chạy offline), \fn{data/height.npy} (độ cao mặt trên cao nhất mỗi ô 1 m), \fn{data/walk.npy} (ô đi được), \fn{world.py} trong bot.}
+\longbox{p2}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} đưa mọi hình học về lưới 1 m (1070 $\times$ 724 ô, khoảng 0,8 triệu ô), tính sẵn offline, nạp bằng numpy khi nhận \fn{hello}.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Đọc terrain: mảng int16 little-endian, chỉ số \fn{j*nx+i}, nhân 0,01 ra mét. Hàm \fn{ground_z} nội suy song tuyến.
+  \item Raster hóa 223 tòa nhà và 27 khối sân vận động: ô nằm trong \fn{ring} và ngoài \fn{holes} lấy \fn{top}. Cầu (9 khối) có \fn{base} trên mặt đất nên lưu riêng (đi và bắn được bên dưới).
+  \item Ô đi được: chênh độ cao với ô bên cạnh không quá 1,2 m và độ dốc không quá 50°. Cộng thêm lề bán kính mech 2,5 m (giãn vùng tường 3 ô).
+  \item \fn{los(a, b)}: đi theo tia trên lưới, so độ cao tia với \fn{height}; điểm mắt là \fn{pos.z + 8}, nòng súng \fn{pos.z + 7}. Cây chỉ dùng cho tầm nhìn (tán mờ dần, thân chặn).
+  \item Trí nhớ địch: cập nhật từ \fn{mechs} (đề bảo đảm vị trí thật trong 5 s sau khi mất dấu), từ \fn{events.damaged.bearing}, \fn{sounds} (hướng sai số 7°, khoảng cách thô).
+  \item Kiểm tra: in ra ảnh \fn{height.npy} so với bản đồ trên \fn{play.joinbuilders.org}; đo thời gian \fn{los} (mục tiêu dưới 0,2 ms/tia).
+\end{enumerate}}
+\partbox{p2}{6. Yêu cầu đặc biệt, chỗ dễ sai}{\fn{scenery} như \fn{cars}, \fn{barriers}, \fn{water} không chặn gì, đừng đưa vào lưới. \fn{rules.maxStep} trong \fn{world.json} là 1,5 m (luật của viewer) còn server dùng \fn{config.mech.step_up} 1,2 m. Mỗi cube làm mech to thêm 5\%, chiều cao mắt và nòng đổi theo (\fn{self.stats}).}
+\metabox{p2}{20\% của P1 (5,2\% tổng), khoảng 1,3 giờ}{1.1}{1.3, 1.4}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{1.3 Di chuyển, vùng bo và sinh tồn}
+\partbox{p3}{1. Yêu cầu của đề}{Điểm tính theo hạng sống sót: ``dying first with five kills scores worse than surviving to the end with none''. Ngoài bo mất HP theo giây (không giáp, không hồi máu). Vùng bo luôn cho biết vòng hiện tại, vòng kế tiếp và thời gian co.}
+\partbox{p3}{2. Mục tiêu khi xong}{Bot không bao giờ chết vì bo khi còn tránh được; luôn đến vòng kế tiếp trước khi co; đứng ở chỗ có che chắn; rút lui để hồi máu khi HP thấp; cuối trận còn nhiều HP nhất có thể.}
+\partbox{p3}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{obs.zone}, \fn{self.pos/vel/hp/energy}, lưới đi được (1.2).\\
+\textbf{Kiến thức:} A* trên lưới, theo đường (path following), dự đoán bo nội suy tuyến tính giữa \fn{shrink_start} và \fn{shrink_end}, năng lượng (chạy nhanh, nhảy, phản lực).}
+\partbox{p3}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{world.py}, \fn{protocol.md} §7 (di chuyển, máu), §9 (vùng bo).\\
+\textbf{Đầu ra:} \fn{nav.py} (A*, theo đường, gỡ kẹt), \fn{strategy.py} (chọn điểm đứng theo pha trận).}
+\longbox{p3}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} chọn điểm đến bằng hàm điểm (an toàn bo + che chắn + xa địch), đi tới bằng A*.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Tính ``bo tương lai'': tại thời điểm $t$, tâm và bán kính nội suy giữa vòng hiện tại và vòng kế tiếp; điểm đến phải nằm trong vòng kế tiếp với lề (ví dụ 15 m) để tới nơi trước khi co.
+  \item Hàm điểm cho ô ứng viên: nằm trong bo tương lai, gần tường (che chắn ít nhất một phía), không ở giữa bãi trống, xa vị trí địch đã biết, gần cube/vũ khí có thể nhặt.
+  \item A* trên lưới 2 m (khoảng 0,2 triệu ô) mỗi 1--2 s, hoặc khi điểm đến đổi; giữa các lần thì theo đường đã có. Gỡ kẹt: nếu vận tốc gần 0 trong 0,5 s thì nhảy + phản lực hoặc đổi hướng.
+  \item Hồi máu: không gây và không nhận sát thương 5 s thì hồi 45 HP/s, nên khi HP thấp thì lùi khỏi tầm nhìn địch (đặt tường giữa mình và địch) trong khi vẫn ở trong bo.
+  \item Cuối trận (vòng 25 m rồi 0 m, từ khoảng 350 s): vào giữa vòng sớm, giữ HP cao; khi bo về 0, ai còn nhiều HP sống lâu hơn.
+  \item Đi im lặng khi cần ẩn: dưới 5 m/s không phát tiếng bước chân.
+\end{enumerate}}
+\partbox{p3}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Đổi hướng cần thời gian (gia tốc 58,5 m/s² dưới đất, 12 m/s² trên không). Bo không gây sát thương cho drone NPC. Zone damage cũng reset bộ đếm hồi máu 5 s. Đừng để bot nhà ``săn'' mình ở bãi trống: bot nhà chia sẻ tầm nhìn, một con thấy là cả đội biết.}
+\metabox{p3}{25\% của P1 (6,5\% tổng), khoảng 1,6 giờ}{1.2}{1.4, 1.5}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{1.4 Chiến đấu và vũ khí}
+\partbox{p4}{1. Yêu cầu của đề}{Mọi phát bắn đi theo hướng thân \emph{thực tế} (thân quay dần về hướng lệnh với 4 rad/s), không có khóa mục tiêu; súng bay thẳng 252 m/s nên phải ngắm đón; đạn trúng nhà, cầu, địa hình đúng chỗ nhìn thấy; trúng từ phía sau nhân 1,5.}
+\partbox{p4}{2. Mục tiêu khi xong}{Bot bắn trúng mục tiêu di chuyển ở 50--150 m, không phí đạn vào tường, quay mặt về phía kẻ đang bắn mình, dùng đúng vũ khí theo khoảng cách và theo vũ khí của đối thủ.}
+\partbox{p4}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{obs.mechs} (vị trí, vận tốc, hướng ngắm, \fn{charging}, vũ khí), \fn{projectiles}, \fn{beams}, \fn{events}, \fn{self.weapons}.\\
+\textbf{Kiến thức:} bài toán đón đầu (giải phương trình bậc hai cho thời gian bay), quỹ đạo parabol cho cối (vận tốc 72 m/s, trọng lực 22 m/s²), tam giác vũ khí của đề.}
+\partbox{p4}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{protocol.md} §5 (kích thước, gốc đạn), §7 (vũ khí, giáp sau, tam giác vũ khí).\\
+\textbf{Đầu ra:} \fn{combat.py} (chọn mục tiêu, ngắm, bắn), \fn{weapons.py} (luật riêng cho súng, cối, laser, sét).}
+\longbox{p4}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} một bộ ``ngắm'' chung cộng luật riêng cho từng vũ khí; chỉ bóp cò khi sai số hướng nhỏ và \fn{los} thông.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Ngắm đón cho súng: với địch ở $\mathbf{p}$, vận tốc $\mathbf{v}$, tìm $t$ nhỏ nhất thỏa $\|\mathbf{p}+\mathbf{v}t-\mathbf{m}\| = 252\,t$ (từ nòng $\mathbf{m}$), ngắm vào tâm khối \fn{pos.z + 4.5}.
+  \item Chỉ bắn khi \fn{self.aim} đã gần hướng lệnh (sai số góc nhỏ hơn khoảng $\arctan(2{,}5/d)$) và tia từ nòng đến điểm đón không vướng nhà.
+  \item Chọn mục tiêu: điểm số theo HP còn lại thấp, khoảng cách gần, đang bắn mình, có tầm bắn thông. Ưu tiên kết liễu (mỗi mạng hạ được là một hạng khi mình còn sống).
+  \item Quay mặt: khi nhận \fn{damaged} với \fn{rear: true}, xoay thân về \fn{bearing}. Thân và chân độc lập, nên vừa lùi về chỗ che vừa bắn trả được.
+  \item Né: đi ngang vuông góc với hướng địch; thấy địch \fn{charging} laser thì đổi hướng ngang hoặc nấp (laser bắn theo hướng ngắm lúc nhả cò).
+  \item Laser: giữ cò 0,75 s rồi nhả khi đã ngắm trúng; tầm 280 m, 315 sát thương, hợp đánh xa. Sét: chỉ dùng khi địch dưới 45 m trong nón 30°, tốn năng lượng. Cối: bắn vòng qua nhà theo tiếng động hoặc vị trí nhớ, tính góc nâng cho tầm cần.
+  \item Nạp đạn khi không có mục tiêu (nạp chủ động), đừng để hết băng giữa giao tranh.
+\end{enumerate}}
+\partbox{p4}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Cối nổ gần mình thì mình cũng mất 50\% sát thương lan và bị hất văng. Đang nạp laser thì đi chậm một nửa. Cầm cối mà bị laser bắn thì nhận thêm 60\% (cook-off). Sét bắn vào khoảng không vẫn tốn năng lượng. Đạn của mình không hiện trong \fn{projectiles}; sự kiện \fn{hit} cho biết trúng hay không để tự hiệu chỉnh.}
+\metabox{p4}{25\% của P1 (6,5\% tổng), khoảng 1,6 giờ}{1.2, 1.3}{1.5, 1.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{1.5 Loot, cube và nâng cấp}
+\partbox{p5}{1. Yêu cầu của đề}{Nhặt vũ khí bằng \fn{take} khi trong 4 m (đổi chỗ thì kèm \fn{drop}); cube tự nhặt khi trong 3,5 m; mỗi mốc cube có một lời mời nâng cấp, trả \fn{pick} trong 5 s, không trả thì nhận lựa chọn 0; supply drop cần đứng một mình 4 s trong vòng 8 m.}
+\partbox{p5}{2. Mục tiêu khi xong}{Đầu trận có thêm một vũ khí phụ hợp lối chơi; nhặt cube khi an toàn; chọn nâng cấp theo bảng ưu tiên; có luật rõ ràng khi nào tranh supply drop.}
+\partbox{p5}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{obs.pickups}, \fn{cubes}, \fn{crates}, \fn{drops}, \fn{offer}, \fn{hello.config.upgrades}.\\
+\textbf{Kiến thức:} 22 nâng cấp và hiệu ứng (\fn{mul}/\fn{add} lên \fn{self.stats} hoặc chỉ số vũ khí).}
+\partbox{p5}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{protocol.md} §7 (loot, supply drop), §10 (cube, nâng cấp).\\
+\textbf{Đầu ra:} \fn{loot.py}, bảng ưu tiên nâng cấp trong \fn{config.py}.}
+\longbox{p5}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Đầu trận: tìm vũ khí gần nhất trên đường vào bo (40 vũ khí rải sẵn, tỉ lệ cối:laser:sét = 1:1:1). Đề xuất bộ đôi súng + laser (đánh xa, sát thương cao); nếu chỉ có sét thì vẫn lấy.
+  \item Cube: đi nhặt khi không có địch trong tầm nhìn; hạ drone NPC (350 HP, rơi 2 cube) chỉ khi khỏe và không bị bot nhà nhìn thấy.
+  \item Nâng cấp, ưu tiên sống sót: \fn{plating} (+15\% HP) $>$ \fn{armor} ($-$8\% sát thương nhận) $>$ \fn{nanites} (hồi máu) $>$ \fn{gun_damage}/\fn{laser_damage} $>$ phần còn lại. Luôn trả \fn{pick} ngay, không để mặc định.
+  \item Supply drop (3 cube + đầy HP + đầy năng lượng): chỉ tranh khi vòng drop không có địch nhìn thấy và mình đến trước; nếu không thì tránh vì đó là nơi mọi bot kéo đến.
+\end{enumerate}}
+\partbox{p5}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Không cầm hai vũ khí cùng loại. Vũ khí vừa nhặt chưa bắn được trong $\max(1\,\text{s}, \text{cooldown})$. Không đổi được laser khi đang nạp. Mỗi cube làm mech to hơn 5\%, nên dễ bị bắn trúng hơn.}
+\metabox{p5}{10\% của P1 (2,6\% tổng), khoảng 0,65 giờ}{1.3, 1.4}{1.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{1.6 Vòng lặp nộp, A/B và chốt final}
+\partbox{p6}{1. Yêu cầu của đề}{Mỗi lần nộp chơi 48 trận practice; seed practice cố định suốt sự kiện nhưng bot không thấy; mỗi giờ nộp 4 lần. Khi đóng, bài được chọn (mặc định là bài tốt nhất) khóa điểm practice; repo phải public và giữ mọi commit đã nộp đến khi công bố, nếu không build lại được thì bài final được 0.}
+\partbox{p6}{2. Mục tiêu khi xong}{Có log các phiên bản (commit, thay đổi, điểm), biết thay đổi nào thật sự giúp, và đã chọn bài final hợp cả với bot nhà (practice) lẫn bot của đội khác (vòng loại, chung kết).}
+\partbox{p6}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} điểm trên trang nộp, trang Watch và \fn{play.joinbuilders.org} (xem trận, chơi thử trên trình duyệt).\\
+\textbf{Kiến thức:} nhiễu thống kê: trung bình 48 trận vẫn dao động, nên chênh lệch nhỏ chưa chắc là thật.}
+\partbox{p6}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} lịch sử nộp.\\
+\textbf{Đầu ra:} \fn{notes/p1_log.md}, tag \fn{p1-final}.}
+\longbox{p6}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Mỗi lần nộp chỉ đổi một ý chính, ghi commit hash và mô tả vào log.
+  \item Dùng hết 4 lượt/giờ khi đang làm P1; khi chuyển sang track khác thì nộp trước rồi mới chuyển.
+  \item Đánh giá nhiễu: nộp lại cùng một commit hai lần để xem điểm dao động bao nhiêu (seed practice cố định nhưng slot và vị trí xuất hiện đổi mỗi trận).
+  \item Đừng tối ưu quá theo bot nhà: chiến thuật ``trốn để bot nhà không thấy'' có thể kém ở vòng loại, nơi các bot đánh nhau tự do. Ưu tiên các cải tiến chung (ngắm trúng, không chết vì bo, quay mặt về địch, hồi máu).
+  \item Chốt: chọn bài có điểm practice cao và đã ổn định qua ít nhất 2 lần nộp gần nhau; giữ repo public.
+\end{enumerate}}
+\partbox{p6}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Đề cho phép BTC chỉnh số trận trước chung kết. Nếu ít hơn 32 đội thì mọi đội vào vòng loại; bot chuyên gia điền chỗ trống. Không có cách xem bản vẽ debug của mình trên trang (``Nothing on the track shows them to you'').}
+\metabox{p6}{10\% của P1 (2,6\% tổng), khoảng 0,65 giờ (rải suốt sự kiện)}{1.1 (bản đầu), sau đó là mọi phần}{Kết quả cuối của P1}{Bỏ qua (làm một mình)}
+
+\newpage
+\section{Bảng tóm tắt các phần}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1.0cm}L{2.9cm}YC{1.2cm}C{1.3cm}L{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Tên} & \textbf{Đầu ra chính} & \textbf{\% P1} & \textbf{\% tổng} & \textbf{Tiên quyết} \\
+\midrule
+1.1 & Hạ tầng, protocol & Repo nộp, Dockerfile, bot v1 qua \fn{check.py} & 10 & 2,6 & Chung \\
+1.2 & Mô hình thế giới & \fn{data/height.npy}, \fn{data/walk.npy}, \fn{world.py} & 20 & 5,2 & 1.1 \\
+1.3 & Di chuyển, vùng bo & \fn{nav.py}, \fn{strategy.py} & 25 & 6,5 & 1.2 \\
+1.4 & Chiến đấu & \fn{combat.py}, \fn{weapons.py} & 25 & 6,5 & 1.2, 1.3 \\
+1.5 & Loot, nâng cấp & \fn{loot.py}, bảng ưu tiên nâng cấp & 10 & 2,6 & 1.3, 1.4 \\
+1.6 & Nộp, A/B, chốt & \fn{notes/p1_log.md}, tag \fn{p1-final} & 10 & 2,6 & 1.1 trở đi \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng P1}} & \textbf{100} & \textbf{26} & \\
+\bottomrule
+\end{tabularx}
+\caption{Tóm tắt P1. ``\% tổng'' là phần trăm trên tổng khối lượng 4 problem (P1 26\%, P2 26\%, P3 26\%, P4 22\%)}
+\end{table}
+
+\end{document}

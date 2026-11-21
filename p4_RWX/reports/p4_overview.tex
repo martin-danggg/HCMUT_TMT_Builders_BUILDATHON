@@ -1,0 +1,556 @@
+\documentclass[a4paper,12pt]{article}
+
+% --- CÀI ĐẶT NGÔN NGỮ & FONT ---
+\usepackage{vntex}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+
+% --- ĐỊNH DẠNG TRANG & VĂN BẢN ---
+\usepackage{a4wide}
+\usepackage{geometry}
+\geometry{a4paper, left=2cm, right=2cm, top=2.5cm, bottom=4.2cm, footskip=12mm}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+% --- ĐỒ HỌA & BẢNG BIỂU ---
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{svg}
+\usepackage{tikz}
+\usetikzlibrary{arrows,snakes,backgrounds,positioning,shapes,calc,fit}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{array}
+\usepackage[skip=5pt]{caption}
+\usepackage{placeins}
+\usepackage{float}       % thêm: template dùng [H]
+\usepackage{longtable}   % thêm: bảng dài ngắt trang
+
+% --- MÀU SẮC & CODE ---
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}    % thêm: tô màu dòng bảng
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[framemethod=tikz]{mdframed}
+
+% --- HEADER & FOOTER ---
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% --- HYPERREF (Luôn load cuối cùng) ---
+\usepackage{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+% ================= CÀI ĐẶT MÀU SẮC =================
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{black}}
+\definecolor{p1}{RGB}{52,101,164}
+\definecolor{p2}{RGB}{78,154,6}
+\definecolor{p3}{RGB}{204,0,0}
+\definecolor{p4}{RGB}{117,80,123}
+\definecolor{p5}{RGB}{193,125,17}
+\definecolor{p6}{RGB}{32,128,128}
+\definecolor{p7}{RGB}{90,90,90}
+\definecolor{p8}{RGB}{170,60,120}
+
+% ================= CÀI ĐẶT HEADER/FOOTER =================
+\everymath{\color{blue}}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+ \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{hcmut.png}}
+   \end{picture}&
+    \begin{tabular}{l}
+        \textbf{\ttfamily Trường Đại học Bách khoa - ĐHQG-HCM}\\
+        \textbf{\ttfamily Khoa Khoa học và Kĩ thuật Máy tính}
+    \end{tabular}
+ \end{tabular}
+}
+\fancyhead[R]{}
+\fancyfoot{}
+\fancyfoot[L]{\scriptsize \ttfamily \textcolor{blue}{Builders Buildathon 2026 - P4 Blast Radius \\ Đội HCMUT TMT, Tháng 11/2026}}
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+
+% ================= CÁC HỘP MÀU =================
+% \partbox{màu}{tiêu đề}{nội dung}: hộp ngắn, không ngắt trang
+\newcommand{\partbox}[3]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \longbox{màu}{tiêu đề}{nội dung}: hộp dài, được ngắt trang
+\newcommand{\longbox}[3]{%
+\begin{mdframed}[linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \metabox{màu}{khối lượng}{tiên quyết}{là nền cho}{số người}
+\newcommand{\metabox}[5]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1pt,leftmargin=0pt,rightmargin=0pt,backgroundcolor=#1!15]
+\textbf{Khối lượng:} #2\par
+\textbf{Tiên quyết:} #3\par
+\textbf{Là nền cho:} #4\par
+\textbf{Số người:} #5
+\end{mdframed}}
+
+% ================= LỆNH PHỤ (thêm cho báo cáo này) =================
+% \trial{...}: số liệu chạy thử, chưa phải kết quả chính thức
+\newcommand{\trial}[1]{\textcolor{p5}{\textbf{[chạy thử]}~#1}}
+% \src{...}: ghi nguồn của một con số
+\newcommand{\src}[1]{{\footnotesize\textcolor{p7}{(nguồn: #1)}}}
+\newcommand{\fn}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=1pt,topsep=2pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\Large Đại học Quốc gia Thành phố Hồ Chí Minh \\
+\Large Trường Đại học Bách khoa \\
+\Large Khoa Khoa học và Kĩ thuật Máy tính
+\end{center}
+
+\vspace{1cm}
+\begin{center}
+\includegraphics[width=4cm]{hcmut.png}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{c}
+    \textbf{\Large BUILDERS BUILDATHON 2026} \\[0.2cm]
+    \textbf{\Large (Problem 4)} \\
+    ~~\\
+    \hline
+    \\
+    \multicolumn{1}{l}{\textbf{{\Large Tổng quan đề bài}}}\\
+    \\
+    \textbf{{\LARGE RWX -- Blast Radius}}\\[0.2cm]
+    {\large Chọn test cần chạy cho mỗi thay đổi code của sqlglot}\\
+    \\
+    \hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrl}
+\hspace{2cm} & Track: & RWX - Blast Radius \\
+& Đội: & HCMUT TMT\\
+& Sinh viên: & Đặng Minh Triết - 2510249 \\
+& Hạn chót: & 23:00 Chủ nhật 22/11/2026 (GMT+7) \\
+\end{tabular}
+\end{table}
+
+\vfill
+\begin{center}
+{\footnotesize Thành phố Hồ Chí Minh, Tháng 11/2026}
+\end{center}
+\end{titlepage}
+
+\thispagestyle{fancy}
+\newpage
+\tableofcontents
+\newpage
+
+\shorthandoff{"}
+\sloppy
+
+\section{Tổng quan}
+
+\subsection{Thông tin chung}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.3cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Nội dung} \\
+\midrule
+Track & RWX -- Blast Radius (nhà tài trợ RWX, giải \$5{,}000, 116 đội trên bảng practice lúc chụp) \\
+Bài toán & Mỗi commit là một patch vào sqlglot tại commit \fn{eb11aec4be8cb2122afe713a4816662c3f0fb2fa}. Chương trình in ra test nào cần chạy và chia chúng cho tối đa 8 worker \\
+Hạn nộp & \textbf{23:00 Chủ nhật 22/11/2026 (GMT+7)}. Lúc viết (T7 21/11, khoảng 11:10) còn khoảng 36 giờ \\
+Giới hạn nộp & 1 lần/giờ lúc đầu (BTC sẽ nới nếu hàng đợi ngắn); khung nộp lúc chụp ghi ``1 of 1 left this hour'' \\
+Hình thức nộp & Repo GitHub public, \fn{Dockerfile} ở gốc, kèm commit hash. Repo tối đa 20 MB \\
+Build & Có mạng, 4 core, 8 GB RAM, 10 phút. Chỉ được tải từ PyPI, npm, Docker Hub, GitHub release có tag cố định, và sqlglot tại commit ghim \\
+Chạy & Không mạng, 2 core, 4 GB, \textbf{3 phút cho cả batch} (4,5 phút ở vòng final, khoảng 1,5 lần số commit), user \fn{nobody}, \fn{HOME=/tmp}, đĩa chỉ đọc, \fn{/tmp} 64 MB, tối đa 256 process, stdout tối đa 2 MB \\
+Final & Commit được chọn (mặc định là bài practice tốt nhất) chấm trên commit chưa công bố, \emph{có cả loại thay đổi không có trong practice}. Ít nhất top 5 được chấm lại 5 lần trên một máy rảnh, lấy trung vị \\
+\bottomrule
+\end{tabularx}
+\caption{Thông tin chung của P4 \src{trang đề, README.md, SCORING.md}}
+\end{table}
+
+\subsection{Bảng điểm và cách chấm}
+P4 chỉ có một tiêu chí, \textbf{chấm tự động hoàn toàn} bằng scorer (cùng luật với \fn{score.py} trong kit). Không có phần chấm AI. Có một yếu tố \textbf{người chấm}: BTC ghi rõ ``Top entries are read'', tức code của các đội đứng đầu sẽ được người đọc để kiểm tra luật (không có bảng tra patch $\rightarrow$ test, không chia sẻ code giữa đội).
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.6cm}Y C{2.1cm}C{1.4cm}}
+\toprule
+\textbf{Thành phần} & \textbf{Định nghĩa} & \textbf{Cách chấm} & \textbf{Phần} \\
+\midrule
+Chi phí một commit & Tải lớn nhất của một worker (tổng giây ghi sẵn của test trong worker đó) $+\;2$ s $\times$ số worker. Không chạy gì thì 0 & auto & 4.3, 4.4 \\
+Phạt bỏ sót & $+300$ s cho mỗi commit có ít nhất một test fail không nằm trong worker nào & auto & 4.2, 4.5 \\
+CPU & Tổng CPU (user + system) mọi process trong container, từ lúc khởi động đến khi thoát & auto & 4.1, 4.3 \\
+Điểm một lần nộp & Chạy image 3 lần, lấy tổng ở giữa, làm tròn 0,1 s: $\lfloor(\mu s+50000)/100000\rfloor/10$ & auto & 4.6 \\
+Kiểm tra luật & Code top đầu được đọc; trùng repo/commit với đội khác thì đội nộp sau bị loại & người & 4.5 \\
+\bottomrule
+\end{tabularx}
+\caption{Rubric P4 \src{SCORING.md, trang đề}}
+\end{table}
+
+\[
+\text{tổng} \;=\; \sum_{\text{commit}}\Big(\max_{w}\sum_{t\in w} d_t \;+\; 2\cdot|W|\Big) \;+\; 300\cdot \#\text{miss} \;+\; \text{CPU},\qquad d_t=\mathrm{round}(1000\cdot\text{seconds}_t)\ \text{ms}.
+\]
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lrl}
+\toprule
+\textbf{Mốc trên bảng practice (ảnh chụp 21/11)} & \textbf{Điểm} & \textbf{Ghi chú} \\
+\midrule
+Hạng 1 (SophiaOmri) & 153,7 s & \\
+Hạng 2 (fortnite pirate token) & 156,8 s & \\
+Baseline của starter & 1614,1 s & Chạy mọi test, chia 3 worker \\
+Số đội & 116 & \\
+\bottomrule
+\end{tabular}
+\caption{Ảnh chụp leaderboard practice (chỉ để định hướng, bảng practice không có giải)}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Suy luận (chưa xác nhận):} Trên 30 commit mẫu, starter tốn 40,349 s/commit (xem bảng chạy thử ở mục 4.6). $1614{,}1/40{,}349 \approx 40{,}0$, nên bộ practice nhiều khả năng có khoảng \textbf{40 commit}, và final khoảng 60 commit. Đội hạng 1 tốn khoảng 3,8 s/commit, sát mức ``oracle'' (biết trước test nào fail) trên bộ mẫu là 4,5 s/commit. Nghĩa là các đội đầu chọn test gần như chính xác tuyệt đối.
+\end{mdframed}
+
+\subsection{Nguồn thông tin và quy ước số liệu}
+\begin{itemize}
+  \item \textbf{Nguồn chính:} trang đề (ảnh chụp) và \fn{SCORING.md}. Repo chưa có forum Q\&A; khi có câu trả lời của BTC thì ưu tiên câu trả lời đó.
+  \item \textbf{Tham khảo:} \fn{README.md}, \fn{selector.py}, \fn{score.py}, \fn{Makefile}, \fn{Dockerfile}, \fn{requirements.lock} và 30 commit mẫu trong \fn{p4_RWX/starter_files/blast-radius-sample/}.
+  \item Số có nhãn \trial{} là do mình chạy \fn{score.py} trên bộ mẫu, \emph{không phải kết quả chính thức}. Bảng chính thức còn cộng CPU và lấy trung vị 3 lần chạy.
+\end{itemize}
+
+\subsection{Sơ đồ phụ thuộc}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={draw,rounded corners,thick,text width=3.3cm,minimum height=1.2cm,align=center,font=\small},
+  ext/.style={draw,dashed,rounded corners,text width=3.6cm,minimum height=1cm,align=center,font=\small,fill=gray!8},
+  arr/.style={->,thick,>=stealth},
+  lab/.style={font=\scriptsize,fill=white,inner sep=1pt}]
+  \node[ext] (c) at (0,2.6) {\textbf{Chung}: repo public, Docker (dùng chung với P1, P2)};
+  \node[box,draw=p1,fill=p1!10] (a) at (0,0) {\textbf{4.1} Môi trường, công cụ};
+  \node[box,draw=p2,fill=p2!10] (b) at (5.4,0) {\textbf{4.2} Map tĩnh: coverage, fixture, import};
+  \node[box,draw=p3,fill=p3!10] (d) at (10.8,0) {\textbf{4.3} Phân tích patch, chọn test};
+  \node[box,draw=p4,fill=p4!10] (e) at (5.4,-2.8) {\textbf{4.4} Chia worker tối ưu};
+  \node[box,draw=p5,fill=p5!10] (f) at (10.8,-2.8) {\textbf{4.5} Luật an toàn (recall)};
+  \node[box,draw=p6,fill=p6!10] (g) at (10.8,-5.6) {\textbf{4.6} Đánh giá, nộp, chốt final};
+  \draw[arr] (c) -- (a);
+  \draw[arr] (a) -- node[lab,above=2pt]{môi trường chuẩn} (b);
+  \draw[arr] (b) -- node[lab,above=2pt]{map} (d);
+  \draw[arr] (a) |- (e);
+  \draw[arr] (d) -- node[lab,right=2pt]{tập test} (f);
+  \draw[arr] (b) -- node[lab,sloped,above=2pt]{import map} (f);
+  \draw[arr] (e) |- (g);
+  \draw[arr] (f) -- (g);
+\end{tikzpicture}
+\end{center}
+P4 không phụ thuộc kết quả của P1, P2, P3. Điểm chung duy nhất là hạ tầng (repo GitHub public có \fn{Dockerfile} ở gốc, build linux/amd64) và quỹ thời gian chung của một người.
+
+\subsection{Hiện trạng repo}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.2cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Hiện trạng (đọc ngày 21/11, khoảng 11:10)} \\
+\midrule
+Repo chính & \fn{martin-danggg/HCMUT_TMT_Builders_BUILDATHON}, nhánh \fn{main}, remote \fn{origin} qua SSH \\
+Commit mới nhất & \fn{55687de} ``Initial commit'', 21/11/2026 10:41:21 +0700, tác giả Triet Dang. Đây là commit duy nhất \\
+File đã commit & Chỉ \fn{README.md} (31 byte, một dòng tiêu đề) \\
+Chưa commit (untracked) & \fn{p1_Builders/} (2,9 MB), \fn{p2_Databricks/} (5,7 MB), \fn{p3_Machina/} (48 KB), \fn{p4_RWX/} (404 KB): toàn bộ là starter files do ban tổ chức phát, chưa có dòng code lời giải nào \\
+Thư mục \fn{reports/} & Chứa file tổng quan này (tiếng Việt và tiếng Anh, chưa commit) \\
+\fn{.gitignore} của repo chính & Bỏ qua 3 thư mục \fn{submission/} (repo riêng) và \fn{p3_Machina/work/} (dữ liệu P3 không được công bố) \\
+Repo nộp riêng (đã tạo trên GitHub, public) & P1: \fn{martin-danggg/hcmut-tmt-p1-mech-royale} $\rightarrow$ \fn{p1_Builders/submission/}\allowbreak\fn{hcmut-tmt-p1-mech-royale/} (commit \fn{f4e1861})\newline P2: \fn{martin-danggg/hcmut-tmt-p2-shopping-sessions} $\rightarrow$ \fn{p2_Databricks/submission/}\allowbreak\fn{hcmut-tmt-p2-shopping-sessions/} (commit \fn{21cd7e4})\newline P4: \fn{martin-danggg/hcmut-tmt-p4-blast-radius} $\rightarrow$ \fn{p4_RWX/submission/}\allowbreak\fn{hcmut-tmt-p4-blast-radius/} (commit \fn{2a682dc})\newline Khung từ starter được clone, commit ``Setup: add requirements'' và push lên \fn{main} bằng \fn{tools/setup_submissions.sh} \\
+\bottomrule
+\end{tabularx}
+\caption{Hiện trạng repo chính, chung cho cả 4 problem}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Nộp bài bằng repo riêng (đã chốt):} P1, P2 và P4 đều yêu cầu \emph{một repo GitHub public có \fn{Dockerfile} ở thư mục gốc} của commit được nộp. Repo chính là monorepo (p1--p4 nằm trong thư mục con) nên \textbf{không nộp repo chính}. Mỗi track có một repo public riêng, đặt trên máy tại \fn{pX_.../submission/hcmut-tmt-pX-.../}; mỗi thư mục đó là một git repo độc lập với remote riêng, còn repo chính bỏ qua chúng qua \fn{.gitignore}. Khi nộp: dán link repo riêng (ví dụ \fn{https://github.com/martin-danggg/hcmut-tmt-p4-blast-radius}) vào ô \emph{Public GitHub repository}; ô \emph{Commit} để trống thì BTC lấy commit mới nhất của \fn{main}. Repo phải giữ public và giữ mọi commit đã nộp đến khi công bố kết quả. P3 không cần GitHub (nộp qua thư mục \fn{gs://} của đội).
+\end{mdframed}
+
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{5.2cm}C{1.6cm}Y}
+\toprule
+\textbf{Thành phần của P4} & \textbf{Có chưa} & \textbf{Ghi chú} \\
+\midrule
+Starter kit (\fn{selector.py}, \fn{score.py}, \fn{Makefile}, \fn{Dockerfile}) & Có & Bản gốc của BTC, có cả \fn{.tar.gz} và bản giải nén \\
+30 commit mẫu + \fn{tests.json} + \fn{answers.json} & Có & 1620 test có số, 1 test bị skip \\
+Bản checkout sqlglot tại \fn{eb11aec} & Chưa & Cần cho 4.2 (làm offline, không đưa vào repo) \\
+Map coverage / fixture / import & Chưa & Đầu ra của 4.2 \\
+Selector mới, chia worker & Chưa & Đầu ra của 4.3--4.5 \\
+Repo nộp riêng \fn{hcmut-tmt-p4-blast-radius} & Có & \fn{p4_RWX/submission/}\allowbreak\fn{hcmut-tmt-p4-blast-radius/}: toàn bộ kit (Dockerfile, \fn{selector.py}, \fn{score.py}, \fn{Makefile}, \fn{sample/}); commit ``Setup: add requirements'' \\
+\bottomrule
+\end{tabularx}
+\caption{Phần đã có và còn thiếu của P4}
+\end{table}
+
+\subsection{Phân công và lịch}
+Làm một mình nên cột ``người review'' không áp dụng. Thay cho review, mỗi thay đổi đều phải qua \fn{make sample} (điểm và số miss) trước khi nộp.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1cm}L{2.6cm}YC{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Người chính} & \textbf{Việc} & \textbf{Review} \\
+\midrule
+4.1 & Đặng Minh Triết & Repo nộp, môi trường giống lúc gán nhãn, \fn{make sample} chạy được & -- \\
+4.2 & Đặng Minh Triết & Map coverage theo từng test, map fixture, map import & -- \\
+4.3 & Đặng Minh Triết & Đọc patch, ánh xạ dòng đổi sang test & -- \\
+4.4 & Đặng Minh Triết & Chọn số worker và chia test & -- \\
+4.5 & Đặng Minh Triết & Luật dự phòng cho trường hợp lạ & -- \\
+4.6 & Đặng Minh Triết & So sánh phiên bản, nộp, chốt final & -- \\
+\bottomrule
+\end{tabularx}
+\caption{Bảng phân công P4}
+\end{table}
+
+Không có ``tuần'' hay ``hạn tag'' riêng: hạn duy nhất là 23:00 CN 22/11, nên lịch chia theo khung giờ. Đề xuất tự gắn tag git \fn{p4-final} lên commit nộp cuối trong khung 22:00--22:45 để dễ truy lại. P4 được 5,5 giờ trong tổng khoảng 25 giờ làm việc (22\%).
+
+\begin{center}\small
+\begin{longtable}{L{1.7cm}L{2.1cm}C{1.1cm}L{10.4cm}}
+\toprule \textbf{Ngày} & \textbf{Giờ} & \textbf{Track} & \textbf{Việc} \\ \midrule\endhead
+T7 21/11 & 11:15--12:00 & Chung & Tạo 3 repo public riêng cho P1, P2, P4 (Dockerfile ở gốc); kiểm tra Docker/WSL2; P3: tải manifest, chạy \fn{get-input.sh --limit 100} \\
+\rowcolor{p4!15} & 12:00--15:30 & P4 & 4.1 môi trường + 4.2 map coverage tại commit ghim; 4.3--4.4 selector v1; \fn{make sample}; nộp lần 1 \\
+ & 15:30--18:00 & P1 & 1.1 hạ tầng + 1.2 bản đồ + 1.3 di chuyển/vùng bo; nộp bot v1 \\
+ & 18:00--19:00 & -- & Nghỉ \\
+ & 19:00--22:30 & P2 & 2.1--2.7 bản đúng: 36/36 fixture, \fn{check-dev} MATCH; nộp lần 1 \\
+ & 22:30--23:30 & P3 & 3.1 khảo sát 100 file mẫu; bắt đầu tải toàn bộ corpus chạy nền qua đêm \\
+ & 23:30--00:30 & P1 & 1.4 chiến đấu v2; nộp (chấm trong lúc ngủ) \\
+CN 22/11 & 00:30--07:30 & -- & Ngủ (P3 tiếp tục tải nền) \\
+ & 07:30--10:30 & P3 & 3.2--3.5 pipeline v1 trên corpus; upload attempt 1 \\
+ & 10:30--12:30 & P2 & 2.8 tối ưu tốc độ; nộp 2 lần \\
+ & 12:30--13:30 & -- & Nghỉ trưa \\
+\rowcolor{p4!15} & 13:30--15:00 & P4 & 4.5 luật an toàn + tinh chỉnh chia worker; nộp \\
+ & 15:00--18:00 & P1 & 1.5 loot/nâng cấp + 1.6 vòng lặp A/B (khoảng 10 lần nộp) \\
+ & 18:00--20:30 & P3 & 3.6 attempt 2--3 theo điểm từng category \\
+ & 20:30--21:30 & P2 & Cải tiến cuối, nộp \\
+\rowcolor{p4!15} & 21:30--22:00 & P4 & Cải tiến cuối, nộp \\
+ & 22:00--22:45 & Chung & Chốt bài: chọn submission cuối cho từng track, giữ repo public, gắn tag \fn{pX-final} \\
+ & 22:45--23:00 & -- & Dự phòng. 23:00 đóng tất cả các track \\
+\bottomrule
+\caption{Lịch đề xuất cho cả 4 track đến hạn 23:00 CN 22/11 (dòng tô màu là P4)}
+\end{longtable}
+\end{center}
+
+
+\subsection{Chọn hướng tổng thể}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.3cm}YYC{1.5cm}}
+\toprule
+\textbf{Hướng} & \textbf{Ưu} & \textbf{Nhược} & \textbf{Chọn?} \\
+\midrule
+A. Heuristic theo tên file (ví dụ \fn{dialects/x.py} $\rightarrow$ \fn{test_x.py}) & Viết trong 30 phút & Bỏ sót nhiều (một dialect có thể làm hỏng test optimizer, executor); mỗi lần sót mất 300 s & Không \\
+B. \textbf{Map tĩnh từ commit ghim}: coverage theo từng test, fixture, import & BTC cho phép rõ ràng; recall cao; độ chính xác tốt ở mức hàm & Tốn khoảng 1,5 giờ dựng map; dòng chạy lúc import bị mọi test ``phủ'' & \textbf{Có} \\
+C. Chạy test ngay lúc chạy để lọc & Biết chắc test nào fail & CPU bị tính 1:1; tổng CPU của tập ứng viên luôn $\ge$ tải worker lớn nhất, nên gần như luôn đắt hơn chỉ báo ứng viên; giới hạn 3 phút với 2 core & Không (chỉ để kiểm tra cú pháp) \\
+D. Học máy trên patch & -- & Không có dữ liệu; dễ phạm luật ``bảng tra từ loại thay đổi sang test'' & Không \\
+\bottomrule
+\end{tabularx}
+\caption{So sánh các hướng làm P4}
+\end{table}
+
+\textbf{Chọn B}, vì: (1) phạt 300 s cho một lần sót bằng khoảng 8 commit chạy toàn bộ test (36,8 s/commit ở 4 worker), nên recall quan trọng hơn hết; (2) map coverage được BTC liệt kê là hợp lệ; (3) map dựng một lần, commit vào repo, nên mỗi lần build chỉ mất vài giây.
+
+\newpage
+\section{Các phần việc}
+
+% ---------------------------------------------------------------
+\subsection{4.1 Môi trường và công cụ}
+\partbox{p1}{1. Yêu cầu của đề}{Nộp repo public có \fn{Dockerfile} ở gốc. Image đọc \fn{/data/commits/<id>.patch} và \fn{/data/tests.json}, in mỗi commit một dòng JSON \texttt{\{"commit": ..., "workers": [[...], ...]\}} ra stdout, chạy được dưới user \fn{nobody}, không mạng, đĩa chỉ đọc, trong 3 phút cho cả batch.}
+\partbox{p1}{2. Mục tiêu khi xong}{Có repo nộp riêng; \fn{make sample} chạy được và in điểm; có môi trường offline giống hệt lúc BTC gán nhãn (cùng image, cùng \fn{requirements.lock}, \fn{SKIP_INTEGRATION=0}) để 4.2 dựng map đúng.}
+\partbox{p1}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} starter kit, sqlglot tại commit \fn{eb11aec}.\\
+\textbf{Kiến thức:} Docker (buildx, \fn{--platform linux/amd64}, quyền file cho uid 65534), pytest 9 (subtest, \fn{--collect-only}), cách scorer đọc stdout (bảng mã lỗi trong \fn{SCORING.md}).}
+\partbox{p1}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{Dockerfile} (giữ nguyên digest \fn{python:3.13-slim@sha256:e48f59...}), \fn{Makefile}, \fn{score.py}, \fn{requirements.lock} (43 gói, gồm pytest 9.2.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, duckdb 2.0.0).\\
+\textbf{Đầu ra:} repo nộp \fn{hcmut-tmt-p4-blast-radius/} (đã tạo) gồm \fn{Dockerfile}, \fn{selector.py}, \fn{Makefile}, \fn{score.py}, \fn{sample/}; thư mục làm việc offline (không commit) chứa bản checkout sqlglot.}
+\longbox{p1}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Tạo repo public mới, chép toàn bộ nội dung kit vào gốc (kit không có thư mục cấp cao nhất). Kiểm tra \fn{make sample} cho ra \fn{Simulated: 1210.470 s}, \fn{Misses: 0} (đúng với lần chạy thử của mình).
+  \item Dựng môi trường offline: \fn{docker run} image cùng digest, \fn{pip install -r requirements.lock}, \fn{git clone} sqlglot rồi \fn{git checkout eb11aec4be8c...}, đặt checkout vào \fn{PYTHONPATH} (không dùng \fn{pip install -e .[dev]} vì sẽ kéo bản mới hơn).
+  \item Đối chiếu: \fn{SKIP_INTEGRATION=0 pytest --collect-only -q} phải ra đúng 1620 id trong \fn{tests.json} cộng 1 id bị skip (\fn{test_variadic_iif_execution}). Lệch là môi trường sai, phải sửa trước khi làm 4.2.
+  \item Viết khung \fn{selector.py} mới: đọc map (4.2), đọc từng patch, gọi hàm chọn test (4.3) và hàm chia worker (4.4), in JSON bằng \fn{json.dumps}. Log ra stderr.
+  \item Đo CPU của selector: \fn{/usr/bin/time -v} quanh \fn{docker run} hoặc \fn{python -X importtime}. Mục tiêu dưới 1 s CPU cho cả batch.
+\end{enumerate}}
+\partbox{p1}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Bất kỳ dòng nào trên stdout không phải đáp án đều làm hỏng cả lần chạy. File map do root ghi lúc build với mode 600 thì \fn{nobody} không đọc được (dùng \fn{chmod a+r}). Không được tải gì từ địa chỉ đội kiểm soát. Repo tối đa 20 MB; submodule và Git LFS không được fetch. Trên Mac Apple Silicon phải build với \fn{--platform linux/amd64}.}
+\metabox{p1}{10\% của P4 (2,2\% tổng 4 problem), khoảng 0,5 giờ}{Phần ``Chung'' (tài khoản GitHub, Docker)}{4.2, 4.4, 4.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{4.2 Map tĩnh từ commit ghim}
+\partbox{p2}{1. Yêu cầu của đề}{Đề cho phép ``maps built from the pinned commit (coverage, imports, fixtures)'' và cấm ``bảng tra từ patch hoặc từ loại thay đổi sang test''. Map phải dựng từ mã sqlglot tại \fn{eb11aec}, không dựng từ \fn{answers.json}.}
+\partbox{p2}{2. Mục tiêu khi xong}{Có 3 map nén, tổng dưới vài MB, commit vào repo nộp: (a) \textbf{coverage}: với mỗi file \fn{sqlglot/**.py}, dòng $\rightarrow$ tập số hiệu test đã chạy qua dòng đó; (b) \textbf{fixture}: file dữ liệu dưới \fn{tests/} $\rightarrow$ tập test đã mở file đó; (c) \textbf{import}: module $\rightarrow$ tập file test import nó (trực tiếp hoặc gián tiếp).}
+\partbox{p2}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} môi trường offline của 4.1, \fn{tests.json} (để đổi node id sang số hiệu).\\
+\textbf{Kiến thức:} coverage.py \emph{dynamic context} (\fn{--cov-context=test} của pytest-cov, hoặc \fn{dynamic_context = test_function}), \fn{coverage json --show-contexts}, \fn{sys.addaudithook} (sự kiện \fn{open}) để ghi file mà mỗi test mở, \fn{ast} để tìm phạm vi hàm/lớp.}
+\partbox{p2}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} bản checkout sqlglot, \fn{sample/tests.json}.\\
+\textbf{Đầu ra:} \fn{maps/coverage.json.gz}, \fn{maps/fixtures.json.gz}, \fn{maps/imports.json.gz}, \fn{maps/funcs.json.gz} (phạm vi dòng của từng hàm/lớp), và script dựng map \fn{tools/build_maps.py} (commit để giải thích được khi BTC đọc code).}
+\longbox{p2}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} chạy toàn bộ test một lần với coverage theo ngữ cảnh từng test, rồi nén lại.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Trong môi trường offline, cài thêm \fn{coverage} và \fn{pytest-cov} (chỉ dùng để dựng map, không đưa vào image nộp).
+  \item Chạy \fn{SKIP_INTEGRATION=0 pytest --cov=sqlglot --cov-context=test -p no:randomly -n 4}. Tốn khoảng 3--5 lần thời gian gốc (103 s một luồng). Ước lượng 2--5 phút với 4 worker xdist (chưa đo).
+  \item Thêm \fn{conftest} plugin nhỏ: trong hook \fn{pytest_runtest_call}, gắn \fn{sys.addaudithook} ghi lại mọi đường dẫn mở dưới \fn{tests/} kèm node id $\rightarrow$ map fixture.
+  \item Map import: với từng file test, chạy \fn{python -c "import tests.x"} trong process mới và lấy \fn{sys.modules} (hoặc \fn{python -X importtime}). Lưu ý \fn{sqlglot/__init__.py} import gần như cả package, nên thường mọi file test phụ thuộc mọi module.
+  \item Đổi node id sang số hiệu theo \fn{tests.json}; với test có subtest, gộp context về id gốc.
+  \item Nén: nhiều dòng có cùng tập test, nên lưu ``bảng tập test duy nhất'' + ``dòng $\rightarrow$ chỉ số tập''. Ghi kèm \fn{funcs.json.gz}: cho mỗi file, danh sách (đầu dòng, cuối dòng, tên) của hàm/lớp lấy từ \fn{ast}.
+  \item Tự kiểm: với 30 commit mẫu, tập test ``phủ dòng bị đổi'' phải chứa mọi test trong \fn{failing} (chỉ dùng để \emph{kiểm tra} map, không dùng để tạo luật).
+\end{enumerate}}
+\partbox{p2}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Dòng chạy lúc import (định nghĩa lớp, hằng số, dict \fn{TRANSFORMS} trong dialect) bị \emph{mọi} test phủ, nên map coverage ở các dòng này vô dụng: cần xử lý riêng ở 4.3. Docstring không phải dòng thực thi, coverage không thấy; nếu sqlglot có test chạy doctest thì phải map docstring sang test đó. Test lấy chậm nhất: \fn{test_max_nodes} 28,817 s, \fn{test_execute_tpcds} 21,454 s, \fn{test_generator_memory} 6,686 s. Đừng dựng map trong \fn{Dockerfile}: mỗi lần nộp sẽ mất vài phút build và dễ vượt 10 phút.}
+\metabox{p2}{30\% của P4 (6,6\% tổng), khoảng 1,6 giờ}{4.1}{4.3, 4.5}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{4.3 Phân tích patch và chọn test}
+\partbox{p3}{1. Yêu cầu của đề}{Mỗi patch là một unified diff độc lập so với commit ghim. In tập test có thể fail; tập rỗng (\fn{"workers": []}) là đáp án đúng cho thay đổi không làm hỏng gì.}
+\partbox{p3}{2. Mục tiêu khi xong}{Hàm \fn{select(patch) -> set[int]} cho từng loại file bị sửa, chạy vài mili-giây mỗi commit, không sót test fail nào trên 30 commit mẫu và tập chọn nhỏ hơn hẳn ``chạy hết''.}
+\partbox{p3}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} các map của 4.2, file patch.\\
+\textbf{Kiến thức:} định dạng unified diff (\fn{@@ -a,b +c,d @@}, dòng \fn{-}/\fn{+}/ngữ cảnh), \fn{compile()} để kiểm tra cú pháp, cấu trúc sqlglot (\fn{expressions}, \fn{parser}, \fn{generator}, \fn{dialects/}, \fn{optimizer/}, \fn{tests/fixtures/optimizer/*.sql}).}
+\partbox{p3}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{/data/commits/*.patch}, \fn{maps/*.json.gz}, bản sqlglot trong image (clone tại commit ghim trong \fn{Dockerfile}, được phép) để áp patch và kiểm tra cú pháp.\\
+\textbf{Đầu ra:} module \fn{select.py} trong repo nộp.}
+\longbox{p3}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} patch so với commit ghim, nên số dòng phía \fn{-} chính là số dòng trong map. Ánh xạ dòng cũ bị đổi sang test qua map, mở rộng ra mức hàm để không sót nhánh mới.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Tự viết parser diff: với mỗi file, lấy các dòng cũ bị xóa/sửa; với dòng chỉ thêm mới, lấy dòng cũ ngay trước và ngay sau điểm chèn.
+  \item \fn{sqlglot/**.py}, dòng nằm trong một hàm: lấy mọi test phủ \emph{bất kỳ dòng nào của hàm đó} (mức hàm). Mức dòng chính xác hơn nhưng sót khi patch thêm nhánh \fn{elif} mới mà chưa test nào đi qua.
+  \item Dòng ở mức lớp/module (thuộc tính lớp, entry trong dict \fn{TRANSFORMS}, \fn{FUNCTIONS}, hằng số): coverage nói ``mọi test'', nên dùng luật hẹp hơn: test phủ các hàm của cùng lớp, cộng các test trong file test của dialect đó. Nếu không chắc thì dùng 4.5.
+  \item Áp patch vào bản sao file trong \fn{/tmp} và gọi \fn{compile()}. Lỗi cú pháp làm file không import được, nên mọi test import module đó đều fail: chọn theo map import (thường là toàn bộ).
+  \item \fn{tests/fixtures/**}: chọn các test đã mở file đó (map fixture).
+  \item \fn{tests/**.py}: chọn test có thân hàm bị đổi; nếu đổi ở mức module (helper, import) thì chọn cả file test; \fn{conftest.py} thì chọn mọi test trong phạm vi của nó.
+  \item Patch chỉ thêm comment: trong \fn{.py} thì gần như vô hại, \emph{trừ khi} rơi vào docstring (có thể làm hỏng doctest) hoặc file \fn{.sql} fixture (comment là một phần dữ liệu test). Đề nói rõ ``comment không được hứa là vô hại'', nên không cho comment đi tắt sang tập rỗng.
+  \item File khác (\fn{pyproject.toml}, \fn{setup.cfg}, \fn{Makefile}, tài liệu): không có trong mẫu. Cấu hình build/test thì chọn tất cả; tài liệu thuần (\fn{.md} ngoài \fn{tests/}) thì chọn rỗng.
+\end{enumerate}}
+\partbox{p3}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Patch có thể sửa nhiều file (loại \fn{multi}). Đổi tên hoặc xóa file (\fn{/dev/null}) phải xử lý được. Một commit mẫu (\fn{3utz}) làm fail 37 test trên 4 file khác nhau, nên đừng chỉ nhìn file test cùng tên. Mọi luật phải suy ra từ mã nguồn hoặc map; ví dụ luật ``fixture $\rightarrow$ \fn{test_optimizer.py}'' phải đến từ map fixture chứ không phải từ việc thấy trong \fn{answers.json}.}
+\metabox{p3}{25\% của P4 (5,5\% tổng), khoảng 1,4 giờ}{4.2}{4.5, 4.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{4.4 Chia worker tối ưu}
+\partbox{p4}{1. Yêu cầu của đề}{Tối đa 8 worker sau khi bỏ worker rỗng. Chi phí là tải worker lớn nhất cộng 2 s mỗi worker; thời lượng test tính bằng mili-giây nguyên.}
+\partbox{p4}{2. Mục tiêu khi xong}{Hàm \fn{split(tests) -> workers} cho chi phí nhỏ nhất (hoặc rất sát) với mọi tập test.}
+\partbox{p4}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} tập test từ 4.3, \fn{seconds} trong \fn{tests.json}.\\
+\textbf{Kiến thức:} bài toán xếp lịch máy song song (makespan), thuật toán LPT, quy hoạch động/brute force cho tập nhỏ.}
+\partbox{p4}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} hàm \fn{split} trong \fn{selector.py} của starter (LPT, cố định 3 worker).\\
+\textbf{Đầu ra:} \fn{split.py} chọn số worker $k$ tối ưu.}
+\longbox{p4}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} với mỗi $k=1..8$, chia bằng LPT rồi chọn $k$ nhỏ nhất theo $\text{makespan}_k + 2000k$ (ms).
+\begin{enumerate}[leftmargin=1.4em]
+  \item Đổi \fn{seconds} sang ms bằng \fn{round(s*1000)}, giống scorer.
+  \item Với mỗi $k$, chạy LPT (test dài nhất trước, vào worker nhẹ nhất). Thêm bước cải thiện cục bộ (đổi chỗ 1--1 giữa worker nặng nhất và nhẹ nhất).
+  \item Tập rỗng thì in \fn{[]}. Tập rất nhỏ (dưới khoảng 12 test) thì thử hết cách chia để ra tối ưu thật.
+  \item Cận dưới để tự kiểm: $\max(\max_t d_t,\ \lceil\sum d_t/k\rceil) + 2000k$.
+\end{enumerate}
+\trial{Với toàn bộ 1620 test: $k=3$ cho 40,349 s/commit (đúng starter), $k=4$ cho \textbf{36,817 s}, $k=5$ cho 38,817 s, $k=8$ cho 44,817 s. Bỏ 3 test chậm nhất (tổng còn 46,09 s): $k=5$ cho 19,218 s. Nghĩa là quyết định có chọn \fn{test_max_nodes} (28,8 s) và \fn{test_execute_tpcds} (21,5 s) hay không quan trọng hơn cách chia.}}
+\partbox{p4}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Nhiều worker hơn chưa chắc tốt hơn: mỗi worker thêm 2 s, và một test 28,8 s không chia nhỏ được. Không lặp số hiệu test trong cùng một dòng (\fn{repeated_test}). Số phải là số nguyên JSON, không phải chuỗi.}
+\metabox{p4}{10\% của P4 (2,2\% tổng), khoảng 0,5 giờ}{4.1 (làm song song với 4.2)}{4.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{4.5 Luật an toàn (recall)}
+\partbox{p5}{1. Yêu cầu của đề}{Final có ``loại thay đổi không có trong practice''. Một commit sót test fail mất 300 s. BTC sửa nhãn sai nếu phát hiện trước khi công bố kết quả.}
+\partbox{p5}{2. Mục tiêu khi xong}{Bộ luật dự phòng rõ ràng: khi map không đủ chắc chắn thì mở rộng tập test theo bậc (hàm $\rightarrow$ lớp $\rightarrow$ file test liên quan $\rightarrow$ toàn bộ), với ngưỡng dựa trên kỳ vọng chi phí.}
+\partbox{p5}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} kết quả 4.3 kèm ``độ tin cậy'' (dòng thuộc hàm hay thuộc module, có lỗi cú pháp không, loại file).\\
+\textbf{Kiến thức:} kỳ vọng chi phí: thêm test tốn tối đa khoảng 36,8 s (chạy hết, 4 worker), còn sót tốn 300 s.}
+\partbox{p5}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{select.py}, map import, 30 commit mẫu.\\
+\textbf{Đầu ra:} \fn{policy.py} và một bảng luật ngắn trong README của repo nộp (để giải thích khi BTC đọc code).}
+\longbox{p5}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} chọn tất cả khi xác suất sót ngoài tập chọn vượt khoảng $36{,}8/300 \approx 12\%$; nếu không thì giữ tập hẹp.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Liệt kê các tình huống ``mù'' của map: dòng mức module/lớp, file \fn{.py} mới thêm, file không phải Python, đổi tên file, xóa hàm, đổi chữ ký hàm, đổi decorator, đổi \fn{__init__.py}.
+  \item Gán cho mỗi tình huống một bậc mở rộng cố định (không dựa vào \fn{answers.json}): ví dụ xóa hoặc đổi tên hàm thì thêm mọi test phủ \emph{nơi gọi} hàm đó (tìm bằng \fn{ast} trên bản sqlglot trong image).
+  \item Lỗi cú pháp hoặc lỗi import mức module thì chọn tất cả (nếu cần chắc chắn có thể chạy \fn{python -c "import sqlglot"} với file đã vá trong \fn{/tmp}, tốn khoảng nửa giây CPU, chỉ làm khi đổi mức module).
+  \item Kiểm tra recall: chạy lại 30 commit mẫu, rồi tự tạo vài patch kiểu khác (đổi tên hàm, thêm file, sửa docstring) và chạy thật pytest offline để xem luật có bắt được không. Đây là kiểm thử, không phải bảng tra.
+  \item Giữ CPU thấp: nạp map một lần, xử lý mọi patch trong một process.
+\end{enumerate}}
+\partbox{p5}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Đừng tối ưu quá sát bộ mẫu (30 commit) hay bảng practice (khoảng 40 commit): final có loại thay đổi mới. Không dùng bảng ``loại thay đổi $\rightarrow$ test'' kể cả viết tay. Test có subtest: một subtest fail là cả test fail (pytest 9 có thể in \fn{PASSED} cạnh \fn{SUBFAILED}).}
+\metabox{p5}{15\% của P4 (3,3\% tổng), khoảng 0,8 giờ}{4.2, 4.3}{4.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{4.6 Đánh giá, nộp và chốt final}
+\partbox{p6}{1. Yêu cầu của đề}{Điểm là trung vị 3 lần chạy (final: top 5 chạy lại 5 lần). Chỉ thấy tổng giây mô phỏng, CPU và số commit sót, không thấy commit nào. Repo phải public và giữ mọi commit đã nộp đến khi công bố kết quả.}
+\partbox{p6}{2. Mục tiêu khi xong}{Có bảng theo dõi các phiên bản (điểm mẫu, số sót, CPU, điểm practice) và đã chọn commit final với lý do rõ.}
+\partbox{p6}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} kết quả \fn{make sample}, phản hồi của trang nộp.\\
+\textbf{Kiến thức:} luật hòa ở final: điểm cách điểm tốt nhất không quá 1 s được coi là bằng, xếp theo thời điểm nộp sớm hơn.}
+\partbox{p6}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{score.py}, \fn{sample/answers.json}.\\
+\textbf{Đầu ra:} \fn{notes/p4_log.md} (bảng phiên bản), tag \fn{p4-final}.}
+\longbox{p6}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Mỗi phiên bản: \fn{make sample}, ghi tổng giây và số sót. Không nộp phiên bản có sót trên mẫu.
+  \item Nộp sớm một bản an toàn (map mức hàm, luật rộng) để có điểm, sau đó mới thu hẹp dần.
+  \item Do luật hòa 1 s, nộp bản tốt \emph{sớm} có lợi hơn nộp bản tốt hơn một chút vào phút chót.
+  \item Chốt: chọn commit có điểm practice tốt và số sót bằng 0; nếu bản tốt nhất có dấu hiệu quá khít (luật hẹp mới thêm, chưa thử loại thay đổi mới) thì cân nhắc chọn bản an toàn hơn.
+\end{enumerate}
+\trial{Chạy \fn{score.py} trên 30 commit mẫu (chưa cộng CPU, chưa lấy trung vị):}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{Yrr L{4.2cm}}
+\toprule
+\textbf{Chiến lược} & \textbf{Giây m.phỏng} & \textbf{Sót} & \textbf{Ghi chú} \\
+\midrule
+Starter: tất cả test, 3 worker & 1210,470 & 0 & 40,35 s/commit \\
+Tất cả test, 8 worker & 1344,510 & 0 & Nhiều worker hơn lại tệ hơn \\
+Không chạy gì & 5400,000 & 18 & 18/30 commit làm fail ít nhất 1 test \\
+Chỉ đổi luật cho patch fixture optimizer & 1134,238 & 0 & Lợi rất ít nếu code vẫn chạy hết \\
+Oracle (đúng tập fail, chia tối ưu) & 135,138 & 0 & Cận dưới trên mẫu, 4,5 s/commit \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Bộ mẫu có 16 commit loại \fn{code}, 8 \fn{fixture}, 3 \fn{multi}, 3 \fn{comment}; 12 commit không làm hỏng test nào (cả 3 commit \fn{comment} đều nằm trong nhóm này).}
+\partbox{p6}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Bị từ chối (sai luật, crash, timeout, vượt bộ nhớ, build lỗi) không làm mất điểm tốt nhất nhưng vẫn tốn lượt nộp trong giờ. Mỗi người chỉ ở một đội; không dùng chung repo/commit với đội khác.}
+\metabox{p6}{10\% của P4 (2,2\% tổng), khoảng 0,5 giờ}{4.3, 4.4, 4.5}{Kết quả cuối của P4}{Bỏ qua (làm một mình)}
+
+\newpage
+\section{Bảng tóm tắt các phần}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1.0cm}L{2.9cm}YC{1.2cm}C{1.3cm}L{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Tên} & \textbf{Đầu ra chính} & \textbf{\% P4} & \textbf{\% tổng} & \textbf{Tiên quyết} \\
+\midrule
+4.1 & Môi trường, công cụ & Repo nộp, môi trường giống lúc gán nhãn, \fn{make sample} chạy & 10 & 2,2 & Chung \\
+4.2 & Map tĩnh & \fn{maps/*.json.gz}, \fn{tools/build_maps.py} & 30 & 6,6 & 4.1 \\
+4.3 & Phân tích patch & \fn{select.py} & 25 & 5,5 & 4.2 \\
+4.4 & Chia worker & \fn{split.py} (chọn $k$ tối ưu) & 10 & 2,2 & 4.1 \\
+4.5 & Luật an toàn & \fn{policy.py}, bảng luật trong README & 15 & 3,3 & 4.2, 4.3 \\
+4.6 & Đánh giá, nộp & \fn{notes/p4_log.md}, tag \fn{p4-final} & 10 & 2,2 & 4.3--4.5 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng P4}} & \textbf{100} & \textbf{22} & \\
+\bottomrule
+\end{tabularx}
+\caption{Tóm tắt P4. ``\% tổng'' là phần trăm trên tổng khối lượng 4 problem (P1 26\%, P2 26\%, P3 26\%, P4 22\%)}
+\end{table}
+
+\end{document}

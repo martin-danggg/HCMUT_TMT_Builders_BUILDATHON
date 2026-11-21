@@ -1,0 +1,607 @@
+\documentclass[a4paper,12pt]{article}
+
+% --- CÀI ĐẶT NGÔN NGỮ & FONT ---
+\usepackage{vntex}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+
+% --- ĐỊNH DẠNG TRANG & VĂN BẢN ---
+\usepackage{a4wide}
+\usepackage{geometry}
+\geometry{a4paper, left=2cm, right=2cm, top=2.5cm, bottom=4.2cm, footskip=12mm}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+% --- ĐỒ HỌA & BẢNG BIỂU ---
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{svg}
+\usepackage{tikz}
+\usetikzlibrary{arrows,snakes,backgrounds,positioning,shapes,calc,fit}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{array}
+\usepackage[skip=5pt]{caption}
+\usepackage{placeins}
+\usepackage{float}       % thêm: template dùng [H]
+\usepackage{longtable}   % thêm: bảng dài ngắt trang
+
+% --- MÀU SẮC & CODE ---
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}    % thêm: tô màu dòng bảng
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[framemethod=tikz]{mdframed}
+
+% --- HEADER & FOOTER ---
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% --- HYPERREF (Luôn load cuối cùng) ---
+\usepackage{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+% ================= CÀI ĐẶT MÀU SẮC =================
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{black}}
+\definecolor{p1}{RGB}{52,101,164}
+\definecolor{p2}{RGB}{78,154,6}
+\definecolor{p3}{RGB}{204,0,0}
+\definecolor{p4}{RGB}{117,80,123}
+\definecolor{p5}{RGB}{193,125,17}
+\definecolor{p6}{RGB}{32,128,128}
+\definecolor{p7}{RGB}{90,90,90}
+\definecolor{p8}{RGB}{170,60,120}
+
+% ================= CÀI ĐẶT HEADER/FOOTER =================
+\everymath{\color{blue}}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+ \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{hcmut.png}}
+   \end{picture}&
+    \begin{tabular}{l}
+        \textbf{\ttfamily Trường Đại học Bách khoa - ĐHQG-HCM}\\
+        \textbf{\ttfamily Khoa Khoa học và Kĩ thuật Máy tính}
+    \end{tabular}
+ \end{tabular}
+}
+\fancyhead[R]{}
+\fancyfoot{}
+\fancyfoot[L]{\scriptsize \ttfamily \textcolor{blue}{Builders Buildathon 2026 - P2 Shopping Sessions \\ Đội HCMUT TMT, Tháng 11/2026}}
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+
+% ================= CÁC HỘP MÀU =================
+% \partbox{màu}{tiêu đề}{nội dung}: hộp ngắn, không ngắt trang
+\newcommand{\partbox}[3]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \longbox{màu}{tiêu đề}{nội dung}: hộp dài, được ngắt trang
+\newcommand{\longbox}[3]{%
+\begin{mdframed}[linecolor=#1,linewidth=1.2pt,topline=false,rightline=false,bottomline=false,leftmargin=0pt,rightmargin=0pt,innerleftmargin=10pt,backgroundcolor=#1!6]
+\textbf{\color{#1}#2}\par\smallskip #3
+\end{mdframed}}
+% \metabox{màu}{khối lượng}{tiên quyết}{là nền cho}{số người}
+\newcommand{\metabox}[5]{%
+\begin{mdframed}[nobreak=true,linecolor=#1,linewidth=1pt,leftmargin=0pt,rightmargin=0pt,backgroundcolor=#1!15]
+\textbf{Khối lượng:} #2\par
+\textbf{Tiên quyết:} #3\par
+\textbf{Là nền cho:} #4\par
+\textbf{Số người:} #5
+\end{mdframed}}
+
+% ================= LỆNH PHỤ (thêm cho báo cáo này) =================
+% \trial{...}: số liệu chạy thử, chưa phải kết quả chính thức
+\newcommand{\trial}[1]{\textcolor{p5}{\textbf{[chạy thử]}~#1}}
+% \src{...}: ghi nguồn của một con số
+\newcommand{\src}[1]{{\footnotesize\textcolor{p7}{(nguồn: #1)}}}
+\newcommand{\fn}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=1pt,topsep=2pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\Large Đại học Quốc gia Thành phố Hồ Chí Minh \\
+\Large Trường Đại học Bách khoa \\
+\Large Khoa Khoa học và Kĩ thuật Máy tính
+\end{center}
+
+\vspace{1cm}
+\begin{center}
+\includegraphics[width=4cm]{hcmut.png}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{c}
+    \textbf{\Large BUILDERS BUILDATHON 2026} \\[0.2cm]
+    \textbf{\Large (Problem 2)} \\
+    ~~\\
+    \hline
+    \\
+    \multicolumn{1}{l}{\textbf{{\Large Tổng quan đề bài}}}\\
+    \\
+    \textbf{{\LARGE Databricks -- Shopping Sessions}}\\[0.2cm]
+    {\large Pipeline click-stream $\rightarrow$ 2 bảng Parquet theo ngày}\\
+    \\
+    \hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrl}
+\hspace{2cm} & Track: & Databricks - Shopping Sessions \\
+& Đội: & HCMUT TMT\\
+& Sinh viên: & Đặng Minh Triết - 2510249 \\
+& Hạn chót: & 23:00 Chủ nhật 22/11/2026 (GMT+7) \\
+\end{tabular}
+\end{table}
+
+\vfill
+\begin{center}
+{\footnotesize Thành phố Hồ Chí Minh, Tháng 11/2026}
+\end{center}
+\end{titlepage}
+
+\thispagestyle{fancy}
+\newpage
+\tableofcontents
+\newpage
+
+\shorthandoff{"}
+\sloppy
+
+\section{Tổng quan}
+
+\subsection{Thông tin chung}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.0cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Nội dung} \\
+\midrule
+Track & Databricks -- Shopping Sessions (nhà tài trợ Databricks, giải \$5{,}000, 116 đội trên bảng practice lúc chụp) \\
+Bài toán & Làm sạch log CSV của shop online (xem trang, thêm giỏ, mua, click quảng cáo), gộp các ID của cùng một người, chia phiên, gán mỗi phiên cho click quảng cáo đã đưa người đó đến, đếm chiến dịch hỗ trợ trong 7 ngày trước, rồi ghi 2 bảng Parquet theo ngày: \fn{/output/user_daily/} và \fn{/output/campaign_daily/}. Luật chính xác nên chỉ có một đáp án đúng; nhanh mà sai một chút thì 0 điểm \\
+Hạn nộp & \textbf{23:00 Chủ nhật 22/11/2026 (GMT+7)}. Lúc viết (T7 21/11, khoảng 11:10) còn khoảng 36 giờ \\
+Giới hạn nộp & 2 lần/giờ (khung nộp lúc chụp: ``2 of 2 left this hour''). Bài bị từ chối không làm đổi điểm tốt nhất \\
+Hình thức nộp & Repo GitHub public, \fn{Dockerfile} ở gốc, kèm commit; repo tối đa 50 MB, không chứa dữ liệu (dữ liệu được mount lúc chạy) \\
+Build & Image linux/amd64 tối đa 8 GB; build có mạng tối đa 10 phút; thời gian build không tính điểm \\
+Chạy & 8 vCPU (hyperthread Intel Xeon, có AVX-512), 24 GB RAM, không swap, không mạng; \fn{/data} chỉ đọc; \fn{/output} + \fn{/scratch} tổng tối đa 50 GB; root chỉ đọc trừ \fn{/tmp} 64 MB; uid 1000; tối đa 4096 process/thread; stdout tối đa 50 MB \\
+Biến môi trường & \fn{DATA_DIR=/data}, \fn{OUTPUT_DIR=/output}, \fn{SCRATCH_DIR=/scratch}, \fn{HOME=/scratch}, \fn{NCPU=8}, \fn{MEM_GB=24} \\
+\bottomrule
+\end{tabularx}
+\caption{Thông tin chung của P2 \src{trang đề, rules.md, README của starter}}
+\end{table}
+
+\subsection{Bảng điểm và cách chấm}
+P2 \textbf{chấm tự động hoàn toàn}: đúng/sai bằng so khớp chính xác với đáp án, rồi tính thời gian chạy. Không có phần chấm AI hay người chấm.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{3.3cm}YC{1.6cm}C{1.6cm}}
+\toprule
+\textbf{Bước chấm} & \textbf{Định nghĩa} & \textbf{Cách chấm} & \textbf{Phần} \\
+\midrule
+Kiểm tra trên bộ dev & Mỗi lần nộp chạy trước trên bộ dev public 1 triệu event (tối đa 3 phút). Sai thì nhận các dòng khác biệt và log, rồi dừng & auto & 2.2--2.7 \\
+Chạy practice & Chạy một lần trên dữ liệu practice ẩn (khoảng 20 triệu event). Dưới 20 s thì chạy 3 lần lấy trung vị. Giới hạn: tối đa 2 lần thời gian baseline và không quá 5 phút & auto & 2.8 \\
+Đúng/sai & Sai bảng, crash, vượt bộ nhớ/đĩa/stdout/thời gian thì bài bị dừng. Lần chạy ẩn chỉ báo mã thoát, có hết bộ nhớ không, số dòng thiếu/thừa/khác & auto & 2.7 \\
+Điểm & Thời gian từ lúc container khởi động đến khi thoát (gồm khởi động engine, đọc CSV), càng thấp càng tốt & auto & 2.8 \\
+Final & Build lại commit được chọn, chạy 3 lần trên khoảng 60 triệu event mới, mỗi lần tối đa 3 phút. Một lần quá 3 phút là không có điểm final; còn lại lấy trung vị. Ít nhất 10 bài nhanh nhất được chạy lại 7 lần trên một máy rảnh & auto & 2.8 \\
+Hòa & Bài nộp sớm hơn xếp trên & auto & -- \\
+\bottomrule
+\end{tabularx}
+\caption{Rubric P2 \src{trang đề}}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lrl}
+\toprule
+\textbf{Mốc trên bảng practice (ảnh chụp 21/11)} & \textbf{Thời gian} & \textbf{Ghi chú} \\
+\midrule
+Hạng 1 (Mahalas) & 0,68 s & \\
+Hạng 2 / 3 & 0,75 s / 0,79 s & \\
+Hạng 10 & 0,99 s & \\
+Khoảng hạng 50 & 1,6 s & \\
+Khoảng hạng 75 & 2,5 s & \\
+Hạng 100 & 8,00 s & \\
+Baseline (PySpark starter, chế độ local) & 172,00 s & \\
+Số đội & 116 & \\
+\bottomrule
+\end{tabular}
+\caption{Ảnh chụp leaderboard practice. Đề nói thời gian practice có thể lệch tới khoảng 20\% giữa các máy chấm, nên chênh lệch nhỏ không có ý nghĩa}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Hai điều kiện sống còn:} (1) \emph{đúng tuyệt đối}, nếu không thì không có điểm; (2) final dùng khoảng 3 lần dữ liệu practice và cắt ở 3 phút, nên đề khuyên \textbf{dưới khoảng 60 s ở practice}. Phần lớn các đội trên bảng đã dưới 3 s, nên muốn có thứ hạng tốt cần cả tốc độ.
+\end{mdframed}
+
+\subsection{Nguồn thông tin và quy ước số liệu}
+\begin{itemize}
+  \item \textbf{Nguồn chính:} trang đề (ảnh chụp) và \fn{rules.md}. Đề ghi rõ khi starter và \fn{rules.md} khác nhau thì \fn{rules.md} thắng. Repo chưa có forum Q\&A.
+  \item \textbf{Tham khảo:} 3 starter (PySpark, DuckDB, Polars; 36 fixture giống hệt nhau), \fn{generator/} (mã Rust), \fn{dev-answer/}.
+  \item Số có nhãn \trial{} do mình chạy trên máy chạy thử 2 vCPU, \emph{không phải kết quả chính thức}.
+\end{itemize}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{5.2cm}Y}
+\toprule
+\textbf{Bộ dev (seed 1)} & \textbf{Giá trị} \\
+\midrule
+Lệnh tạo & \fn{generate --seed 1 --events 1000000 --clicks 250000 --output dev} \\
+\trial{Thời gian tạo} & 0,47 s (sau khi \fn{cargo build --release} mất 2,4 s) \\
+\trial{Dung lượng, số file} & 92 MB; 30 file events (79 MB), 40 file clicks (12 MB), 14 file links (940 KB) \\
+\trial{Số dòng dữ liệu (không tính header)} & events 1.072.086; clicks 255.240; links 44.874; \fn{products.csv} 50.000; \fn{campaigns.csv} 2.000 \\
+Cửa sổ thời gian & 2027-12-09T00:00:00Z đến 2027-12-23T00:00:00Z \\
+Đáp án dev (\fn{dev-answer/}) & \fn{user_daily.csv} 117.038 dòng; \fn{campaign_daily.csv} 27.400 dòng \\
+\bottomrule
+\end{tabularx}
+\caption{Bộ dev 1 triệu event \src{generator, dev-answer.zip}}
+\end{table}
+
+\subsection{Sơ đồ phụ thuộc}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={draw,rounded corners,thick,text width=3.0cm,minimum height=1.1cm,align=center,font=\small},
+  ext/.style={draw,dashed,rounded corners,text width=3.6cm,minimum height=1cm,align=center,font=\small,fill=gray!8},
+  arr/.style={->,thick,>=stealth},
+  lab/.style={font=\scriptsize,fill=white,inner sep=1pt}]
+  \node[ext] (c) at (0,2.4) {\textbf{Chung}: repo public, Docker (dùng chung với P1, P4)};
+  \node[box,draw=p1,fill=p1!10] (a) at (0,0) {\textbf{2.1} Chọn engine, dựng repo};
+  \node[box,draw=p2,fill=p2!10] (b) at (4.3,0) {\textbf{2.2} Đọc CSV đúng dialect};
+  \node[box,draw=p3,fill=p3!10] (d) at (8.6,1.2) {\textbf{2.3} Timestamp, kiểm tra hợp lệ};
+  \node[box,draw=p4,fill=p4!10] (e) at (8.6,-1.2) {\textbf{2.4} Gộp ID (linked IDs)};
+  \node[box,draw=p5,fill=p5!10] (f) at (12.9,1.2) {\textbf{2.5} Event $\rightarrow$ phiên};
+  \node[box,draw=p6,fill=p6!10] (g) at (12.9,-1.2) {\textbf{2.6} Click: gán phiên, hỗ trợ};
+  \node[box,draw=p7,fill=p7!10] (h) at (8.6,-3.6) {\textbf{2.7} Ghi Parquet, kiểm thử};
+  \node[box,draw=p8,fill=p8!10] (i) at (2.6,-3.6) {\textbf{2.8} Tối ưu tốc độ};
+  \draw[arr] (c) -- (a);
+  \draw[arr] (a) -- (b);
+  \draw[arr] (b) -- (d);
+  \draw[arr] (b) -- (e);
+  \draw[arr] (d) -- (f);
+  \draw[arr] (e) -- (f);
+  \draw[arr] (e) -- (g);
+  \draw[arr] (f) -- node[lab,right=2pt]{đầu phiên} (g);
+  \draw[arr] (g) |- (h);
+  \draw[arr] (h) -- node[lab,above=2pt]{đúng rồi mới nhanh} (i);
+\end{tikzpicture}
+\end{center}
+P2 không phụ thuộc kết quả của P1, P3, P4; chỉ dùng chung hạ tầng (repo public, Docker linux/amd64) và quỹ thời gian.
+
+\subsection{Hiện trạng repo}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{4.2cm}Y}
+\toprule
+\textbf{Mục} & \textbf{Hiện trạng (đọc ngày 21/11, khoảng 11:10)} \\
+\midrule
+Repo chính & \fn{martin-danggg/HCMUT_TMT_Builders_BUILDATHON}, nhánh \fn{main}, remote \fn{origin} qua SSH \\
+Commit mới nhất & \fn{55687de} ``Initial commit'', 21/11/2026 10:41:21 +0700, tác giả Triet Dang. Đây là commit duy nhất \\
+File đã commit & Chỉ \fn{README.md} (31 byte, một dòng tiêu đề) \\
+Chưa commit (untracked) & \fn{p1_Builders/} (2,9 MB), \fn{p2_Databricks/} (5,7 MB), \fn{p3_Machina/} (48 KB), \fn{p4_RWX/} (404 KB): toàn bộ là starter files do ban tổ chức phát, chưa có dòng code lời giải nào \\
+Thư mục \fn{reports/} & Chứa file tổng quan này (tiếng Việt và tiếng Anh, chưa commit) \\
+\fn{.gitignore} của repo chính & Bỏ qua 3 thư mục \fn{submission/} (repo riêng) và \fn{p3_Machina/work/} (dữ liệu P3 không được công bố) \\
+Repo nộp riêng (đã tạo trên GitHub, public) & P1: \fn{martin-danggg/hcmut-tmt-p1-mech-royale} $\rightarrow$ \fn{p1_Builders/submission/}\allowbreak\fn{hcmut-tmt-p1-mech-royale/} (commit \fn{f4e1861})\newline P2: \fn{martin-danggg/hcmut-tmt-p2-shopping-sessions} $\rightarrow$ \fn{p2_Databricks/submission/}\allowbreak\fn{hcmut-tmt-p2-shopping-sessions/} (commit \fn{21cd7e4})\newline P4: \fn{martin-danggg/hcmut-tmt-p4-blast-radius} $\rightarrow$ \fn{p4_RWX/submission/}\allowbreak\fn{hcmut-tmt-p4-blast-radius/} (commit \fn{2a682dc})\newline Khung từ starter được clone, commit ``Setup: add requirements'' và push lên \fn{main} bằng \fn{tools/setup_submissions.sh} \\
+\bottomrule
+\end{tabularx}
+\caption{Hiện trạng repo chính, chung cho cả 4 problem}
+\end{table}
+
+\begin{mdframed}[linecolor=orange,linewidth=1pt,backgroundcolor=orange!8]
+\textbf{Nộp bài bằng repo riêng (đã chốt):} P1, P2 và P4 đều yêu cầu \emph{một repo GitHub public có \fn{Dockerfile} ở thư mục gốc} của commit được nộp. Repo chính là monorepo (p1--p4 nằm trong thư mục con) nên \textbf{không nộp repo chính}. Mỗi track có một repo public riêng, đặt trên máy tại \fn{pX_.../submission/hcmut-tmt-pX-.../}; mỗi thư mục đó là một git repo độc lập với remote riêng, còn repo chính bỏ qua chúng qua \fn{.gitignore}. Khi nộp: dán link repo riêng (ví dụ \fn{https://github.com/martin-danggg/hcmut-tmt-p4-blast-radius}) vào ô \emph{Public GitHub repository}; ô \emph{Commit} để trống thì BTC lấy commit mới nhất của \fn{main}. Repo phải giữ public và giữ mọi commit đã nộp đến khi công bố kết quả. P3 không cần GitHub (nộp qua thư mục \fn{gs://} của đội).
+\end{mdframed}
+
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{5.3cm}C{1.6cm}Y}
+\toprule
+\textbf{Thành phần của P2} & \textbf{Có chưa} & \textbf{Ghi chú} \\
+\midrule
+\fn{rules.md} & Có & Đặc tả đầy đủ (17 KB) \\
+Starter DuckDB / Polars / PySpark (.zip + giải nén) & Có & Pipeline rỗng, chỉ ghi đúng schema; duckdb 1.5.6, polars 2.1.0, pyspark 4.0.1; Python 3.12-slim-bookworm \\
+36 fixture (\fn{A1}--\fn{A12}, \fn{E1}--\fn{E20}, \fn{L1}--\fn{L4}) & Có & Giống nhau ở cả 3 starter; đáp án viết tay từ luật \\
+\fn{generator/} (Rust) và \fn{dev-answer/} & Có & Cần Rust $\ge$ 1.85 để build \\
+Bộ dev 1 triệu event (\fn{dev/}) & Chưa & Không đưa vào repo nộp; tạo bằng generator (mình đã tạo thử ngoài repo) \\
+Repo nộp riêng \fn{hcmut-tmt-p2-}\allowbreak\fn{shopping-sessions} & Có & \fn{p2_Databricks/submission/}\allowbreak\fn{hcmut-tmt-p2-shopping-sessions/}: toàn bộ \fn{starter-duckdb} (Dockerfile, Makefile, pipeline rỗng, scripts, 36 fixture), \fn{TEAM.md} đã điền, \fn{.gitignore} chặn dữ liệu; commit ``Setup: add requirements'' (\fn{21cd7e4}), rồi \fn{93d927b} ``Fix: keep CRLF in fixtures'': thêm \fn{.gitattributes} (\fn{* -text}) vì Git trên Windows đã đổi dòng CRLF cố ý của fixture E20 thành LF \\
+Pipeline của đội & Chưa & Đầu ra của 2.1--2.8 \\
+\bottomrule
+\end{tabularx}
+\caption{Phần đã có và còn thiếu của P2}
+\end{table}
+
+\subsection{Phân công và lịch}
+Làm một mình nên cột ``người review'' không áp dụng. Thay cho review: 36/36 fixture + \fn{check-dev} MATCH + tự kiểm tổng (mục 2.7) trước mọi lần nộp.
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1cm}L{2.6cm}YC{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Người chính} & \textbf{Việc} & \textbf{Review} \\
+\midrule
+2.1 & Đặng Minh Triết & Chọn engine, tạo repo nộp từ starter & -- \\
+2.2 & Đặng Minh Triết & Bộ đọc CSV theo đúng dialect của \fn{rules.md} & -- \\
+2.3 & Đặng Minh Triết & Đổi 3 dạng timestamp, kiểm tra cửa sổ và giá & -- \\
+2.4 & Đặng Minh Triết & Union-find trên \fn{links/}, đặt tên người & -- \\
+2.5 & Đặng Minh Triết & Dedup, lọc, chia phiên, ngày, danh mục & -- \\
+2.6 & Đặng Minh Triết & Dedup click, gán phiên, đếm hỗ trợ & -- \\
+2.7 & Đặng Minh Triết & Ghi Parquet, chạy fixture, \fn{check-dev} & -- \\
+2.8 & Đặng Minh Triết & Đo và tối ưu thời gian & -- \\
+\bottomrule
+\end{tabularx}
+\caption{Bảng phân công P2}
+\end{table}
+
+Không có ``tuần'' hay ``hạn tag'': hạn duy nhất là 23:00 CN 22/11. Đề xuất tự gắn tag \fn{p2-final} lên commit chốt. P2 được 6,5 giờ trong khoảng 25 giờ làm việc (26\%).
+
+\begin{center}\small
+\begin{longtable}{L{1.7cm}L{2.1cm}C{1.1cm}L{10.4cm}}
+\toprule \textbf{Ngày} & \textbf{Giờ} & \textbf{Track} & \textbf{Việc} \\ \midrule\endhead
+T7 21/11 & 11:15--12:00 & Chung & Tạo 3 repo public riêng cho P1, P2, P4 (Dockerfile ở gốc); kiểm tra Docker/WSL2; P3: tải manifest, chạy \fn{get-input.sh --limit 100} \\
+ & 12:00--15:30 & P4 & 4.1 môi trường + 4.2 map coverage tại commit ghim; 4.3--4.4 selector v1; \fn{make sample}; nộp lần 1 \\
+ & 15:30--18:00 & P1 & 1.1 hạ tầng + 1.2 bản đồ + 1.3 di chuyển/vùng bo; nộp bot v1 \\
+ & 18:00--19:00 & -- & Nghỉ \\
+\rowcolor{p2!15} & 19:00--22:30 & P2 & 2.1--2.7 bản đúng: 36/36 fixture, \fn{check-dev} MATCH; nộp lần 1 \\
+ & 22:30--23:30 & P3 & 3.1 khảo sát 100 file mẫu; bắt đầu tải toàn bộ corpus chạy nền qua đêm \\
+ & 23:30--00:30 & P1 & 1.4 chiến đấu v2; nộp (chấm trong lúc ngủ) \\
+CN 22/11 & 00:30--07:30 & -- & Ngủ (P3 tiếp tục tải nền) \\
+ & 07:30--10:30 & P3 & 3.2--3.5 pipeline v1 trên corpus; upload attempt 1 \\
+\rowcolor{p2!15} & 10:30--12:30 & P2 & 2.8 tối ưu tốc độ; nộp 2 lần \\
+ & 12:30--13:30 & -- & Nghỉ trưa \\
+ & 13:30--15:00 & P4 & 4.5 luật an toàn + tinh chỉnh chia worker; nộp \\
+ & 15:00--18:00 & P1 & 1.5 loot/nâng cấp + 1.6 vòng lặp A/B (khoảng 10 lần nộp) \\
+ & 18:00--20:30 & P3 & 3.6 attempt 2--3 theo điểm từng category \\
+\rowcolor{p2!15} & 20:30--21:30 & P2 & Cải tiến cuối, nộp \\
+ & 21:30--22:00 & P4 & Cải tiến cuối, nộp \\
+ & 22:00--22:45 & Chung & Chốt bài: chọn submission cuối cho từng track, giữ repo public, gắn tag \fn{pX-final} \\
+ & 22:45--23:00 & -- & Dự phòng. 23:00 đóng tất cả các track \\
+\bottomrule
+\caption{Lịch đề xuất cho cả 4 track đến hạn 23:00 CN 22/11 (dòng tô màu là P2)}
+\end{longtable}
+\end{center}
+
+
+\subsection{Chọn hướng tổng thể}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{L{2.6cm}YYC{1.5cm}}
+\toprule
+\textbf{Engine} & \textbf{Ưu} & \textbf{Nhược} & \textbf{Chọn?} \\
+\midrule
+PySpark (starter) & Có sẵn mẹo JVM & Baseline 172 s; JVM khởi động chậm; dễ vượt 3 phút ở final & Không \\
+\textbf{DuckDB} & SQL gọn; đọc CSV song song rất nhanh; có ASOF JOIN, window, range join; tự tràn đĩa khi thiếu RAM & Bộ đọc CSV của nó không khớp dialect (đọc \fn{""} thành chuỗi rỗng, tự sửa dòng lỗi), nên phải đọc nguyên dòng rồi tự tách & \textbf{Có (bản 1)} \\
+Polars & Nhanh, lazy/streaming & Cũng phải tự tách dòng; \texttt{\textbackslash d} của regex Rust khớp cả chữ số Unicode & Dự phòng \\
+Rust tự viết & Nhanh nhất (các đội đầu dưới 1 s); kiểm soát từng byte & Viết lâu, dễ sai khi chỉ còn 36 giờ và còn 3 track khác & Bản 2 nếu dư thời gian \\
+Python thuần & Dễ viết đúng & Chậm (hàng chục triệu dòng) & Không \\
+\bottomrule
+\end{tabularx}
+\caption{So sánh engine cho P2}
+\end{table}
+
+\textbf{Chọn DuckDB cho bản đúng đầu tiên}, vì: (1) đúng là điều kiện cần, và SQL cho phép viết từng luật thành một bước kiểm tra được; (2) đọc nguyên dòng rồi tách bằng SQL cho phép tuân thủ dialect mà vẫn đọc song song; \trial{đọc nguyên dòng 1,07 triệu event (81 MB) mất 0,10 s, tách 7 trường mất 0,11 s trên 2 vCPU}; (3) phần gộp ID (đồ thị) làm bằng Python/scipy, không phải đệ quy SQL. Nếu bản DuckDB đúng và còn thời gian thì mới viết lại phần nóng bằng Rust, lấy bản DuckDB làm chuẩn so sánh.
+
+\newpage
+\section{Các phần việc}
+
+% ---------------------------------------------------------------
+\subsection{2.1 Chọn engine và dựng repo}
+\partbox{p1}{1. Yêu cầu của đề}{Repo public có \fn{Dockerfile} ở gốc, \fn{CMD} chạy không tham số, thoát mã 0 nghĩa là ``xong, kiểm tra output''. Không ghi ngoài \fn{/output} và \fn{/scratch}; không dùng mạng lúc chạy.}
+\partbox{p1}{2. Mục tiêu khi xong}{Repo \fn{hcmut-tmt-p2-}\allowbreak\fn{shopping-sessions} (đã tạo) dựng từ \fn{starter-duckdb}, \fn{make build} và \fn{make fixtures} chạy được (dù còn sai), có \fn{generate} trên PATH và thư mục \fn{dev/} để thử.}
+\partbox{p1}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{starter-duckdb/}, \fn{generator/}.\\
+\textbf{Kiến thức:} Docker buildx, cách starter chạy với cờ của máy chấm (\fn{scripts/docker_run.sh}), Rust toolchain để build generator.}
+\partbox{p1}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \texttt{starter-duckdb/\{Dockerfile, Makefile, run.sh, requirements.txt, pipeline/pipeline.py, scripts/*, fixtures/*\}}.\\
+\textbf{Đầu ra:} repo nộp với cấu trúc như starter, \fn{TEAM.md} điền tên đội.}
+\longbox{p1}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Tạo repo public, chép nội dung \fn{starter-duckdb/} lên gốc (fixtures đi kèm vì đã nằm trong thư mục starter).
+  \item \fn{cargo build --release} trong \fn{generator/}, chép \fn{target/release/generate} vào PATH; \fn{make dev}; giải nén \fn{dev-answer.zip} vào \fn{dev-answer/}.
+  \item Không cần Docker khi lặp nhanh: \fn{python3 scripts/run_fixtures.py fixtures -- python3 pipeline/pipeline.py} (cần \fn{pip install polars} cho script so sánh).
+  \item Thêm \fn{.gitignore} cho \fn{dev/}, \fn{out/}: repo tối đa 50 MB và không được chứa dữ liệu.
+\end{enumerate}}
+\partbox{p1}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Image phải là linux/amd64 (máy chấm Intel Xeon). Process chạy với uid 1000: mọi thư mục tạm (DuckDB \fn{temp_directory}, \fn{TMPDIR}, \fn{HOME}) phải trỏ vào \fn{/scratch}; \fn{run.sh} của starter đã làm việc này.}
+\metabox{p1}{5\% của P2 (1,3\% tổng 4 problem), khoảng 0,3 giờ}{Phần ``Chung'' (GitHub, Docker)}{2.2}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.2 Đọc CSV đúng dialect}
+\partbox{p2}{1. Yêu cầu của đề}{Phân cách bằng dấu phẩy, UTF-8, chỉ \texttt{\textbackslash n} kết thúc dòng (\texttt{\textbackslash r} là ký tự thường). Trường có thể bọc trong ngoặc kép; ngoặc là cú pháp, \fn{""} là trường rỗng; trường rỗng là null. Dòng sai số trường, có ngoặc ở chỗ khác ngoài bọc cả trường, hoặc dòng trống đều là dòng lỗi và bị bỏ. Dấu cách là một phần giá trị. Mọi file có header; đọc mọi \fn{*.csv} trong \fn{events/}, \fn{clicks/}, \fn{links/} (có file chỉ có header).}
+\partbox{p2}{2. Mục tiêu khi xong}{Ba bảng thô \fn{events_raw}, \fn{clicks_raw}, \fn{links_raw} với đúng số cột, giá trị đã bỏ ngoặc, null đúng chỗ, dòng lỗi đã loại. Qua các fixture về dialect: E13, E15, E19, E20, L3.}
+\partbox{p2}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{/data/events/*.csv} (7 cột), \fn{clicks/*.csv} (4 cột), \fn{links/*.csv} (2 cột).\\
+\textbf{Kiến thức:} \fn{read_csv} của DuckDB với \fn{delim}, \texttt{quote=\textquotesingle{}\textquotesingle{}}, \texttt{escape=\textquotesingle{}\textquotesingle{}}, \fn{header}, \texttt{new\_line=\textquotesingle{}\textbackslash n\textquotesingle{}}; hàm chuỗi \fn{string_split}, \fn{regexp_matches} (dùng \fn{[0-9]}, không dùng \texttt{\textbackslash d}).}
+\partbox{p2}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{rules.md} mục ``CSV dialect'', \fn{fixtures/README.md}.\\
+\textbf{Đầu ra:} hàm \fn{read_table(glob, ncols)} trong \fn{pipeline/pipeline.py} (hoặc \fn{pipeline/csv.sql}).}
+\longbox{p2}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} không để DuckDB hiểu dấu phẩy hay ngoặc. Đọc mỗi dòng thành một chuỗi, rồi tự tách.
+\begin{enumerate}[leftmargin=1.4em]
+  \item Đọc nguyên dòng: \texttt{read\_csv(glob, columns=\{\textquotesingle{}line\textquotesingle{}:\textquotesingle{}VARCHAR\textquotesingle{}\}, delim=chr(1), quote=\textquotesingle{}\textquotesingle{}, escape=\textquotesingle{}\textquotesingle{}, header=true, auto\_detect=false, new\_line=\textquotesingle{}\textbackslash n\textquotesingle{})}. Header bị bỏ theo từng file; dòng giống header ở giữa file vẫn là dữ liệu (fixture L3).
+  \item Tách: \texttt{f = string\_split(line, \textquotesingle{},\textquotesingle{})}; giữ dòng có \fn{len(f) = ncols}. Dòng trống cho 1 trường nên tự bị loại khi \fn{ncols} $\ge$ 2.
+  \item Với mỗi trường: nếu không chứa \fn{"} thì giữ nguyên; nếu có dạng \fn{"..."} (ngoặc ở đầu và cuối, bên trong không có ngoặc) thì bỏ ngoặc; còn lại là dòng lỗi. Trường rỗng (sau khi bỏ ngoặc) thành NULL.
+  \item Không trim, không đổi hoa thường; \texttt{\textbackslash r} ở cuối trường cuối giữ nguyên để các bước sau tự loại (giá \texttt{1000\textbackslash r} sai, \fn{ts} có \texttt{\textbackslash r} sai).
+  \item Kiểm tra từng fixture dialect bằng cách in bảng thô và so với mô tả trong \fn{fixtures/README.md}.
+\end{enumerate}}
+\partbox{p2}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Fixture L3 có ID chứa ký tự tab được bọc ngoặc (\texttt{"A\textbackslash tB"}) và ID đó thành tên của người gồm \fn{u4}, \fn{u1}. Ký tự phân cách giả \fn{chr(1)} phải không xuất hiện trong dữ liệu (đề không cấm hẳn; nên đọc \fn{generator/src/text.rs} để chắc, hoặc thêm kiểm tra). Malformed chiếm khoảng 0,05\% dòng.}
+\metabox{p2}{15\% của P2 (3,9\% tổng), khoảng 1,0 giờ}{2.1}{2.3, 2.4}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.3 Timestamp và kiểm tra hợp lệ}
+\partbox{p3}{1. Yêu cầu của đề}{\fn{ts} có 3 dạng: F1 \fn{YYYY-MM-DDTHH:MM:SSZ}; F2 có offset \fn{+HH:MM}/\fn{-HH:MM} (giờ 00--23, phút 00--59, trừ offset để ra UTC); F3 chỉ gồm chữ số = epoch mili-giây (cho phép số 0 ở đầu). Mọi dạng khác là sai (phần lẻ giây, \fn{z}/\fn{t} thường, dấu cách thay \fn{T}, không có múi giờ, ngày không tồn tại, giờ 24, giây 60, offset không có dấu hai chấm\ldots). Event cần \fn{window_start <= ts < window_end}; click cần \fn{window_start - 7 ngày <= ts < window_end}. \fn{ingest_ts} luôn là F1 hợp lệ.}
+\partbox{p3}{2. Mục tiêu khi xong}{Hàm SQL \fn{parse_ts(s) -> BIGINT ms hoặc NULL} và các điều kiện hợp lệ cho event (loại event, product, giá) và click (campaign). Qua E2, E7, E10, E12, E13, E17, E18, A10.}
+\partbox{p3}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} bảng thô của 2.2, \fn{manifest.json}, \fn{products.csv}, \fn{campaigns.csv}.\\
+\textbf{Kiến thức:} lịch Gregory (năm nhuận: chia hết cho 4, trừ thế kỷ không chia hết cho 400), đổi ngày sang số ngày từ epoch, giới hạn int64.}
+\partbox{p3}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{rules.md} mục ``Timestamps'' và bước ``Validate'' của events, clicks.\\
+\textbf{Đầu ra:} macro \fn{parse_ts}, \fn{valid_price} trong pipeline.}
+\longbox{p3}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item F1/F2: khớp mẫu chặt, mọi ký tự số là \texttt{[0-9]}:\\
+  {\footnotesize\texttt{\textasciicircum[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}T[0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\}}\allowbreak\texttt{(Z|[+-][0-9]\{2\}:[0-9]\{2\})\$}}\\
+  rồi cắt chuỗi lấy số, kiểm tra tháng 1--12, ngày $\le$ số ngày của tháng (tính năm nhuận), giờ $\le$ 23, phút và giây $\le$ 59, giờ offset $\le$ 23, phút offset $\le$ 59.
+  \item Đổi sang ms bằng số học (số ngày từ epoch $\times$ 86.400.000 + ...) thay vì \fn{strptime} để nhanh và không bị hàm tự ``sửa'' ngày sai. \fn{-00:00} là UTC.
+  \item F3: \texttt{\textasciicircum[0-9]+\$}; bỏ số 0 đầu; nếu còn hơn 18 chữ số thì chắc chắn ngoài cửa sổ (sai), không ép kiểu để tránh tràn; còn lại ép \fn{BIGINT}.
+  \item Kiểm tra cửa sổ theo ms; ranh giới: đầu cửa sổ tính, cuối cửa sổ không tính; click tại đúng \fn{window_start - 7 ngày} được tính.
+  \item Event hợp lệ: \fn{user_id} khác null, \fn{ts} hợp lệ, \fn{event_type} đúng chính xác \fn{view}/\fn{cart}/\fn{purchase}, \fn{product_id} khác null; riêng \fn{purchase} cần giá chỉ gồm chữ số ASCII, giá trị 1--10.000.000 (\fn{0250} là 250). Click hợp lệ: \fn{user_id} khác null, \fn{ts} hợp lệ trong cửa sổ click, \fn{campaign_id} có trong \fn{campaigns.csv}.
+\end{enumerate}}
+\partbox{p3}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Chữ số Ả Rập-Ấn (Unicode \texttt{U+0660}--\texttt{U+0669}) và chữ số toàn chiều rộng (\texttt{U+FF10}--\texttt{U+FF19}) không phải chữ số (E18). F3 \fn{86400000} hợp lệ về cú pháp nhưng ngoài cửa sổ. Cửa sổ có thể chứa 29/02/2028. Giá chỉ kiểm tra cho \fn{purchase}; với \fn{view}/\fn{cart} giá bị bỏ qua dù chứa gì (E10).}
+\metabox{p3}{15\% của P2 (3,9\% tổng), khoảng 1,0 giờ}{2.2}{2.5, 2.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.4 Gộp ID (linked IDs)}
+\partbox{p4}{1. Yêu cầu của đề}{Mỗi dòng \fn{links} hợp lệ (không lỗi, hai phía đều khác rỗng) nối hai ID thành một người; quan hệ bắc cầu, không phụ thuộc thứ tự, file hay chiều. Tên người là ID nhỏ nhất theo byte; ID không xuất hiện trong link nào là một người riêng. Link không có thời gian và áp dụng trước mọi bước khác.}
+\partbox{p4}{2. Mục tiêu khi xong}{Bảng \fn{person_map(user_id, person)} cho mọi ID xuất hiện trong \fn{links}; ID khác ánh xạ về chính nó. Qua L1--L4 và A12.}
+\partbox{p4}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{links_raw} từ 2.2.\\
+\textbf{Kiến thức:} union-find (gộp theo hạng, nén đường đi) hoặc \fn{scipy.sparse.csgraph.connected_components}; so sánh chuỗi theo byte (thứ tự code point của Python trùng với thứ tự byte UTF-8).}
+\partbox{p4}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{rules.md} mục ``Linked IDs'', phần mô tả generator (chuỗi hàng trăm link, thiết bị dùng chung gộp hàng nghìn người).\\
+\textbf{Đầu ra:} hàm \fn{build_person_map()} và bảng DuckDB \fn{person_map}.}
+\longbox{p4}{5. Hướng giải quyết và các bước làm}{
+\textbf{Ý tưởng:} đồ thị làm bằng Python (hoặc scipy), không dùng CTE đệ quy (chuỗi dài hàng trăm bước sẽ rất chậm).
+\begin{enumerate}[leftmargin=1.4em]
+  \item Lấy các cặp từ DuckDB ra Arrow/numpy; mã hóa ID thành số nguyên bằng \fn{factorize} (hoặc \fn{dense_rank} trong SQL).
+  \item Tìm thành phần liên thông (scipy) hoặc union-find thuần Python.
+  \item Với mỗi thành phần, tên = ID nhỏ nhất theo byte (lấy \fn{min} trên chuỗi).
+  \item Đưa \fn{person_map} trở lại DuckDB, \fn{LEFT JOIN} vào events và clicks: \fn{coalesce(person, user_id)}.
+\end{enumerate}}
+\partbox{p4}{6. Yêu cầu đặc biệt, chỗ dễ sai}{ID chữ hoa (\fn{U1}) là ID khác, xếp trước mọi ID chữ thường và có thể thành tên người. Link tự nối (\fn{u6,u6}) và link lặp không đổi gì. ID có thể được nối mà không xuất hiện trong event hay click nào, nhưng vẫn có thể là tên (L2). Dòng link có một phía rỗng bị bỏ, và việc đó có thể tách một người làm hai.}
+\metabox{p4}{10\% của P2 (2,6\% tổng), khoảng 0,65 giờ}{2.2}{2.5, 2.6}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.5 Event: dedup, lọc, chia phiên}
+\partbox{p5}{1. Yêu cầu của đề}{Theo đúng thứ tự: (1) parse, bỏ dòng lỗi và \fn{event_id} rỗng; (2) dedup theo \fn{event_id}, giữ bản có \fn{ingest_ts} nhỏ nhất, \emph{trước} khi kiểm tra hợp lệ; (3) kiểm tra bản giữ lại; (4) bỏ event trễ khi \fn{ingest_ts - ts} quá 24 giờ; (5) chia phiên theo người, sắp theo \fn{ts}, khoảng cách quá 30 phút (1.800.000 ms) thì sang phiên mới, các event cùng \fn{ts} chung phiên; (6) ngày của phiên là ngày UTC lúc bắt đầu; (7) danh mục lấy từ \fn{products.csv}, không có thì \fn{unknown}.}
+\partbox{p5}{2. Mục tiêu khi xong}{Bảng \fn{sessions(person, session_id, start_ts, day, events, revenue_cents, has_purchase)} và bảng doanh thu theo danh mục mỗi phiên. Qua E1--E20.}
+\partbox{p5}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{events_raw}, \fn{person_map}, \fn{products.csv}.\\
+\textbf{Kiến thức:} window function (\fn{lag}, \fn{sum() over}), \fn{arg_min}/\fn{QUALIFY row_number()}, phép chia ngày theo ms.}
+\partbox{p5}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{rules.md} mục ``Events, in this order''.\\
+\textbf{Đầu ra:} các bước SQL \fn{events_kept}, \fn{events_valid}, \fn{sessions} trong pipeline.}
+\longbox{p5}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Dedup: \fn{QUALIFY row_number() OVER (PARTITION BY event_id ORDER BY ingest_ms) = 1} (các bản cùng \fn{ingest_ts} giống hệt nhau nên chọn bản nào cũng được). Làm trên bảng thô đã parse, chưa lọc hợp lệ.
+  \item Lọc hợp lệ (2.3), rồi bỏ trễ: giữ khi \fn{ingest_ms - ts_ms <= 86.400.000} (đúng 24 giờ vẫn giữ; \fn{ingest_ts} trước \fn{ts} vẫn giữ).
+  \item Gán người: \fn{person = coalesce(person_map.person, user_id)}.
+  \item Chia phiên trên các \emph{timestamp khác nhau}: lấy \fn{DISTINCT person, ts}, tính \fn{gap = ts - lag(ts)}, cờ phiên mới khi \fn{gap > 1.800.000} hoặc đầu tiên, \fn{session_no = sum(cờ) over (...)}; rồi join ngược về event theo \fn{(person, ts)}.
+  \item Phiên: \fn{start_ts = min(ts)}, \fn{day = ngày UTC của start_ts}, đếm event, tổng giá các \fn{purchase}, có mua hay không.
+  \item Danh mục: \fn{LEFT JOIN products}, null thành \fn{unknown}; tổng giá mua theo (người, ngày, danh mục) để tìm \fn{top_category} ở 2.7.
+\end{enumerate}}
+\partbox{p5}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Đúng 30 phút vẫn cùng phiên, 30 phút + 1 ms thì tách (E1, E2). Bản sao sớm nhất có \fn{ts} sai thì cả event bị bỏ, bản sau hợp lệ không cứu được (E5). Bản sao có thể mang user khác: lấy user của bản sớm nhất (E4). Phiên qua nửa đêm tính cho ngày bắt đầu (E3). Event trễ phải bỏ \emph{trước} khi chia phiên, vì nó có thể nối hai phiên.}
+\metabox{p5}{15\% của P2 (3,9\% tổng), khoảng 1,0 giờ}{2.3, 2.4}{2.6, 2.7}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.6 Click: gán phiên và đếm hỗ trợ}
+\partbox{p6}{1. Yêu cầu của đề}{Click: parse, bỏ \fn{click_id} rỗng, dedup theo \fn{click_id} (các bản giống nhau), kiểm tra hợp lệ. Mỗi phiên được gán cho click hợp lệ của cùng người có \fn{click.ts <= session_start} và cách không quá 7 ngày (604.800.000 ms), lấy \fn{ts} muộn nhất, hòa thì \fn{click_id} nhỏ nhất theo byte; không có thì gán \fn{organic}. Hỗ trợ: mọi chiến dịch có ít nhất một click hợp lệ của người đó trong \fn{[start - 7 ngày, start]}, mỗi chiến dịch tính một lần, kể cả chiến dịch được gán; \fn{organic} không bao giờ hỗ trợ.}
+\partbox{p6}{2. Mục tiêu khi xong}{Mỗi phiên có \fn{campaign_id} được gán và danh sách chiến dịch hỗ trợ. Qua A1--A12, L4.}
+\partbox{p6}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} \fn{clicks_raw}, \fn{person_map}, \fn{campaigns.csv}, bảng \fn{sessions}.\\
+\textbf{Kiến thức:} \fn{ASOF JOIN} của DuckDB, range join (IEJoin), \fn{DISTINCT} theo cặp.}
+\partbox{p6}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{rules.md} mục ``Clicks''.\\
+\textbf{Đầu ra:} bảng \fn{session_credit(session, campaign_id, channel)}, \fn{session_assist(session, campaign_id)}.}
+\longbox{p6}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Dedup click: \fn{DISTINCT ON (click_id)} sau khi parse (bản sao chỉ khác cách đặt ngoặc, đã bỏ ở 2.2).
+  \item Lọc hợp lệ, gán người như event.
+  \item Gán phiên: rút gọn click về một dòng cho mỗi \fn{(person, ts)} giữ \fn{min(click_id)} (đúng luật hòa), rồi \fn{ASOF JOIN} theo \fn{person} và \fn{click.ts <= start_ts}; giữ khi \fn{start_ts - click.ts <= 604.800.000}, ngược lại là \fn{organic}.
+  \item Hỗ trợ: rút gọn về \fn{(person, campaign_id, ts)} khác nhau; range join với phiên theo \fn{person} và \fn{start_ts - 7 ngày <= ts <= start_ts}; \fn{DISTINCT (session, campaign_id)}.
+  \item Tự kiểm: tổng \fn{assisted_sessions} $\ge$ số phiên được gán cho chiến dịch khác \fn{organic}.
+\end{enumerate}}
+\partbox{p6}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Click đúng lúc bắt đầu phiên được tính, trễ 1 ms thì không (A4). Click giữa phiên chỉ ảnh hưởng các phiên sau (A9). Click trước cửa sổ event tới 7 ngày vẫn tính (A2, A10). Một click gán được nhiều phiên và hỗ trợ mọi phiên trong 7 ngày sau nó, mỗi phiên tính theo ngày của chính phiên đó (A8, A12). Chiến dịch chỉ hỗ trợ mà không được gán vẫn có dòng, các cột gán bằng 0 (A11). Khách ``cá voi'' có rất nhiều click: range join phải dùng kiểu join bất đẳng thức, không được thành tích Descartes.}
+\metabox{p6}{15\% của P2 (3,9\% tổng), khoảng 1,0 giờ}{2.3, 2.4, 2.5}{2.7}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.7 Ghi Parquet và kiểm thử}
+\partbox{p7}{1. Yêu cầu của đề}{Hai bảng, mỗi bảng một hoặc nhiều file \fn{*.parquet} ngay trong thư mục; đúng tên cột, không thừa cột; số nguyên độ rộng nào cũng được; \fn{day} phải là Parquet \fn{DATE}. \fn{user_daily}: một dòng cho mỗi (người, ngày) có phiên, gồm \fn{sessions}, \fn{events}, \fn{revenue_cents}, \fn{top_category} (danh mục có tổng giá mua lớn nhất, hòa thì nhỏ nhất theo byte, null nếu không mua). \fn{campaign_daily}: một dòng cho mỗi (chiến dịch, ngày) có phiên được gán hoặc được hỗ trợ.}
+\partbox{p7}{2. Mục tiêu khi xong}{36/36 fixture khớp; \fn{make check-dev} in \fn{MATCH} (117.038 và 27.400 dòng); tự kiểm tổng \fn{sessions} và \fn{revenue_cents} bằng nhau giữa 2 bảng.}
+\partbox{p7}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} kết quả 2.5, 2.6; \fn{fixtures/*/expected/}, \fn{dev-answer/}.\\
+\textbf{Kiến thức:} \fn{COPY ... TO ... (FORMAT parquet)}, kiểu \fn{DATE}; script \fn{run_fixtures.py} và \fn{compare.py} (so khớp không phụ thuộc thứ tự, có kiểm tra khóa trùng).}
+\partbox{p7}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} \fn{rules.md} mục ``Outputs'', \fn{scripts/run_fixtures.py}, \fn{scripts/compare.py}.\\
+\textbf{Đầu ra:} \fn{/output/user_daily/*.parquet}, \fn{/output/campaign_daily/*.parquet}; \fn{notes/p2_log.md}.}
+\longbox{p7}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item \fn{user_daily}: gộp phiên theo (người, ngày); \fn{top_category} bằng \fn{arg_max} trên (tổng giá giảm dần, tên danh mục tăng dần) hoặc \fn{QUALIFY row_number()}.
+  \item \fn{campaign_daily}: \fn{FULL OUTER JOIN} giữa ``gán'' (\fn{sessions}, \fn{purchasing_sessions}, \fn{revenue_cents}) và ``hỗ trợ'' (\fn{assisted_sessions}) theo (chiến dịch, ngày), null thành 0; \fn{channel} từ \fn{campaigns.csv}, \fn{organic} cho \fn{organic}.
+  \item Ghi Parquet trực tiếp từ DuckDB (cho phép nhiều file: \fn{PER_THREAD_OUTPUT}).
+  \item Chạy 36 fixture sau mỗi thay đổi; khi sai, đọc dòng ``Catches'' của fixture trong \fn{fixtures/README.md} để biết luật nào bị vi phạm.
+  \item Chạy dev: \fn{make run-dev} rồi \fn{make check-dev}; lệch thì in 5 dòng khác biệt đầu tiên để tìm luật sai.
+\end{enumerate}}
+\partbox{p7}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Fixture viết tay từ luật, không phải từ code tham chiếu, nên khi fixture và \fn{rules.md} có vẻ khác nhau thì hỏi BTC. Bộ dev chỉ kiểm tra với seed 1; dữ liệu ẩn có cửa sổ, cá voi, tỉ lệ rác khác, nên đừng ghi cứng gì theo bộ dev.}
+\metabox{p7}{10\% của P2 (2,6\% tổng), khoảng 0,65 giờ}{2.5, 2.6}{2.8}{Bỏ qua (làm một mình)}
+
+% ---------------------------------------------------------------
+\subsection{2.8 Tối ưu tốc độ}
+\partbox{p8}{1. Yêu cầu của đề}{Điểm là thời gian thực từ lúc container khởi động đến khi thoát, gồm cả khởi động engine và đọc CSV. Practice khoảng 20 triệu event; final khoảng 60 triệu, mỗi lần tối đa 3 phút.}
+\partbox{p8}{2. Mục tiêu khi xong}{Bản đúng chạy dưới 60 s ở practice (yêu cầu tối thiểu theo đề), mục tiêu thực tế vài giây với DuckDB; nếu viết lại bằng Rust thì dưới 2 s.}
+\partbox{p8}{3. Dữ liệu đầu vào và kiến thức cần có}{
+\textbf{Dữ liệu:} bộ dữ liệu lớn tự tạo: \fn{generate --seed 7 --events 20000000 --clicks 5000000} (tỉ lệ click giống dev; ước tính khoảng 1,8 GB, chưa đo).\\
+\textbf{Kiến thức:} \fn{EXPLAIN ANALYZE} của DuckDB, \fn{threads}, \fn{memory_limit}, \fn{preserve_insertion_order=false}; với Rust: mmap, rayon, bảng băm, sắp xếp song song.}
+\partbox{p8}{4. File cần dựa vào $\rightarrow$ file đầu ra}{
+\textbf{Dựa vào:} pipeline đúng của 2.7.\\
+\textbf{Đầu ra:} pipeline nhanh hơn, bảng đo thời gian trong \fn{notes/p2_log.md}.}
+\longbox{p8}{5. Hướng giải quyết và các bước làm}{
+\begin{enumerate}[leftmargin=1.4em]
+  \item Đo từng bước bằng \fn{EXPLAIN ANALYZE} trên bộ 20 triệu tự tạo; thường tốn nhất là đọc + tách chuỗi, dedup event và chia phiên (sắp xếp theo người, thời gian).
+  \item Giảm số lần quét: tách trường và parse timestamp trong cùng một lượt; chỉ giữ các cột cần.
+  \item Thay regex bằng hàm chuỗi rẻ hơn (\fn{length}, \fn{substr}, so ký tự) ở đường nóng; chỉ dùng regex khi chuỗi có ký tự lạ.
+  \item Mã hóa \fn{person} thành số nguyên trước khi sắp xếp và join (chuỗi chậm hơn nhiều).
+  \item Tránh Python ở đường nóng; chỉ phần union-find chạy Python, trên mảng số.
+  \item Nếu còn từ 4 giờ trở lên sau khi bản DuckDB đã đúng: viết lại bằng Rust (đọc file song song theo đoạn, tách byte thủ công, union-find, sắp xếp theo người), so khớp với bản DuckDB trên nhiều seed trước khi nộp.
+\end{enumerate}}
+\partbox{p8}{6. Yêu cầu đặc biệt, chỗ dễ sai}{Chỉ 2 lượt/giờ: luôn kiểm tra đúng ở máy trước khi nộp. Thời gian practice dao động tới khoảng 20\% giữa các máy. Lần chạy ẩn không cho xem log, chỉ báo số dòng thiếu/thừa/khác. Một lần final quá 3 phút là mất điểm final, nên giữ dư địa lớn cho dữ liệu gấp 3.}
+\metabox{p8}{15\% của P2 (3,9\% tổng), khoảng 1,0 giờ}{2.7}{Kết quả cuối của P2}{Bỏ qua (làm một mình)}
+
+\newpage
+\section{Bảng tóm tắt các phần}
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{C{1.0cm}L{2.9cm}YC{1.2cm}C{1.3cm}L{1.6cm}}
+\toprule
+\textbf{Phần} & \textbf{Tên} & \textbf{Đầu ra chính} & \textbf{\% P2} & \textbf{\% tổng} & \textbf{Tiên quyết} \\
+\midrule
+2.1 & Engine, repo & Repo nộp từ starter DuckDB, bộ dev & 5 & 1,3 & Chung \\
+2.2 & Đọc CSV & \fn{read_table()} đúng dialect & 15 & 3,9 & 2.1 \\
+2.3 & Timestamp, hợp lệ & \fn{parse_ts}, \fn{valid_price} & 15 & 3,9 & 2.2 \\
+2.4 & Gộp ID & \fn{person_map} & 10 & 2,6 & 2.2 \\
+2.5 & Event $\rightarrow$ phiên & Bảng \fn{sessions} & 15 & 3,9 & 2.3, 2.4 \\
+2.6 & Click, hỗ trợ & \fn{session_credit}, \fn{session_assist} & 15 & 3,9 & 2.3--2.5 \\
+2.7 & Parquet, kiểm thử & 2 bảng Parquet, 36/36 fixture, dev MATCH & 10 & 2,6 & 2.5, 2.6 \\
+2.8 & Tối ưu tốc độ & Pipeline nhanh, bảng đo & 15 & 3,9 & 2.7 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Tổng P2}} & \textbf{100} & \textbf{26} & \\
+\bottomrule
+\end{tabularx}
+\caption{Tóm tắt P2. ``\% tổng'' là phần trăm trên tổng khối lượng 4 problem (P1 26\%, P2 26\%, P3 26\%, P4 22\%)}
+\end{table}
+
+\end{document}
