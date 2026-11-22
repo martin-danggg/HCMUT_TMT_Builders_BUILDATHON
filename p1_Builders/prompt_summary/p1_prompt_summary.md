@@ -3,15 +3,15 @@
 ## Prompt để dán vào chat mới
 
 ```
-Đọc file p1_Builders/prompt_summary/p1_prompt_summary.md trong repo D:\Hackathon\Builders_Buildathon\HCMUT_TMT_Builders_BUILDATHON rồi tiếp tục giúp tôi làm Problem 1 (Builders Mech Royale) của Builders Buildathon. Hạn chót 23:00 CN 22/11/2026 (GMT+7). Tôi làm một mình. Trả lời tiếng Việt, không commit, không clone, báo trước khi sửa file nào.
+Đọc file p1_Builders/prompt_summary/p1_prompt_summary.md trong thư mục HCMUT_TMT_Builders_BUILDATHON tôi đã kết nối (repo D:\Hackathon\Builders_Buildathon\HCMUT_TMT_Builders_BUILDATHON) rồi tiếp tục giúp tôi làm Problem 1 (Builders Mech Royale) của Builders Buildathon 2026. Repo nộp: p1_Builders/submission/hcmut-tmt-p1-mech-royale (bot.py hiện vẫn là bot mẫu). Đọc thêm p1_Builders/submission/docker_check.log (kết quả check trong Docker chạy qua đêm) nếu có. Hạn chót 23:00 CN 22/11/2026 (GMT+7), tôi làm một mình. Trả lời tiếng Việt. Đề và forum Q&A là nguồn chính, số liệu phải khớp code, số chạy thử ghi rõ "chạy thử". Báo trước khi sửa file nào. Commit thì đưa lệnh cho tôi tự chạy và push, không ghi tên Claude trong commit. Bắt đầu bằng việc nói ngắn gọn tình trạng hiện tại và việc nên làm tiếp theo.
 ```
 
 ## Bối cảnh hackathon
 - Builders Buildathon 2026, đội **HCMUT TMT**, làm **một mình** (Đặng Minh Triết).
 - **Hạn chót: 23:00 Chủ nhật 22/11/2026 (GMT+7)** cho cả 4 track: **P1 Builders Mech Royale**, P2 Databricks Shopping Sessions, P3 Machina CAD De-ID, P4 RWX Blast Radius.
-- Repo: `D:\Hackathon\Builders_Buildathon\HCMUT_TMT_Builders_BUILDATHON` (GitHub `martin-danggg/HCMUT_TMT_Builders_BUILDATHON`, chỉ 1 commit `55687de`, p1–p4 chưa được git theo dõi).
-- File P1 có sẵn: `p1_Builders/starter_files/mechfight-kit.tar.gz` và bản giải nén `mechfight-kit/mechfight-kit/` (`protocol.md` – đặc tả đầy đủ; `python/` với `mechfight.py`, `example_bot.py`, `Dockerfile`; `ts/`; `check/check.py` + `stream.jsonl.gz`; `arena/v2/world.json`, `terrain.i16`). Báo cáo tổng quan: `p1_Builders/reports/p1_overview.pdf` (tiếng Việt), `p1_overview_en.pdf` (tiếng Anh).
-- Quy ước của người dùng: trả lời tiếng Việt; **không commit, không clone; báo trước khi sửa file nào**; số liệu chạy thử phải ghi rõ "chạy thử".
+- Repo chính: `D:\Hackathon\Builders_Buildathon\HCMUT_TMT_Builders_BUILDATHON` (GitHub `martin-danggg/HCMUT_TMT_Builders_BUILDATHON`, **public**). Commit `93efebb` (22/11) đã đưa báo cáo, `prompt_summary`, starter và `tools/setup_submissions.sh` lên. `.gitignore` chặn `p1_Builders/submission/`, `p2_Databricks/submission/`, `p4_RWX/submission/` (repo nộp riêng) và `p3_Machina/submission/` (dữ liệu P3, không được công bố).
+- File P1 có sẵn: `p1_Builders/starter_files/mechfight-kit.tar.gz` và bản giải nén `p1_Builders/starter_files/mechfight-kit/` (`protocol.md` – đặc tả đầy đủ; `python/` với `mechfight.py`, `example_bot.py`, `Dockerfile`; `ts/`; `check/check.py` + `stream.jsonl.gz`; `arena/v2/world.json`, `terrain.i16`). Báo cáo tổng quan: `p1_Builders/reports/p1_overview.pdf` (tiếng Việt), `p1_overview_en.pdf` (tiếng Anh).
+- Quy ước của người dùng: trả lời tiếng Việt; **báo trước khi sửa file nào**; đề và forum Q&A là nguồn chính, mọi con số phải khớp với code; số liệu chạy thử phải ghi rõ "chạy thử"; không công khai mã mời đội. Được commit trong repo nộp riêng (báo trước), nhưng **người dùng tự push** (Claude không dùng được SSH key `github-personal`). **Không thêm dòng Co-Authored-By/ghi tên Claude vào commit.** Git trong máy ảo của Claude không xóa được file nên đừng chạy `git commit`/`git add` ở đó (để lại `.git/index.lock`); đưa lệnh cho người dùng chạy trong Git Bash.
 - **Repo nộp riêng (đã tạo):** `https://github.com/martin-danggg/hcmut-tmt-p1-mech-royale`, trên máy ở `p1_Builders/submission/hcmut-tmt-p1-mech-royale/` (git repo độc lập, repo chính bỏ qua qua `.gitignore`). Khung từ starter (`Dockerfile` ở gốc chạy `bot.py`, `mechfight.py`, `check/`, `arena/v2/`, `docs/`, README) được commit "Setup: add requirements" (`f4e1861`) và push bằng `bash tools/setup_submissions.sh`. Repo tối đa 20 MB. Chưa có code bot thật (bot.py là bot mẫu đổi tên `hcmut-tmt`).
 
 ## Đề P1
@@ -41,5 +41,9 @@ Hạng 1 AT **5,48**, hạng 2 5,35; baseline (bot mẫu Python) **1,15**.
 5. **1.5** Nhặt vũ khí phụ, cube khi an toàn; nâng cấp ưu tiên plating > armor > nanites > sát thương.
 6. **1.6** Mỗi lần nộp đổi một ý, ghi log; đừng tối ưu quá theo bot nhà.
 
-## Tình trạng hiện tại (CN 22/11, khoảng 01:50)
-- Chưa làm phần nào; người dùng đang ưu tiên P3. Lịch đề xuất ban đầu cho P1: khoảng 6,5 giờ.
+## Tình trạng hiện tại (CN 22/11, khoảng 03:40)
+- Repo nộp đã có khung và đã push (`f4e1861`). `bot.py` vẫn là **bot mẫu** đổi tên `hcmut-tmt`; chưa có chiến thuật nào.
+- Chạy thử trên máy người dùng (không Docker): `python3 check/check.py -- python3 -u bot.py` → **PASS**, `ready` sau 44 ms, 300/300 đúng hạn, p50 0,2 ms, p99 0,4 ms.
+- Qua đêm người dùng được đề nghị chạy `docker build` + `check.py` trong container (log: `p1_Builders/submission/docker_check.log`) và **nộp thử bot mẫu** để lấy điểm nền (practice; hòa thì nộp sớm hơn thắng). Kiểm tra log và điểm trên trang track trước.
+- README của repo nộp: lệnh `docker run` thiếu `--user 65534:65534` so với lệnh mẫu trong `protocol.md` (chưa sửa, không ảnh hưởng điểm).
+- Việc tiếp theo: 1.2 (lưới bản đồ + `los`), 1.3 (theo vùng bo, A*), 1.4 (ngắm đón); mỗi bản nộp đổi một ý.
